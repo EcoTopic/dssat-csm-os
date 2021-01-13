@@ -700,7 +700,7 @@ C-GH &               P1,P2O,P2R,P5,G1,G2,PHINT,P3,P4
 !     &               G2,G3,G4,PD,P2,TC
 
 !       CaneGro sugarcane
-        CASE ('SCCAN')
+        CASE ('SCCAN', 'SCRGR')
               WRITE (LUNIO,3000,IOSTAT=ERRNUM) VARNO,VRNAME,
      &          trim(PLAINTXT)
 

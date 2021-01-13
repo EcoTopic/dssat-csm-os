@@ -135,7 +135,7 @@ C
 C**WDB 12/8/2015 added BSCER to case statement for sugarbeet model
           CASE('MLCER','MZCER','SWCER','MZIXM','SGCER',
      &         'PTSUB','RICER','TRARO','TNARO',
-     &         'SCCAN','SCCSP','BSCER')
+     &         'SCCAN','SCRGR','SCCSP','BSCER')
             CALL INVRCE (CROP, MODEL)
           CASE ('CSCER','CSCAS','CSYCA')
 !           CALL INVRCS

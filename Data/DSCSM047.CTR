@@ -239,7 +239,7 @@ $SIMULATION_CONTROLS
 @N CONTROLS_TITLE
 91 CANEGRO, Sugarcane
 @N GENERAL     NYERS NREPS START SDATE RSEED SNAME.................... MODEL...
-91 GE              .     .     .     .     .                           SCCAN 
+91 GE              .     .     .     .     .                           SCRGR 
 
 !-----------------------------------------------------------------------------------------
 @N CONTROLS_TITLE

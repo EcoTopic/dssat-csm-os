@@ -1003,7 +1003,7 @@ C-GH     IF (PLTPOP .LE. 0.0 .OR. PLTPOP .GT. 999.) THEN
 !         ENDIF
          IF (ROWSPC <= 0.0) THEN
             SELECT CASE (MODEL(1:5))
-            CASE ('SCCAN'); ROWSPC = 0.0  !Canegro does not need this
+            CASE ('SCCAN', 'SCRGR'); ROWSPC = 0.0  !Canegro does not need this
             CASE DEFAULT
               ROWSPC = 1.0 / SQRT(PLTPOP) * 100.
               MSG(1) = "Missing row spacing in experiment file."

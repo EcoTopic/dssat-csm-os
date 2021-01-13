@@ -316,7 +316,7 @@ C-GH &            P1,P2O,P2R,P5,G1,G2,PHINT,P3,P4
 !        ECONO = '      '
 
 !     CaneGro: South African Sugarcane model **
-      CASE ('SCCAN') 
+      CASE ('SCCAN', 'SCRGR') 
         !WRITE(*, '(A)') C360
         READ (C360,1060,IOSTAT=ERRNUM) VARTY, VRNAME, ECONO,
      &      MaxPARCE, APFMX, STKPFMAX, SUCA, TBFT,  

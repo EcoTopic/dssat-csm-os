@@ -545,7 +545,8 @@ C         Variables to run CASUPRO from Alt_PLANT.  FSR 07-23-03
       !  MJ Added IRRAMT July 2015
       !  MJ Added ES July 2015
       !  MJ added SATFAC Jan 2018
-        CALL SC_CNGRO (
+      !      CALL SC_CNGRO (
+           CALL SC_RGR (
      &    CONTROL, ISWITCH,                                   !Input
      &    CO2, DAYL, EOP, EP, EO, ES, HARVFRAC, NH4, NO3, SNOW,   !Input
      &    SOILPROP, SRAD, SW, TMAX, TMIN, TRWUP, TRWU, EOS,   !Input
@@ -558,6 +559,22 @@ c     Added by MJ, 2007-04-04:
 c     ::::::::::::::::::::::::
 c     Total LAI must exceed or be equal to healthy LAI:
           XLAI = MAX(XLAI, XHLAI)
+
+      CASE('SCRGR')
+            CALL SC_RGR (
+     &    CONTROL, ISWITCH,                                   !Input
+     &    CO2, DAYL, EOP, EP, EO, ES, HARVFRAC, NH4, NO3, SNOW,   !Input
+     &    SOILPROP, SRAD, SW, TMAX, TMIN, TRWUP, TRWU, EOS,   !Input
+     &    RWUEP1, TWILEN, YREND, YRPLT, WEATHER, IRRAMT,      !Input
+     $    CANHT, HARVRES, KCAN, KTRANS, MDATE, NSTRES,        !Output
+     &    PORMIN, RLV, RWUMX,SENESCE, STGDOY, UNH4,           !Output
+     &    UNO3, XLAI, XHLAI, EORATIO)                 !Output
+      
+c     Added by MJ, 2007-04-04:
+c     ::::::::::::::::::::::::
+c     Total LAI must exceed or be equal to healthy LAI:
+          XLAI = MAX(XLAI, XHLAI)
+
 !     -------------------------------------------------
 !     Sugarcane - SAMUCA
       CASE('SCSAM')
