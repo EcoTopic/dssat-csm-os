@@ -325,6 +325,7 @@ C=======================================================================
      &    (INDEX(MODEL(3:5),'SIM') .EQ. 0) .AND.   !CROPSIM (Cassava)
      &    (INDEX(MODEL(3:5),'SUB') .EQ. 0) .AND.   !SUBSTOR
      &    (INDEX(MODEL(3:5),'CAN') .EQ. 0) .AND.   !CANEGRO
+     &    (INDEX(MODEL(3:5),'RGR') .EQ. 0) .AND.   !RGR-SUGARCANE
      &    (INDEX(MODEL(3:5),'CSP') .EQ. 0) .AND.   !CASUPRO
      &	(INDEX(MODEL(3:5),'SAM') .EQ. 0) .AND.	 !SAMUCA
      &    (INDEX(MODEL(3:5),'ALO') .EQ. 0) .AND.   !ALOHA

@@ -546,7 +546,7 @@ C         Variables to run CASUPRO from Alt_PLANT.  FSR 07-23-03
       !  MJ Added ES July 2015
       !  MJ added SATFAC Jan 2018
       !      CALL SC_CNGRO (
-           CALL SC_RGR (
+           CALL SC_CNGRO (
      &    CONTROL, ISWITCH,                                   !Input
      &    CO2, DAYL, EOP, EP, EO, ES, HARVFRAC, NH4, NO3, SNOW,   !Input
      &    SOILPROP, SRAD, SW, TMAX, TMIN, TRWUP, TRWU, EOS,   !Input
