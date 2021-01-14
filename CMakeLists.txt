@@ -228,6 +228,7 @@ set(
         "Plant/CANEGRO-Sugarcane/SC_ROOTG.for"
         "Plant/CANEGRO-Sugarcane/SC_UM_WSTRESS.for"
         "Plant/RGR-Sugarcane/SC_RGR.for"
+        "Plant/RGR-Sugarcane/SC_RGOUT.for"
         "Plant/CASUPRO-Sugarcane/CSP_CANOPY.for"
         "Plant/CASUPRO-Sugarcane/CSP_CASUPRO.for"
         "Plant/CASUPRO-Sugarcane/CSP_DEMAND.for"

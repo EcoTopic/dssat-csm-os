@@ -297,6 +297,9 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 c     Call the output routine, to initialise output
 c     ::::::::::
+      CALL SC_RGOUTPUT(CONTROL, WEATHER,
+     &  SW, SoilProp,
+     &  YRPLT, CELLSE_DM)
 
 
 c     create work.out
@@ -415,6 +418,10 @@ c	Water logging stress
         TSS(I) = 0.0
       ENDDO
       SATFAC = 0.0
+
+      CALL SC_RGOUTPUT(CONTROL, WEATHER,
+     &  SW, SoilProp,
+     &  YRPLT, CELLSE_DM)
 
 c     END of SEASINIT
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -570,6 +577,9 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 c     Write output of daily values:
 c     :::::::::::::::::::::::::::::
 
+      CALL SC_RGOUTPUT(CONTROL, WEATHER,
+     &  SW, SoilProp,
+     &  YRPLT, CELLSE_DM)
 
 
 !         chp 4/7/2009
