@@ -132,6 +132,110 @@ c     local copy of CONTROL%DYNAMIC:
       INTEGER DYNAMIC
 c     Output file unit:
 c      INTEGER NOUTDG
+
+c     JvdM: RGR genetic input parameters
+c     -----------------
+      REAL InitialGLAI  ! Initial green leaf area index (m2/m2)
+      REAL TBase_LAI  ! Cardinal temperatures for canopy development  (°C)
+      REAL TOpt_LAI  ! Cardinal temperatures for canopy development  (°C)
+      REAL TFin_LAI  ! Cardinal temperatures for canopy development  (°C)
+      REAL TBase_Photos  ! Cardinal temperatures for photosynthesis  (°C)
+      REAL TOpt1_Photos  ! Cardinal temperatures for photosynthesis  (°C)
+      REAL TOpt2_Photos  ! Cardinal temperatures for photosynthesis  (°C)
+      REAL TFin_Photos  ! Cardinal temperatures for photosynthesis  (°C)
+      REAL TBase_LFAPP  ! Cardinal temperatures for leaf appearance (°C)
+      REAL TOpt_LFAPP  ! Cardinal temperatures for leaf appearance (°C)
+      REAL TFin_LFAPP  ! Cardinal temperatures for leaf appearance (°C)
+      REAL LeafPI1  ! Leaf phyllocron intervals (°Cd):
+      REAL LeafPI2  ! Leaf phyllocron intervals (°Cd):
+      REAL KeMin  ! Minimum and maximum PAR extinction coefficients
+      REAL KeMax  ! Minimum and maximum PAR extinction coefficients
+      REAL KeMaxLf  ! Number of leaves/stalk at KeMax
+      REAL SLAMin  ! Minimum and maximum specific leaf area (cm2/g)
+      REAL SLAMax  ! Minimum and maximum specific leaf area (cm2/g)
+      REAL Suc_LfNum_Delay  ! delay in number of leaves after onset of stalk growth when sucrose is permitted to start accumulating
+      REAL RGRglaiMin  ! Minimum and Maximum relative growth rate of green leaf area index (RGRglai), and the slope
+      REAL RGRglaiMax  ! Minimum and Maximum relative growth rate of green leaf area index (RGRglai), and the slope
+      REAL RGRglaiSlope  ! coefficient describing the transition from max to min as the crop transitions to stalk growth
+      REAL RUEo  ! maximum theoretical radiation use efficiency, under optimal conditions (ADM PAR basis, g/MJ)
+      REAL MAX_ROOTPF  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
+      REAL AvRootDMFrac  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
+      REAL APFMX  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
+      REAL PCB  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
+      REAL FI_OSG  ! Fractional PAR interception at which 50% of shoots have started stalk growth
+      REAL OSG_log_c1  ! Parameter controlling the rate at which the crop transitions to stalk growth in response to PAR interception
+      REAL STKPFmax  ! Maximum fraction of aerial biomass that can be allocated to stalks each day
+      REAL SERo  !  max stalk elongation rate per day, under optimal temperature and water conditions (cm/d)
+      REAL SSH  ! specific stalk height' = cm length/g (over 1 m2 for a mature crop i.e. 8-15 stalks)
+      REAL lai_sen_light  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
+      REAL sen_light_slope  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
+
+
+c     JvdM: RGR model local state and daily rate variables
+      REAL TAVE  ! daily mean temperature
+      REAL ADM  ! Above-ground dry mass t/ha
+      REAL CANma  ! Conversion from leaf to dry mass
+      REAL CTT_LFEM  ! Cumulative thermal time for leaf appearance °Cd
+      REAL dADM  ! Daily change in Above-ground dry mass
+      REAL dGLA  ! New daily green leaf area m2/m2
+      REAL dGLA_pot  ! Potential (source-unlimited) change in green leaf area m2/m2
+      REAL dGLAI  ! Daily change in green leaf area index, new growth - senescence
+      REAL dLeafDM  ! Daily change in total leaf dry mass t/ha/d
+      REAL dLeafPI  ! Daily change in leaf phyllocron interval l/s/d
+      REAL dlt_slai_light  ! Daily leaf area senescence m2/m2/d
+      REAL dRootDM  ! Daily change in Root dry mass
+      REAL dSDM  ! Daily change in stalk dry mass t/ha/d
+      REAL dSenDM  ! Daily leaf area senescence m2/m2/d
+      REAL dSFibDM  ! Daily change in stalk fibre dry mass t/ha/d
+      REAL dSSuc  ! Daily change in stalk sucrose t/ha/d
+      REAL dTTLf  ! Daily thermal time accumulation for driving leaf appearance °Cd
+      REAL FIinter  ! Inter-row PAR fractional interception
+      REAL FT_LAI  ! Temperature factor for LAI growth
+      REAL FT_photos  ! Daily temperature factor for photosynthesis
+      REAL GLAI  ! Green leaf area index m2/m2
+      REAL GLeafDM  ! Green leaf canopy dry mass t/ha
+      REAL KePAR  ! PAR canopy extinction coefficient
+      REAL LAIsen  ! Daily GLAI senesced m2/m2/d
+      REAL LeafDM  ! Total (living + dead) leaf dry mass t/ha
+      REAL LeafPI  ! Current leaf phyllocron interval °Cd
+      REAL LeafSink  ! Leaf carbon demand (sink strength) t/ha/d
+      REAL LFNUM_OSG  ! The number of leaves per shoot at which onset of stalk growth started l/s
+      REAL LFNUM_SUCStart  ! Leaf number per stalk at which sucrose accumulation can start. l/s
+      REAL NumLF  ! Number of leaves per shoot (reference) l/s
+      REAL RootFrac  ! Daily fraction of biomass allocated to roots, g/g
+      REAL RootDM  ! Root dry mass
+      REAL RGR_LAI_max  ! Today's maximum relative LAI growth rate, considering temperature
+      REAL SDM  ! Stalk dry mass t/ha
+      REAL SenDM  ! Dry mass of senesced leaves t/ha
+      REAL SER  ! Stalk elongation rate cm/d
+      REAL slai_light_fac  ! Daily fraction of GLAI senesced
+      REAL SLSR  ! Source:sink ratio
+      REAL SLA  ! specific leaf area (cm2/g)
+      REAL Source  ! Daily biomass increase (source strength) t/ha/d
+      REAL SPF  ! Stalk partitioning fraction t/t
+      REAL StalkSink  ! Stalk fibre growth sink strength t/ha/d
+      REAL StalkLength  ! Stalk length (height to top visible dewlap) cm
+      REAL SFibDM  ! Stalk fibre dry mass t/ha
+      REAL SWDF2  ! Soil water deficit (stress) factor affecting expansive growth
+      REAL SUCDM  ! stalk sucrose (t/ha)
+      REAL TotalDM  ! Total crop dry mass t/ha
+      REAL vADM  ! Verify ADM t/ha
+      REAL vSource  ! Verify Source t/ha
+
+c     to be used in seasinit      
+      REAL leafTT
+      REAL LeafTTmax
+      REAL, DIMENSION(5) :: LeafTTx, leafTTy ! array
+      REAL, DIMENSION(5) :: FT_photosx, FT_photosy ! array
+      REAL, DIMENSION(4) :: FT_LAIx,FT_LAIy ! array
+      REAL, DIMENSION(2) :: KePARx,KePARy ! array
+      REAL TABEX
+      REAL SWDF1
+
+c     need for SPF calculation in rate calculations
+      REAL(8) inx
+
+
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 c     CANEGRO variable declarations (variables internal
 c     to this subroutine and sub-subroutines)
@@ -423,6 +527,162 @@ c	Water logging stress
      &  SW, SoilProp,
      &  YRPLT, CELLSE_DM)
 
+c     JvdM: The following to be replaced by Fortran SEASINIT CUL read     
+      InitialGLAI  = 0.1
+      TBase_LAI  = 15
+      TOpt_LAI  = 35
+      TFin_LAI  = 40
+      TBase_Photos  = 10.0
+      TOpt1_Photos  = 20.0
+      TOpt2_Photos  = 32.0
+      TFin_Photos  = 45.0
+      TBase_LFAPP  = 9
+      TOpt_LFAPP  = 28
+      TFin_LFAPP  = 40
+      LeafPI1  = 70
+      LeafPI2  = 120
+      KeMin  = 0.5
+      KeMax  = 0.9
+      KeMaxLf  = 20
+      SLAMin  = 50
+      SLAMax  = 150
+      Suc_LfNum_Delay  = 4
+      RGRglaiMin  = 0.009
+      RGRglaiMax  = 0.18
+      RGRglaiSlope  = -20
+      RUEo  = 3.6
+      MAX_ROOTPF  = 0.95
+      AvRootDMFrac  = 0.23
+      APFMX  = 0.8
+      PCB  = 0.6
+      FI_OSG  = 0.7
+      OSG_log_c1  = 200.0
+      STKPFmax  = 0.7
+      SERo  = 1
+      SSH  = 1
+      lai_sen_light  = 2.5
+      sen_light_slope  = 0.005
+
+c     JvdM: initalise program variables
+      TAVE = 0.0
+      ADM = 0.0
+      CANma = 0.0
+      CTT_LFEM = 0.0
+      dADM = 0.0
+      dGLA = 0.0
+      dGLA_pot = 0.0
+      dGLAI = 0.0
+      dLeafDM = 0.0
+      dLeafPI = 0.0
+      dlt_slai_light = 0.0
+      dRootDM = 0.0
+      dSDM = 0.0
+      dSenDM = 0.0
+      dSFibDM = 0.0
+      dSSuc = 0.0
+      dTTLf = 0.0
+      FIinter = 0.0
+      FT_LAI = 0.0
+      FT_photos = 0.0
+      GLAI = InitialGLAI
+      GLeafDM = 0.0
+      KePAR = 0.0
+      LAIsen = 0.0
+      LeafDM = 0.0
+      LeafPI = 0.0
+      LeafSink = 0.0
+      LFNUM_OSG = 0.0
+      LFNUM_SUCStart = 20.0
+      NumLF = 0.0
+      RootFrac = 0.0
+      RootDM = 0.0
+      RGR_LAI_max = 0.0
+      SDM = 0.0
+      SenDM = 0.0
+      SER = 0.0
+      slai_light_fac = 0.0
+      SLSR = 0.0
+      SLA = 0.0
+      Source = 0.0
+      SPF = 0.0
+      StalkSink = 0.0
+      StalkLength = 0.0
+      SFibDM = 0.0
+      SWDF2 = 0.0
+      SUCDM = 0.0
+      TotalDM = 0.0
+      vADM = 0.0
+      vSource = 0.0
+
+c     need for SPF calculation in rate calculations
+      inx = 0.0
+
+c      set initial GLAI
+      InitialGLAI = InitialGLAI ! as above, probabaly superfluous?
+      
+c       ---- "lookup" functions --------
+c      These functions interpolate linearly between points.
+      FT_photosx = (/0.0, TBase_Photos, TOpt1_Photos, 
+     & TOpt2_Photos, TFin_Photos/)
+      FT_photosy = (/0.0, 0.0, 1.0, 1.0, 0.0/)
+
+      WRITE(*,'(A,F5.2)') "FT_photosx: ", FT_photosx(2)
+      WRITE(*,'(A,F5.2)') "MAX OF FT_photosy: ", MAXVAL(FT_photosy)
+
+c     call TABEX function later (daily loop, rates of change) with arrays defined above:
+c     FT_photos = TABEX(FT_photosy, FT_photosx, TAVE, 5)
+
+c     WRITE(*,'(A,F8.3)') "FT_photos: ", FT_photos
+
+c     Max relative growth rate of GLAI
+      FT_LAIx= (/ 0.0, TBase_LAI, TOpt_LAI, TFin_LAI /)
+      FT_LAIy= (/ 0.0,       0.0,      1.0,      0.0 /)
+
+c     call TABEX function later (daily loop, rates of change) with arrays defined above:
+c      FT_LAI = TABEX(FT_LAIy, FT_LAIx, TAVE, 4)
+      
+c      WRITE(*,'(A,F8.3)') "FT_LAI: ", FT_LAI
+      
+c      radiation extinction coefficient:
+c      linear interpolation between KeMin when there are no leaves
+c      and KeMax when there are KeMaxLf leaves
+      KePARx=(/ 0.0, KeMaxLf/)
+      KePARy=(/ KeMin, KeMax/)
+
+c     call TABEX function later (daily loop, rates of change) with arrays defined above:
+c     in R-version ymax and ymin are defined. TABEX cannot handle?      
+c      KePAR = TABEX(KePARy, KePARx, NumLF, 2)
+      
+c      WRITE(*,'(A,F8.3)') "KePAR: ", KePAR
+
+c     define the leaf appearance dTT function
+      LeafTTmax = TOpt_LFAPP - TBase_LFAPP
+      
+c     prepare arrays for TABEX function
+      LeafTTx = (/ 0.0,TBase_LFAPP, TOpt_LFAPP, TFin_LFAPP, 60.0 /)
+      leafTTy = (/ 0.0,        0.0,  LeafTTmax,        0.0,  0.0 /)
+
+c     call TABEX function later (daily loop, rates of change) with arrays defined above:
+c      LeafTT = TABEX(LeafTTy, LeafTTx, TAVE, 5)
+
+c      WRITE(*,'(A,F10.4)') "LeafTT: ", LeafTT
+
+c      leaf phyllocron interval starts at minimum value, not 0
+       LeafPI = LeafPI1
+
+c       place holders for soil water stress deficit (stress) factors
+       SWDF1 = 1.0
+       SWDF2 = 1.0
+
+c       number of leaves per shoot at start of stalk growth (i.e. when SPF > 0.001)
+       LFNUM_OSG = 0.0
+c       number of leaves at which sucrose accumulation can start
+c       (this is recalculated at runtime)
+       LFNUM_SUCStart = 20.0
+
+
+      WRITE(*,*) "End of SEASINIT"
+
 c     END of SEASINIT
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 c
@@ -433,6 +693,188 @@ c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.RATE) THEN
             WRITE(*,*) 'SC_RGR CALLED IN RATE MODE...'
+
+c     set rates of change to 0 at start            
+      dADM = 0.0
+      dGLA = 0.0
+      dGLA_pot = 0.0
+      dGLAI = 0.0
+      dLeafDM = 0.0
+      dLeafPI = 0.0
+      dlt_slai_light = 0.0
+      dRootDM = 0.0
+      dSDM = 0.0
+      dSenDM = 0.0
+      dSFibDM = 0.0
+      dSSuc = 0.0
+      dTTLf = 0.0
+      
+c     Average daily temperature
+      TAVE = (0.5 * TMAX) + (0.5 * TMIN)
+c     SRAD already defined
+      
+c     -----------  CALCULATE RATES OF CHANGE ------------------
+c     ------------- Phenology-related -------------------
+c     calculate SLA
+c     todo: make this a function of average source:sink index over the preceding
+c     phyllocron interval
+      SLA = (0.5 * SLAMin) + (0.5 * SLAMax)
+      
+c     convert Specific leaf area input to t/ha/m2
+c     (SLA might be modified at runtime)
+      CANma = 1.0 / SLA * 100.0
+
+c     radiation extinction coefficient:
+      KePAR = TABEX(KePARy, KePARx, NumLF, 2)
+
+      WRITE(*,'(A,F8.3)') "KePAR: ", KePAR
+
+c     fractional interception of radiation
+      FIinter = 1.0 - EXP(-1.0 * KePAR * GLAI)
+
+      WRITE(*,'(A,F8.3)') "FIinter: ", (FIinter - FI_OSG)
+      
+c     stalk partitioning fraction
+c     can OSG_log_c1 be linked to LAI_RGR, i.e. a faster canopy --> faster transition?
+      inx = (-1.0 * OSG_log_c1 * (FIinter - FI_OSG))
+      SPF = MAX(STKPFmax / (1.0 + EXP(inx)), SPF)
+      inx = 0.0
+
+      WRITE(*,'(A,F8.3)') "SPF: ", SPF
+
+c     how many leaves are there? (first primary cohort)
+      NumLF = CTT_LFEM / LeafPI
+
+c     if SPF > 0.001, record number of leaves:
+c     (SPF > 0.001 & LFNUM_OSG < 5) is test for first day of OSG
+c     LFNUM_OSG = ifelse((SPF > 0.001 & LFNUM_OSG < 5), NumLF, 0.0) 
+c     so the minimum leaf number for starting sucrose accumulation is:
+c     LFNUM_SUCStart <- ifelse((SPF > 0.001 & LFNUM_OSG < 5), LFNUM_OSG + mpars$Suc_LfNum_Delay, 20.0)
+      IF (SPF .GT. 0.001 .AND. LFNUM_OSG .LT. 5) THEN
+            LFNUM_OSG = NumLF
+            LFNUM_SUCStart = LFNUM_OSG + Suc_LfNum_Delay
+      ELSE
+            LFNUM_OSG = 0.0
+            LFNUM_SUCStart = 20.0         
+      ENDIF
+
+      WRITE(*,'(A,F8.3)') "LFNUM_SUCStart: ", LFNUM_SUCStart
+
+c     daily thermal time for leaf appearance
+c     dTTLf = ifelse(GLAI>0.0, LeafTTf(TAVE), 0.0)
+      IF (GLAI .LT. 0.0) THEN
+            dTTLf =  TABEX(LeafTTy, LeafTTx, TAVE, 5)
+      ELSE
+            dTTLf =  0.0
+      ENDIF
+      
+      WRITE(*,'(A,F8.3)') "dTTLf: ", dTTLf
+
+c     leaf phyllocron interval transitions from short to long as crop
+c     transitions to stalk growth phase
+      dLeafPI = (LeafPI2 - LeafPI1) * (SPF / STKPFmax)
+
+c     ----------- Photosynthesis (source strength) --------------
+c     temperature factor for photosynthesis
+      FT_photos = TABEX(FT_photosy, FT_photosx, TAVE, 5)
+
+c     daily source strength    
+c     source strength is increases by the average fraction allocated to roots.
+c     RUEo is defined in terms of above-ground biomass per unit intercepted 
+c     photosynthetically-active radiation (PAR).
+      Source = FT_photos * FIinter * RUEo * 0.01 * (1.0/(1.0-AvRootDMFrac)) * SRAD * 0.5
+
+c     ----------- Sink strengths --------------
+c     daily allocation to root DM
+      inx = -1.0 * PCB * TotalDM
+      RootFrac = MIN(MAX_ROOTPF, 1.0 - APFMX * ( 1 - exp(inx)))
+      inx = 0.0
+      dRootDM = Source * RootFrac
+
+c     calculate relative growth rate of green leaf area index
+      inx = (-1.0 * RGRglaiSlope * ((FIinter - FI_OSG)))
+      RGR_LAI_max = RGRglaiMin + (RGRglaiMax - RGRglaiMin) /
+     & ( 1.0 + exp(inx))
+      inx = 0.0
+      
+c     potential (source-unlimited) growth in GLAI today
+      FT_LAI = TABEX(FT_LAIy, FT_LAIx, TAVE, 4)
+      dGLA_pot = RGR_LAI_max * FT_LAI * GLAI  * SWDF2
+
+c     associated potential sink strength
+      LeafSink = dGLA_pot * 1.0/SLA * 100.0
+
+c     stalk elongation rate (cm/d) for the average stalk
+c     assuming the same cardinal temperatures for stalk growth as leaf growth, hence FT_LAI
+      SER = SERo * FT_LAI * SWDF2 * SPF/STKPFmax
+
+      WRITE(*,'(A,F8.3)') "SER: ", SER
+
+c     stalk structural growth sink strength
+c     maybe delay by a few PIs before sucrose can start accumulating?
+c     in that case, excess source adds to stalk fibre mass but 
+c     not stalk length, allowing for densification of the stalk.
+c     SSH = 'specific stalk height' = cm length/g (per m2)
+      StalkSink = SER * 1.0 / SSH * 0.01
+
+c     ------------- resolution of source and sink strengths ----------
+     
+c     daily increase in above-ground dry biomass
+      dADM = Source - dRootDM
+
+c     source:sink ratio
+      SLSR = dADM / (LeafSink + StalkSink)
+
+c     demand for leaf dry mass (source and sink-limited)
+      dLeafDM = MIN(dADM, LeafSink)
+
+c     change in stalk dry fibre mass, limited by:
+c     1. Stalk partitioning fraction * source
+c     2. ADM source leftovers after C requirements for leaf growth are deducted
+c     3. Stalk sink strength
+      dSFibDM = MIN(SPF * dADM, (dADM - dLeafDM), StalkSink)
+
+c     allocation to sucrose is whatever is left over after roots, leaves and stalks
+c     demands are met.  Sucrose can only accumulate after a certain number of
+c     internodes have appeared, i.e. at leaf number LFNUM_SUCStart
+c     I suspect this necessary, otherwise sucrose content will be very high
+c     shortly after OSG, where the canopy is photosynthesising strongly and
+c     sink strengths are not that great during the transition to stalk growth.
+      dSSuc = 0.0
+      IF (NumLF .LE. LFNUM_SUCStart) THEN
+c       allocated excess to sucrose if enough internodes have developed
+        dSSuc = dADM - dLeafDM - dSFibDM
+      ELSE 
+c       otherwise allocate the excess to stalk fibre
+        dSFibDM = dADM - dLeafDM
+      ENDIF
+
+c     new green leaf area, based on yesterday's new leaf dry mass
+      dGLA = dLeafDM / CANma
+
+c     actual GLAI growth, based on yesterday's new leaf dry mass and
+c     yesterday's senescence
+      dGLAI = dGLA - LAIsen
+
+c     senescence: based on light environment only:
+c     this basic concept comes from APSIM-Sugar
+      IF (GLAI .LT. lai_sen_light) THEN
+        slai_light_fac =  sen_light_slope * (GLAI - lai_sen_light)
+      ELSE
+            slai_light_fac =  0.0
+      ENDIF
+      
+c     daily senescence rate (using APSIM_Sugar variable name)
+      dlt_slai_light = GLAI * slai_light_fac
+      LAIsen = dlt_slai_light
+
+c     mass senesced
+c     ##todo: senesce based on SLA from when these leaves appeared.
+      dSenDM = dlt_slai_light * CANma 
+
+
+             
+
 
 
 c     Calculate water stresses:
@@ -551,7 +993,7 @@ c           Find an equivalent value from DSSAT!
 !        ENDIF
 !      ENDIF
 
-
+      WRITE(*,*) "End of RATE MODE..."
 
 c     END of RATE
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -563,6 +1005,40 @@ c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.INTEGR) THEN
             WRITE(*,*) 'SC_RGR CALLED IN INTEGRATE MODE...'
+
+c     Leaf phyllo interval
+      LeafPI = LeafPI + dLeafPI
+c     integrate GLAI
+      GLAI = GLAI + dGLAI
+            
+c     stalk length
+      StalkLength = StalkLength + SER
+       
+C     thermal time for leaf appearance:
+      CTT_LFEM = CTT_LFEM + dTTLf
+             
+C     integrate ADM
+      ADM = ADM + dADM
+C     integrate stalk dry mass
+      SDM = SDM + dSFibDM + dSSuc
+C     stalk fibre dry mass
+      SFibDM = SFibDM + dSFibDM
+C     stalk sucrose (t/ha)
+      SUCDM = SUCDM + dSSuc
+C     integrate total leaf dry mass
+      LeafDM = LeafDM + dLeafDM
+C     integrate green leaf dry mass
+      GLeafDM = GLeafDM + dLeafDM - dSenDM
+C     integrate total dry mass
+      TotalDM = TotalDM + Source
+C     integrate root dry mass
+      RootDM = RootDM + Source - dSDM - dLeafDM
+C     integrate senesced DM
+      SenDM = SenDM + dSenDM
+C     verify ADM
+      vADM = GLeafDM + SenDM + dSFibDM + dSSuc
+C     verify source
+      vSource = dRootDM + dLeafDM + dSFibDM + dSSuc
 
 
 c     END of INTEGRATE
@@ -619,7 +1095,7 @@ c     ::::::::::::::::::::::::::::::::::::
 
       END
 c     -----------------------------------------------------
-c     END of SUBROUTINE SC_CNGRO
+c     END of SUBROUTINE SC_RGR
 c     -----------------------------------------------------
 c     APPENDIX 1: DSSAT interface variables:
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::

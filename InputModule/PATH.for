@@ -327,7 +327,7 @@ C=======================================================================
      &    (INDEX(MODEL(3:5),'CAN') .EQ. 0) .AND.   !CANEGRO
      &    (INDEX(MODEL(3:5),'RGR') .EQ. 0) .AND.   !RGR-SUGARCANE
      &    (INDEX(MODEL(3:5),'CSP') .EQ. 0) .AND.   !CASUPRO
-     &	(INDEX(MODEL(3:5),'SAM') .EQ. 0) .AND.	 !SAMUCA
+     &    (INDEX(MODEL(3:5),'SAM') .EQ. 0) .AND.   !SAMUCA
      &    (INDEX(MODEL(3:5),'ALO') .EQ. 0) .AND.   !ALOHA
      &    (INDEX(MODEL(3:5),'ARO') .EQ. 0) .AND.   !AROIDS
      &    (INDEX(MODEL(3:5),'CRP') .EQ. 0) .AND.   !CropSim cassava

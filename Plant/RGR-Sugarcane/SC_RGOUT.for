@@ -36,9 +36,13 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       SUBROUTINE SC_RGOUTPUT (CONTROL, WEATHER,
-     - SW, SoilProp,
-     - YRPLT, CELLSE_DM)
+     & SW, SoilProp,
+     & YRPLT, CELLSE_DM)
+
+      
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 c     Define DSSAT composite variables:
 c     [Taken from MZ_CERES.for]
       USE ModuleDefs
