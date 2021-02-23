@@ -37,7 +37,9 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       SUBROUTINE SC_RGOUTPUT (CONTROL, WEATHER,
      & SW, SoilProp,
-     & YRPLT, CELLSE_DM)
+     & YRPLT, CELLSE_DM, TAVE,
+     & ADM)   ! Above-ground dry mass t/ha
+     
 
       
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -125,6 +127,12 @@ c     Stalk population per m2
 c     Cellulosic DM (t/ha)
       REAL, INTENT(IN) ::  CELLSE_DM
 
+c     SC_RGR outputs
+      REAL, INTENT(IN) :: TAVE  ! daily mean temperature
+      REAL, INTENT(IN) :: ADM  ! Above-ground dry mass t/ha
+
+
+
 c     CANEGRO 3.5 variables:
 c     ::::::::::::::::::::::
 c     GROHEAD - this is an array variable that stores the 
@@ -134,8 +142,8 @@ c     MJ, Feb 2008: Grohead was previously an array of four long
 c     strings.  However, this was a pain to maintain, so it is
 c     now a 2-dimensional array with each column header stored
 c     separately.
-      CHARACTER*15 GROHEAD(4, 50)
-      CHARACTER*15 GRO_OUT(50)
+      CHARACTER*15 GROHEAD(4, 53)
+      CHARACTER*15 GRO_OUT(53)
 
 
 c     Loop counter variables
@@ -373,189 +381,186 @@ c     Water stress affecting growth
           DATA GROHEAD(3, 20) /'stress'/
           DATA GROHEAD(4, 20) /'WSGD'/
 
-c     Water stress affecting tillering
-          DATA GROHEAD(1, 21) /'WaterStress'/
-          DATA GROHEAD(2, 21) /'Tillering'/
-          DATA GROHEAD(3, 21) /'(0-1)'/
-          DATA GROHEAD(4, 21) /'WSTD'/
-
-
-c     Stalk height (metres)
-          DATA GROHEAD(1, 22) /'Stalk'/
-          DATA GROHEAD(2, 22) /'Hght'/
-          DATA GROHEAD(3, 22) /'m'/
-          DATA GROHEAD(4, 22) /'SHTD'/
-
-c     Root depth (m)
-          DATA GROHEAD(1, 23) /'Root'/
-          DATA GROHEAD(2, 23) /'Depth'/
-          DATA GROHEAD(3, 23) /'m'/
-          DATA GROHEAD(4, 23) /'RDPD'/
-
-c     Root length density (cm3/cm3)
-c     Layer 1
-          DATA GROHEAD(1, 24) /'Root_Len.'/
-          DATA GROHEAD(2, 24) /'density(1)'/
-          DATA GROHEAD(3, 24) /'cm3/cm3'/
-          DATA GROHEAD(4, 24) /'RL1D'/
-
-c     Root length density (cm3/cm3)
-c     Layer 2
-          DATA GROHEAD(1, 25) /'Root_Len.'/
-          DATA GROHEAD(2, 25) /'density(2)'/
-          DATA GROHEAD(3, 25) /'cm/cm3'/
-          DATA GROHEAD(4, 25) /'RL2D'/
-c     Root length density (cm3/cm3)
-c     Layer 3
-          DATA GROHEAD(1, 26) /'Root_Len.'/
-          DATA GROHEAD(2, 26) /'density(3)'/
-          DATA GROHEAD(3, 26) /'cm/cm3'/
-          DATA GROHEAD(4, 26) /'RL3D'/
-c     Root length density (cm3/cm3)
-c     Layer 4
-          DATA GROHEAD(1, 27) /'Root_Len.'/
-          DATA GROHEAD(2, 27) /'density(4)'/
-          DATA GROHEAD(3, 27) /'cm/cm3'/
-          DATA GROHEAD(4, 27) /'RL4D'/
-c     Root length density (cm3/cm3)
-c     Layer 5
-          DATA GROHEAD(1, 28) /'Root_Len.'/
-          DATA GROHEAD(2, 28) /'density(5)'/
-          DATA GROHEAD(3, 28) /'cm/cm3'/
-          DATA GROHEAD(4, 28) /'RL5D'/
-c     Root length density (cm3/cm3)
-c     Layer 6
-          DATA GROHEAD(1, 29) /'Root_Len.'/
-          DATA GROHEAD(2, 29) /'density(6)'/
-          DATA GROHEAD(3, 29) /'cm/cm3'/
-          DATA GROHEAD(4, 29) /'RL6D'/
-c     Root length density (cm3/cm3)
-c     Layer 7
-          DATA GROHEAD(1, 30) /'Root_Len.'/
-          DATA GROHEAD(2, 30) /'density(7)'/
-          DATA GROHEAD(3, 30) /'cm/cm3'/
-          DATA GROHEAD(4, 30) /'RL7D'/
-c     Root length density (cm3/cm3)
-c     Layer 8
-          DATA GROHEAD(1, 31) /'Root_Len.'/
-          DATA GROHEAD(2, 31) /'density(8)'/
-          DATA GROHEAD(3, 31) /'cm/cm3'/
-          DATA GROHEAD(4, 31) /'RL8D'/
-c     Root length density (cm3/cm3)
-c     Layer 9
-          DATA GROHEAD(1, 32) /'Root_Len.'/
-          DATA GROHEAD(2, 32) /'density(9)'/
-          DATA GROHEAD(3, 32) /'cm/cm3'/
-          DATA GROHEAD(4, 32) /'RL9D'/
-c     Root length density (cm3/cm3)
-c     Layer 10
-          DATA GROHEAD(1, 33) /'Root_Len.'/
-          DATA GROHEAD(2, 33) /'density(10)'/
-          DATA GROHEAD(3, 33) /'cm/cm3'/
-          DATA GROHEAD(4, 33) /'RL10D'/
-
-c     Potential soil evaporation (mm/day)
-c     This is in here because ET.OUT does not output it...
-          DATA GROHEAD(1, 34) /'Pot.'/
-          DATA GROHEAD(2, 34) /'soil'/
-          DATA GROHEAD(3, 34) /'evap(mm)'/
-          DATA GROHEAD(4, 34) /'EOSA'/
-
-c     Total root length density
-c     This is a fairly meaningless variable that
-c     assisted with model comparison
-          DATA GROHEAD(1, 35) /'Total'/
-          DATA GROHEAD(2, 35) /'Root'/
-          DATA GROHEAD(3, 35) /'Length'/
-          DATA GROHEAD(4, 35) /'RTLD'/
-
-c     Percent light interception
-c     0-100%
-          DATA GROHEAD(1, 36) /'Percent'/
-          DATA GROHEAD(2, 36) /'light'/
-          DATA GROHEAD(3, 36) /'int.'/
-          DATA GROHEAD(4, 36) /'LI%D'/
-
-c     Specific leaf area
-          DATA GROHEAD(1, 37) /'Spec'/
-          DATA GROHEAD(2, 37) /'Leaf'/
-          DATA GROHEAD(3, 37) /'Area'/
-          DATA GROHEAD(4, 37) /'SLAD'/
-
-c     Gross photosynthetic rate
-c     t/ha/day
-          DATA GROHEAD(1, 38) /'Gross'/
-          DATA GROHEAD(2, 38) /'photos'/
-          DATA GROHEAD(3, 38) /'rate(t/ha/d)'/
-          DATA GROHEAD(4, 38) /'PGRD'/
-
-c     Biomass accumulation rate (change per day)
-c     t/ha/day
-          DATA GROHEAD(1, 39) /'Biomass'/
-          DATA GROHEAD(2, 39) /'accum.'/
-          DATA GROHEAD(3, 39) /'(t/ha/d)'/
-          DATA GROHEAD(4, 39) /'BRDMD'/
-
-c     Severity of lodging
-          DATA GROHEAD(1, 40) /'lodging'/
-          DATA GROHEAD(2, 40) /'severity'/
-          DATA GROHEAD(3, 40) /'(0-1)'/
-          DATA GROHEAD(4, 40) /'LDGFD'/
-
-c     Thermal time (emergence)
-          DATA GROHEAD(1, 41) /'Heat units'/
-          DATA GROHEAD(2, 41) /'TBase Emerg'/
-          DATA GROHEAD(3, 41) /'deg C.day'/
-          DATA GROHEAD(4, 41) /'TTEBC'/
-
-c     Thermal time (tiller population)
-          DATA GROHEAD(1, 42) /'Heat units'/
-          DATA GROHEAD(2, 42) /'TBase Popn'/
-          DATA GROHEAD(3, 42) /'deg C.day'/
-          DATA GROHEAD(4, 42) /'TTSPC'/
-
-c     Thermal time (Leaf extension)
-          DATA GROHEAD(1, 43) /'Heat units'/
-          DATA GROHEAD(2, 43) /'TbaseLeafEx'/
-          DATA GROHEAD(3, 43) /'deg C.day'/
-          DATA GROHEAD(4, 43) /'TTLEC'/
-
-c     Sucrose % of dry stalk mass
-          DATA GROHEAD(1, 44) /'Sucrose %'/
-          DATA GROHEAD(2, 44) /'dry mass'/
-          DATA GROHEAD(3, 44) /'t/t * 100'/
-          DATA GROHEAD(4, 44) /'SU%DMD'/
-
-c     Sucrose % of wet/fresh stalk mass
-          DATA GROHEAD(1, 45) /'Sucrose %'/
-          DATA GROHEAD(2, 45) /'wet mass'/
-          DATA GROHEAD(3, 45) /'t/t * 100'/
-          DATA GROHEAD(4, 45) /'SU%FMD'/
-
-c     Water stress (CWSI)
-          DATA GROHEAD(1, 46) /'CWSI'/
-          DATA GROHEAD(2, 46) /'water'/
-          DATA GROHEAD(3, 46) /'stress'/
-          DATA GROHEAD(4, 46) /'CWSI'/
-
-c     Respiration rate
-          DATA GROHEAD(1, 47) /'PARCE'/
-          DATA GROHEAD(2, 47) /'RUE'/
-          DATA GROHEAD(3, 47) /'Rate'/
-          DATA GROHEAD(4, 47) /'PARCE'/
-
-c     Growth respiration rate
-          DATA GROHEAD(1, 48) /'G_RESP'/
-          DATA GROHEAD(2, 48) /'Growth '/
-          DATA GROHEAD(3, 48) /'Resp.'/
-          DATA GROHEAD(4, 48) /'G_RESP'/
-
-c     Maintenance respiration rate
-          DATA GROHEAD(1, 49) /'M_RESP'/
-          DATA GROHEAD(2, 49) /'Resp.'/
-          DATA GROHEAD(3, 49) /'Maint.'/
-          DATA GROHEAD(4, 49) /'M_RESP'/
-
+c        Temperature factor for LAI growth
+         DATA GROHEAD(1, 23) /'!TEMPERATURE'/
+         DATA GROHEAD(2, 23) /'!FACTOR'/
+         DATA GROHEAD(3, 23) /'!FOR'/
+         DATA GROHEAD(4, 23) /'@FT_LAI'/
+ 
+c        Daily temperature factor for photosynthesis
+         DATA GROHEAD(1, 24) /'!DAILY'/
+         DATA GROHEAD(2, 24) /'!TEMPERATURE'/
+         DATA GROHEAD(3, 24) /'!FACTOR'/
+         DATA GROHEAD(4, 24) /'@FT_photos'/
+ 
+c        Green leaf area index m2/m2
+         DATA GROHEAD(1, 25) /'!GREEN'/
+         DATA GROHEAD(2, 25) /'!LEAF'/
+         DATA GROHEAD(3, 25) /'!AREA'/
+         DATA GROHEAD(4, 25) /'@LAIGD'/
+ 
+c        Green leaf canopy dry mass t/ha
+         DATA GROHEAD(1, 26) /'!GREEN'/
+         DATA GROHEAD(2, 26) /'!LEAF'/
+         DATA GROHEAD(3, 26) /'!CANOPY'/
+         DATA GROHEAD(4, 26) /'@LGDMD'/
+ 
+c        PAR canopy extinction coefficient
+         DATA GROHEAD(1, 27) /'!PAR'/
+         DATA GROHEAD(2, 27) /'!CANOPY'/
+         DATA GROHEAD(3, 27) /'!EXTINCTION'/
+         DATA GROHEAD(4, 27) /'@KePAR'/
+ 
+c        Daily GLAI senesced m2/m2/d
+         DATA GROHEAD(1, 28) /'!DAILY'/
+         DATA GROHEAD(2, 28) /'!GLAI'/
+         DATA GROHEAD(3, 28) /'!SENESCED'/
+         DATA GROHEAD(4, 28) /'@LAIsen'/
+ 
+c        Total (living + dead) leaf dry mass t/ha
+         DATA GROHEAD(1, 29) /'!TOTAL'/
+         DATA GROHEAD(2, 29) /'!(LIVING'/
+         DATA GROHEAD(3, 29) /'!+'/
+         DATA GROHEAD(4, 29) /'@LTDMD'/
+ 
+c        Current leaf phyllocron interval °Cd
+         DATA GROHEAD(1, 30) /'!CURRENT'/
+         DATA GROHEAD(2, 30) /'!LEAF'/
+         DATA GROHEAD(3, 30) /'!PHYLLOCRON'/
+         DATA GROHEAD(4, 30) /'@LeafPI'/
+ 
+c        Leaf carbon demand (sink strength) t/ha/d
+         DATA GROHEAD(1, 31) /'!LEAF'/
+         DATA GROHEAD(2, 31) /'!CARBON'/
+         DATA GROHEAD(3, 31) /'!DEMAND'/
+         DATA GROHEAD(4, 31) /'@LeafSink'/
+ 
+c        The number of leaves per shoot at which onset of stalk growth started l/s
+         DATA GROHEAD(1, 32) /'!THE'/
+         DATA GROHEAD(2, 32) /'!NUMBER'/
+         DATA GROHEAD(3, 32) /'!OF'/
+         DATA GROHEAD(4, 32) /'@LFNUM_OSG'/
+ 
+c        Leaf number per stalk at which sucrose accumulation can start. l/s
+         DATA GROHEAD(1, 33) /'!LEAF'/
+         DATA GROHEAD(2, 33) /'!NUMBER'/
+         DATA GROHEAD(3, 33) /'!PER'/
+         DATA GROHEAD(4, 33) /'@LFNUM_SUCSt'/
+ 
+c        Number of leaves per shoot (reference) l/s
+         DATA GROHEAD(1, 34) /'!NUMBER'/
+         DATA GROHEAD(2, 34) /'!OF'/
+         DATA GROHEAD(3, 34) /'!LEAVES'/
+         DATA GROHEAD(4, 34) /'@NumLF'/
+ 
+c        Daily fraction of biomass allocated to roots, g/g
+         DATA GROHEAD(1, 35) /'!DAILY'/
+         DATA GROHEAD(2, 35) /'!FRACTION'/
+         DATA GROHEAD(3, 35) /'!OF'/
+         DATA GROHEAD(4, 35) /'@RootFrac'/
+ 
+c        Root dry mass
+         DATA GROHEAD(1, 36) /'!ROOT'/
+         DATA GROHEAD(2, 36) /'!DRY'/
+         DATA GROHEAD(3, 36) /'!MASS'/
+         DATA GROHEAD(4, 36) /'@RootDM'/
+ 
+c        Today_s maximum relative LAI growth rate, considering temperature
+         DATA GROHEAD(1, 37) /'!TODAY_S'/
+         DATA GROHEAD(2, 37) /'!MAXIMUM'/
+         DATA GROHEAD(3, 37) /'!RELATIVE'/
+         DATA GROHEAD(4, 37) /'@RGR_LAI_max'/
+ 
+c        Stalk dry mass t/ha
+         DATA GROHEAD(1, 38) /'!STALK'/
+         DATA GROHEAD(2, 38) /'!DRY'/
+         DATA GROHEAD(3, 38) /'!MASS'/
+         DATA GROHEAD(4, 38) /'@SMDMD'/
+ 
+c        Dry mass of senesced leaves t/ha
+         DATA GROHEAD(1, 39) /'!DRY'/
+         DATA GROHEAD(2, 39) /'!MASS'/
+         DATA GROHEAD(3, 39) /'!OF'/
+         DATA GROHEAD(4, 39) /'@LDDMD'/
+ 
+c        Stalk elongation rate cm/d
+         DATA GROHEAD(1, 40) /'!STALK'/
+         DATA GROHEAD(2, 40) /'!ELONGATION'/
+         DATA GROHEAD(3, 40) /'!RATE'/
+         DATA GROHEAD(4, 40) /'@SER'/
+ 
+c        Daily fraction of GLAI senesced
+         DATA GROHEAD(1, 41) /'!DAILY'/
+         DATA GROHEAD(2, 41) /'!FRACTION'/
+         DATA GROHEAD(3, 41) /'!OF'/
+         DATA GROHEAD(4, 41) /'@slai_light_'/
+ 
+c        Source:sink ratio
+         DATA GROHEAD(1, 42) /'!SOURCE:SINK'/
+         DATA GROHEAD(2, 42) /'!RATIO'/
+         DATA GROHEAD(3, 42) /'!NA'/
+         DATA GROHEAD(4, 42) /'@SLSR'/
+ 
+c        specific leaf area (cm2/g)
+         DATA GROHEAD(1, 43) /'!SPECIFIC'/
+         DATA GROHEAD(2, 43) /'!LEAF'/
+         DATA GROHEAD(3, 43) /'!AREA'/
+         DATA GROHEAD(4, 43) /'@SLAD'/
+ 
+c        Daily biomass increase (source strength) t/ha/d
+         DATA GROHEAD(1, 44) /'!DAILY'/
+         DATA GROHEAD(2, 44) /'!BIOMASS'/
+         DATA GROHEAD(3, 44) /'!INCREASE'/
+         DATA GROHEAD(4, 44) /'@Source'/
+ 
+c        Stalk partitioning fraction t/t
+         DATA GROHEAD(1, 45) /'!STALK'/
+         DATA GROHEAD(2, 45) /'!PARTITIONIN'/
+         DATA GROHEAD(3, 45) /'!FRACTION'/
+         DATA GROHEAD(4, 45) /'@SPF'/
+ 
+c        Stalk fibre growth sink strength t/ha/d
+         DATA GROHEAD(1, 46) /'!STALK'/
+         DATA GROHEAD(2, 46) /'!FIBRE'/
+         DATA GROHEAD(3, 46) /'!GROWTH'/
+         DATA GROHEAD(4, 46) /'@StalkSink'/
+ 
+c        Stalk length (height to top visible dewlap) cm
+         DATA GROHEAD(1, 47) /'!STALK'/
+         DATA GROHEAD(2, 47) /'!LENGTH'/
+         DATA GROHEAD(3, 47) /'!(HEIGHT'/
+         DATA GROHEAD(4, 47) /'@StalkLength'/
+ 
+c        Stalk fibre dry mass t/ha
+         DATA GROHEAD(1, 48) /'!STALK'/
+         DATA GROHEAD(2, 48) /'!FIBRE'/
+         DATA GROHEAD(3, 48) /'!DRY'/
+         DATA GROHEAD(4, 48) /'@SFibDM'/
+ 
+c        Soil water deficit (stress) factor affecting expansive growth
+         DATA GROHEAD(1, 49) /'!SOIL'/
+         DATA GROHEAD(2, 49) /'!WATER'/
+         DATA GROHEAD(3, 49) /'!DEFICIT'/
+         DATA GROHEAD(4, 49) /'@WSGD'/
+ 
+c        stalk sucrose (t/ha)
+         DATA GROHEAD(1, 50) /'!STALK'/
+         DATA GROHEAD(2, 50) /'!SUCROSE'/
+         DATA GROHEAD(3, 50) /'!(T/HA)'/
+         DATA GROHEAD(4, 50) /'@SUCMD'/
+ 
+c        Total crop dry mass t/ha
+         DATA GROHEAD(1, 51) /'!TOTAL'/
+         DATA GROHEAD(2, 51) /'!CROP'/
+         DATA GROHEAD(3, 51) /'!DRY'/
+         DATA GROHEAD(4, 51) /'@TotalDM'/
+ 
+c        Verify ADM t/ha
+         DATA GROHEAD(1, 52) /'!VERIFY'/
+         DATA GROHEAD(2, 52) /'!ADM'/
+         DATA GROHEAD(3, 52) /'!T/HA'/
+         DATA GROHEAD(4, 52) /'@vADM'/
+ 
 c     Maintenance respiration rate
           DATA GROHEAD(1, 50) /'Cell-'/
           DATA GROHEAD(2, 50) /'ulosic'/
@@ -565,7 +570,7 @@ c     Maintenance respiration rate
 
 c          ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c          Number of output variables (important for output!)
-           DATA NUM_OVARS /50/
+           DATA NUM_OVARS /53/
 
 c          Width of output columns:
            DATA VAR_WIDTH /12/
@@ -703,7 +708,7 @@ c              WRITE(*, '(3(I3, 2H, ))') TLEN, FLEN, ENDI
           ENDDO
 
 c         Proudly output the format string
-c              WRITE(*, '(A)') FMT_STR
+              WRITE(*, '(A)') FMT_STR
 
 c         Format string for general headings:
           WRITE(WIDTH_STR, '(I3)') VAR_WIDTH-1
@@ -890,8 +895,9 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 !       chp 9/26/2008 changed stress output to (1.0 - stress)
 
           WRITE(NOUTDG,FMT=D_FMT_STR) 
-     -                     YEAR, DOY,  DAS, DAP, 
-     -                     TMIN, TMAX
+     &                     YEAR, DOY,  DAS, DAP, 
+     &                     TAVE, ADM 
+!     &                     TMIN, TMAX, 
 !     -                     NINT(T_SD), 
 !     -                     CaneCrop%GROPHASE,
 !     -                     LAID, LGDMD, SMFMD, SMDMD, SUCMD, RDMD, 
