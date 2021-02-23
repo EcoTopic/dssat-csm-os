@@ -396,14 +396,84 @@ c              DYNAMIC = RUNINIT
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       IF (DYNAMIC.EQ.RUNINIT) THEN
-            WRITE(*,*) 'SC_RGR CALLED IN RUNINIT MODE...'
+        WRITE(*,*) 'SC_RGR CALLED IN RUNINIT MODE...'
+
+c     JvdM: initalise program variables
+      TAVE = 0.0
+      ADM = 0.0
+      CANma = 0.0
+      CTT_LFEM = 0.0
+      dADM = 0.0
+      dGLA = 0.0
+      dGLA_pot = 0.0
+      dGLAI = 0.0
+      dLeafDM = 0.0
+      dLeafPI = 0.0
+      dlt_slai_light = 0.0
+      dRootDM = 0.0
+      dSDM = 0.0
+      dSenDM = 0.0
+      dSFibDM = 0.0
+      dSSuc = 0.0
+      dTTLf = 0.0
+      FIinter = 0.0
+      FT_LAI = 0.0
+      FT_photos = 0.0
+      InitialGLAI  = 0.1
+      GLAI = InitialGLAI
+      GLeafDM = 0.0
+      KePAR = 0.0
+      LAIsen = 0.0
+      LeafDM = 0.0
+      LeafPI = 0.0
+      LeafSink = 0.0
+      LFNUM_OSG = 0.0
+      LFNUM_SUCStart = 20.0
+      NumLF = 0.0
+      RootFrac = 0.0
+      RootDM = 0.0
+      RGR_LAI_max = 0.0
+      SDM = 0.0
+      SenDM = 0.0
+      SER = 0.0
+      slai_light_fac = 0.0
+      SLSR = 0.0
+      SLA = 0.0
+      Source = 0.0
+      SPF = 0.0
+      StalkSink = 0.0
+      StalkLength = 0.0
+      SFibDM = 0.0
+      SWDF2 = 0.0
+      SUCDM = 0.0
+      TotalDM = 0.0
+      vADM = 0.0
+      vSource = 0.0
+
+c     need for SPF calculation in rate calculations
+      inx = 0.0
      
 
 c     Call the output routine, to initialise output
 c     ::::::::::
       CALL SC_RGOUTPUT(CONTROL, WEATHER,
      &  SW, SoilProp,
-     &  YRPLT, CELLSE_DM)
+     &  YRPLT, CELLSE_DM, TAVE,
+     &  ADM, CANma, CTT_LFEM,
+     & dADM, dGLA, dGLA_pot, dGLAI,
+     & dLeafDM, dLeafPI, dlt_slai_light,
+     & dRootDM, dSDM, dSenDM, dSFibDM, 
+     & dSSuc, dTTLf, FIinter, FT_LAI, 
+     & FT_photos, GLAI, GLeafDM,
+     & KePAR, LAIsen, LeafDM, LeafPI, 
+     & LeafSink, LFNUM_OSG, LFNUM_SUCStart, 
+     & NumLF, RootFrac, RootDM,
+     & RGR_LAI_max, SDM, SenDM,
+     & SER, slai_light_fac, SLSR,
+     & SLA, Source, SPF, StalkSink, 
+     & StalkLength, SFibDM, SWDF2, 
+     & SUCDM, TotalDM, vADM, vSource)
+     
 
 
 c     create work.out
@@ -448,6 +518,80 @@ c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF (DYNAMIC.EQ.SEASINIT) THEN
             WRITE(*,*) 'SC_RGR CALLED IN SEASINIT MODE...'
+
+c     JvdM: The following to be replaced by Fortran SEASINIT CUL read     
+            InitialGLAI  = 0.1
+            TBase_LAI  = 15
+            TOpt_LAI  = 35
+            TFin_LAI  = 40
+            TBase_Photos  = 10.0
+            TOpt1_Photos  = 20.0
+            TOpt2_Photos  = 32.0
+            TFin_Photos  = 45.0
+            TBase_LFAPP  = 9
+            TOpt_LFAPP  = 28
+            TFin_LFAPP  = 40
+            LeafPI1  = 70
+            LeafPI2  = 120
+            KeMin  = 0.5
+            KeMax  = 0.9
+            KeMaxLf  = 20
+            SLAMin  = 50
+            SLAMax  = 150
+            Suc_LfNum_Delay  = 4
+            RGRglaiMin  = 0.009
+            RGRglaiMax  = 0.18
+            RGRglaiSlope  = -20
+            RUEo  = 3.6
+            MAX_ROOTPF  = 0.95
+            AvRootDMFrac  = 0.23
+            APFMX  = 0.8
+            PCB  = 0.6
+            FI_OSG  = 0.7
+            OSG_log_c1  = 200.0
+            STKPFmax  = 0.7
+            SERo  = 1
+            SSH  = 1
+            lai_sen_light  = 2.5
+            sen_light_slope  = 0.005
+
+      ! CALL GET_CULTIVAR_COEFF(InitialGLAI, 'InitialGLAI', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TBase_LAI, 'TBase_LAI', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TOpt_LAI, 'TOpt_LAI', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TFin_LAI, 'TFin_LAI', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TBase_Photos, 'TBase_Photos', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TOpt1_Photos, 'TOpt1_Photos', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TOpt2_Photos, 'TOpt2_Photos', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TFin_Photos, 'TFin_Photos', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TBase_LFAPP, 'TBase_LFAPP', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TOpt_LFAPP, 'TOpt_LFAPP', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(TFin_LFAPP, 'TFin_LFAPP', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(LeafPI1, 'LeafPI1', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(LeafPI2, 'LeafPI2', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(KeMin, 'KeMin', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(KeMax, 'KeMax', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(KeMaxLf, 'KeMaxLf', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(SLAMin, 'SLAMin', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(SLAMax, 'SLAMax', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(Suc_LfNum_Delay, 'Suc_LfNum_Delay', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(RGRglaiMin, 'RGRglaiMin', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(RGRglaiMax, 'RGRglaiMax', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(RGRglaiSlope, 'RGRglaiSlope', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(RUEo, 'RUEo', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(MAX_ROOTPF, 'MAX_ROOTPF', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(AvRootDMFrac, 'AvRootDMFrac', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(APFMX, 'APFMX', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(PCB, 'PCB', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(FI_OSG, 'FI_OSG', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(OSG_log_c1, 'OSG_log_c1', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(STKPFmax, 'STKPFmax', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(SERo, 'SERo', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(SSH, 'SSH', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(lai_sen_light, 'lai_sen_light', CONTROL, cERROR)
+      ! CALL GET_CULTIVAR_COEFF(sen_light_slope, 'sen_light_slope', CONTROL, cERROR)
+
+      
+
 
 c     EORATIO: this seems to be the closest thing to a crop coefficient
 c     that DSSAT offers for the PENMON model at least.
@@ -525,97 +669,24 @@ c	Water logging stress
 
       CALL SC_RGOUTPUT(CONTROL, WEATHER,
      &  SW, SoilProp,
-     &  YRPLT, CELLSE_DM)
+     &  YRPLT, CELLSE_DM, TAVE,
+     &  ADM, CANma, CTT_LFEM,
+     & dADM, dGLA, dGLA_pot, dGLAI,
+     & dLeafDM, dLeafPI, dlt_slai_light,
+     & dRootDM, dSDM, dSenDM, dSFibDM,
+     & dSSuc, dTTLf, FIinter, FT_LAI, 
+     & FT_photos, GLAI, GLeafDM,
+     & KePAR, LAIsen, LeafDM, LeafPI, 
+     & LeafSink, LFNUM_OSG, LFNUM_SUCStart,
+     & NumLF, RootFrac, RootDM, 
+     & RGR_LAI_max, SDM, SenDM,
+     & SER, slai_light_fac, SLSR,
+     & SLA, Source, SPF, StalkSink, 
+     & StalkLength, SFibDM, SWDF2, 
+     & SUCDM, TotalDM, vADM, vSource)
+     
 
-c     JvdM: The following to be replaced by Fortran SEASINIT CUL read     
-      InitialGLAI  = 0.1
-      TBase_LAI  = 15
-      TOpt_LAI  = 35
-      TFin_LAI  = 40
-      TBase_Photos  = 10.0
-      TOpt1_Photos  = 20.0
-      TOpt2_Photos  = 32.0
-      TFin_Photos  = 45.0
-      TBase_LFAPP  = 9
-      TOpt_LFAPP  = 28
-      TFin_LFAPP  = 40
-      LeafPI1  = 70
-      LeafPI2  = 120
-      KeMin  = 0.5
-      KeMax  = 0.9
-      KeMaxLf  = 20
-      SLAMin  = 50
-      SLAMax  = 150
-      Suc_LfNum_Delay  = 4
-      RGRglaiMin  = 0.009
-      RGRglaiMax  = 0.18
-      RGRglaiSlope  = -20
-      RUEo  = 3.6
-      MAX_ROOTPF  = 0.95
-      AvRootDMFrac  = 0.23
-      APFMX  = 0.8
-      PCB  = 0.6
-      FI_OSG  = 0.7
-      OSG_log_c1  = 200.0
-      STKPFmax  = 0.7
-      SERo  = 1
-      SSH  = 1
-      lai_sen_light  = 2.5
-      sen_light_slope  = 0.005
 
-c     JvdM: initalise program variables
-      TAVE = 0.0
-      ADM = 0.0
-      CANma = 0.0
-      CTT_LFEM = 0.0
-      dADM = 0.0
-      dGLA = 0.0
-      dGLA_pot = 0.0
-      dGLAI = 0.0
-      dLeafDM = 0.0
-      dLeafPI = 0.0
-      dlt_slai_light = 0.0
-      dRootDM = 0.0
-      dSDM = 0.0
-      dSenDM = 0.0
-      dSFibDM = 0.0
-      dSSuc = 0.0
-      dTTLf = 0.0
-      FIinter = 0.0
-      FT_LAI = 0.0
-      FT_photos = 0.0
-      GLAI = InitialGLAI
-      GLeafDM = 0.0
-      KePAR = 0.0
-      LAIsen = 0.0
-      LeafDM = 0.0
-      LeafPI = 0.0
-      LeafSink = 0.0
-      LFNUM_OSG = 0.0
-      LFNUM_SUCStart = 20.0
-      NumLF = 0.0
-      RootFrac = 0.0
-      RootDM = 0.0
-      RGR_LAI_max = 0.0
-      SDM = 0.0
-      SenDM = 0.0
-      SER = 0.0
-      slai_light_fac = 0.0
-      SLSR = 0.0
-      SLA = 0.0
-      Source = 0.0
-      SPF = 0.0
-      StalkSink = 0.0
-      StalkLength = 0.0
-      SFibDM = 0.0
-      SWDF2 = 0.0
-      SUCDM = 0.0
-      TotalDM = 0.0
-      vADM = 0.0
-      vSource = 0.0
-
-c     need for SPF calculation in rate calculations
-      inx = 0.0
 
 c      set initial GLAI
       InitialGLAI = InitialGLAI ! as above, probabaly superfluous?
@@ -722,7 +793,13 @@ c     phyllocron interval
       
 c     convert Specific leaf area input to t/ha/m2
 c     (SLA might be modified at runtime)
-      CANma = 1.0 / SLA * 100.0
+      WRITE(*,'(A,F8.3)') "SLA: ", SLA
+      IF (SLA .LT. 0.0) THEN
+            CANma = 1.0 / SLA * 100.0
+      ELSE
+            CANma = 0.0
+      ENDIF
+
 
 c     radiation extinction coefficient:
       KePAR = TABEX(KePARy, KePARx, NumLF, 2)
@@ -823,7 +900,11 @@ c     daily increase in above-ground dry biomass
       dADM = Source - dRootDM
 
 c     source:sink ratio
-      SLSR = dADM / (LeafSink + StalkSink)
+      IF ((LeafSink + StalkSink) .LT. 0.0) THEN
+            SLSR = dADM / (LeafSink + StalkSink)
+      ELSE
+            SLSR = 0.0
+      ENDIF
 
 c     demand for leaf dry mass (source and sink-limited)
       dLeafDM = MIN(dADM, LeafSink)
@@ -850,7 +931,11 @@ c       otherwise allocate the excess to stalk fibre
       ENDIF
 
 c     new green leaf area, based on yesterday's new leaf dry mass
-      dGLA = dLeafDM / CANma
+      IF (CANma .LT. 0.0) THEN
+            dGLA = dLeafDM / CANma
+      ELSE
+            dGLA = 0
+      ENDIF
 
 c     actual GLAI growth, based on yesterday's new leaf dry mass and
 c     yesterday's senescence
@@ -1055,7 +1140,22 @@ c     :::::::::::::::::::::::::::::
 
       CALL SC_RGOUTPUT(CONTROL, WEATHER,
      &  SW, SoilProp,
-     &  YRPLT, CELLSE_DM)
+     &  YRPLT, CELLSE_DM, TAVE,
+     &  ADM, CANma, CTT_LFEM,
+     & dADM, dGLA, dGLA_pot, dGLAI,
+     & dLeafDM, dLeafPI, dlt_slai_light,
+     & dRootDM, dSDM, dSenDM, dSFibDM,
+     & dSSuc, dTTLf, FIinter, FT_LAI, 
+     & FT_photos, GLAI, GLeafDM,
+     & KePAR, LAIsen, LeafDM, LeafPI,
+     & LeafSink, LFNUM_OSG, LFNUM_SUCStart,
+     & NumLF, RootFrac, RootDM,
+     & RGR_LAI_max, SDM, SenDM,
+     & SER,slai_light_fac, SLSR,
+     & SLA, Source, SPF, StalkSink,
+     & StalkLength, SFibDM, SWDF2, 
+     & SUCDM, TotalDM, vADM, vSource)
+     
 
 
 !         chp 4/7/2009
