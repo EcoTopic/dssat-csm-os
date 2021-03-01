@@ -40,6 +40,24 @@
      &      TTRATNEM, CHUPIBASE, TT_POPGROWTH, POPTT16, 
      &      TAR0, TDELAY, LER0, SER0, LG_AMBASE, AQP_UP5
 
+!     For SCRGR
+      REAL
+     & InitialGLAI, TBase_LAI, 
+     & TOpt_LAI, TFin_LAI, TBase_Photos, 
+     & TOpt1_Photos, TOpt2_Photos, 
+     & TFin_Photos, TBase_LFAPP, 
+     & TOpt_LFAPP, TFin_LFAPP, 
+     & LeafPI1, LeafPI2, KeMin, 
+     & KeMax, KeMaxLf, SLAMin, 
+     & SLAMax, Suc_LfNum_Dela, 
+     & RGRglaiMin, RGRglaiMax, 
+     & RGRglaiSlope, RUEo, MAX_ROOTPF, 
+     & AvRootDMFrac, PCB, 
+     & OSG_log_c1, SERo, 
+     & SSH, lai_sen_light, sen_light_slop 
+!     & LAI_JTo
+!     & APFMX, STKPFmax     
+
 	!--- SAMUCA's cultivar parameters	(MV, jan-2020)
 	real    maxgl_r
 	real    n_lf_when_stk_emerg_r
@@ -153,3 +171,23 @@
      &      end_tt_it_growth            ,   
      &      mid_tt_lf_growth            ,   
      &      end_tt_lf_growth                  
+     
+!     JvdM	 Add SCRGR Coefficients
+      COMMON /GEN16/
+     & InitialGLAI, TBase_LAI, 
+     & TOpt_LAI, TFin_LAI, TBase_Photos, 
+     & TOpt1_Photos, TOpt2_Photos, 
+     & TFin_Photos, TBase_LFAPP, 
+     & TOpt_LFAPP, TFin_LFAPP, 
+     & LeafPI1, LeafPI2, KeMin, 
+     & KeMax, KeMaxLf, SLAMin, 
+     & SLAMax, Suc_LfNum_Dela, 
+     & RGRglaiMin, RGRglaiMax, 
+     & RGRglaiSlope, RUEo, MAX_ROOTPF, 
+     & AvRootDMFrac, 
+     & PCB, 
+     & OSG_log_c1, SERo, 
+     & SSH, lai_sen_light, sen_light_slop 
+!     & LAI_JTo
+!     & STKPFmax, 
+!     & APFMX, 

@@ -81,6 +81,7 @@ C-----------------------------------------------------------------------
 !         'PTSUB' - SUBSTOR-Potato
 !         'RICER' - CERES-Rice
 !         'SCCAN' - CANEGRO Sugarcane
+!         'SCRGR' - experimental Sugarcane
 !         'SCCSP' - CASUPRO Sugarcane
 !         'SCSAM' - SAMUCA Sugarcane
 !         'SGCER' - CERES-Sorghum

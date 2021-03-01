@@ -320,8 +320,8 @@ C-GH        F6.2,6F6.1,5F6.2,F6.1,F6.0,2F6.1,F6.2,2F6.1,3F6.2,A)
 C-LPM       F6.2,6F6.1,2F6.2,3F6.1,F6.0,7F6.1,F6.2,A) 
 C-GH        F6.2,6F6.1,5F6.2,F6.1,F6.0,2F6.1,F6.2,2F6.1,2F6.2,A)
      
-      CASE ('SCCAN', 'SCRGR')
-      
+      !CASE ('SCCAN', 'SCRGR')
+        CASE ('SCCAN')
         ! WRITE(*, '(A, F10.5)') 'SER0 is ', SER0 
         WRITE(LUNIO,'(A)') TRIM(ATLINE) 
         WRITE(LUNIO,170,IOSTAT=ERRNUM)
@@ -338,6 +338,33 @@ C-GH        F6.2,6F6.1,5F6.2,F6.1,F6.0,2F6.1,F6.2,2F6.1,2F6.2,A)
      &           F15.2,F15.1,F15.1,
      &           F15.1,F15.1,F15.1,F15.1,F15.3,F15.3,F15.5,
      &           F15.1,F15.4,F15.4,F15.1,F15.4)
+
+        CASE ('SCRGR')
+      
+      ! WRITE(*, '(A, F10.5)') 'SER0 is ', SER0 
+         WRITE(LUNIO,'(A)') TRIM(ATLINE) 
+         WRITE(LUNIO,172,IOSTAT=ERRNUM)
+     &   LNCU,CROP,VARNO,VRNAME(1:8),ECONO,
+     &   InitialGLAI, TBase_LAI, 
+     &   TOpt_LAI, TFin_LAI, TBase_Photos, 
+     &   TOpt1_Photos, TOpt2_Photos, 
+     &   TFin_Photos, TBase_LFAPP, 
+     &   TOpt_LFAPP, TFin_LFAPP, 
+     &   LeafPI1, LeafPI2, KeMin, 
+     &   KeMax, KeMaxLf, SLAMin, 
+     &   SLAMax, Suc_LfNum_Dela, 
+     &   RGRglaiMin, RGRglaiMax, 
+     &   RGRglaiSlope, RUEo, MAX_ROOTPF, 
+     &   AvRootDMFrac, APFMX, PCB, 
+     &   OSG_log_c1, STKPFmax, SERo, 
+     &   SSH, lai_sen_light, sen_light_slop 
+!     &   LAI_JTo
+   
+   
+!  170   FORMAT (I3,1X,A2,1X,A6,1X,A8,1X,A6,
+!     &      4F15.2,16F15.1,2F15.2,F15.10,F15.1,2F15.10)
+172    FORMAT (I3,1X,A2,1X,A6,1X,A8,1X,A6,
+     &           34F15.4)
 
       case ('SCSAM')
           
