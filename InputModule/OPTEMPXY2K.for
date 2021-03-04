@@ -352,12 +352,12 @@ C-GH        F6.2,6F6.1,5F6.2,F6.1,F6.0,2F6.1,F6.2,2F6.1,2F6.2,A)
      &   TOpt_LFAPP, TFin_LFAPP, 
      &   LeafPI1, LeafPI2, KeMin, 
      &   KeMax, KeMaxLf, SLAMin, 
-     &   SLAMax, Suc_LfNum_Dela, 
+     &   SLAMax, Suc_LfNum_Delay, 
      &   RGRglaiMin, RGRglaiMax, 
      &   RGRglaiSlope, RUEo, MAX_ROOTPF, 
      &   AvRootDMFrac, APFMX, PCB, 
      &   OSG_log_c1, STKPFmax, SERo, 
-     &   SSH, lai_sen_light, sen_light_slop 
+     &   SSH, lai_sen_light, sen_light_slope 
 !     &   LAI_JTo
    
    

@@ -889,12 +889,12 @@ C          Branch to menu choice
      & TOpt_LFAPP, TFin_LFAPP, 
      & LeafPI1, LeafPI2, KeMin, 
      & KeMax, KeMaxLf, SLAMin, 
-     & SLAMax, Suc_LfNum_Dela, 
+     & SLAMax, Suc_LfNum_Delay, 
      & RGRglaiMin, RGRglaiMax, 
      & RGRglaiSlope, RUEo, MAX_ROOTPF, 
      & AvRootDMFrac, APFMX, PCB, 
      & OSG_log_c1, STKPFmax, SERo, 
-     & SSH, lai_sen_light, sen_light_slop 
+     & SSH, lai_sen_light, sen_light_slope
 !     & LAI_JTo
     
 5910    FORMAT (12X,'0. End of changes',//,
@@ -916,7 +916,7 @@ C          Branch to menu choice
      &  12X,'16. KeMaxLf (Number of leaves/stalk at KeMax)....[',F7.2,/,
      &  12X,'17. SLAMin (Minimumspecific leaf area (cm2/g))...[',F7.2,/,
      &  12X,'18. SLAMax (Maximum specific leaf area (cm2/g))..[',F7.2,/,
-     &  12X,'19. Suc_LfNum_Dela  (delay in number of leaves af[',F7.2,/,
+     &  12X,'19. Suc_LfNum_Delay (delay in number of leaves af[',F7.2,/,
      &  12X,'20. RGRglaiMin (Minimum relative growth rate of g[',F7.2,/,
      &  12X,'21. RGRglaiMax (Maximum relative growth rate of g[',F7.2,/,
      &  12X,'22. RGRglaiSlope (Slope coefficient describing th[',F7.2,/,
@@ -930,7 +930,7 @@ C          Branch to menu choice
      &  12X,'30. SERo (max stalk elongation rate per day, unde[',F7.2,/,
      &  12X,'31. SSH (specific stalk height  = cm length/g (ov[',F7.2,/,
      &  12X,'32. lai_sen_light (APSIM-Sugar maximum GLAI for l[',F7.2,/,
-     &  12X,'33. sen_light_slop (APSIM-Sugar light intercepti[',F7.2,/)
+     &  12X,'33. sen_light_slope (APSIM-Sugar light intercepti[',F7.2,/)
     
            WRITE (*,5100)
 C
@@ -961,7 +961,7 @@ C          Branch to menu choice
             CASE (16); CALL GETREAL (KeMaxLf, 'KeMaxLf', 0.0, 200.0)
             CASE (17); CALL GETREAL (SLAMin, 'SLAMin', 0.0, 500.0)
             CASE (18); CALL GETREAL (SLAMax, 'SLAMax', 0.0, 1500.0)
-            CASE (19); CALL GETREAL (Suc_LfNum_Dela, 'Suc_LfNum_Dela',
+            CASE (19); CALL GETREAL (Suc_LfNum_Delay, 'Suc_LfNum_Delay',
      &         0.0, 40.0)
             CASE (20); CALL GETREAL (RGRglaiMin, 'RGRglaiMin', 0.0, 0.09)
             CASE (21); CALL GETREAL (RGRglaiMax, 'RGRglaiMax', 0.0, 1.8)
@@ -977,7 +977,7 @@ C          Branch to menu choice
             CASE (31); CALL GETREAL (SSH, 'SSH', 0.0, 10.0)
             CASE (32); CALL GETREAL (lai_sen_light, 'lai_sen_light',
      &         0.0, 25.0)
-            CASE (33); CALL GETREAL (sen_light_slop, 'sen_light_slop',
+            CASE (33); CALL GETREAL (sen_light_slope, 'sen_light_slope',
      &         0.0, 0.05)
                END SELECT 
 

@@ -344,12 +344,12 @@ C-GH &            P1,P2O,P2R,P5,G1,G2,PHINT,P3,P4
      &   TOpt_LFAPP, TFin_LFAPP, 
      &   LeafPI1, LeafPI2, KeMin, 
      &   KeMax, KeMaxLf, SLAMin, 
-     &   SLAMax, Suc_LfNum_Dela, 
+     &   SLAMax, Suc_LfNum_Delay, 
      &   RGRglaiMin, RGRglaiMax, 
      &   RGRglaiSlope, RUEo, MAX_ROOTPF, 
      &   AvRootDMFrac, APFMX, PCB, 
      &   OSG_log_c1, STKPFmax, SERo, 
-     &   SSH, lai_sen_light, sen_light_slop 
+     &   SSH, lai_sen_light, sen_light_slope
 !     &   LAI_JTo
    
 

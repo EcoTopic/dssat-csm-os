@@ -153,7 +153,7 @@ c     -----------------
       REAL KeMaxLf  ! Number of leaves/stalk at KeMax
       REAL SLAMin  ! Minimum and maximum specific leaf area (cm2/g)
       REAL SLAMax  ! Minimum and maximum specific leaf area (cm2/g)
-      REAL Suc_LfNum_Dela  ! delay in number of leaves after onset of stalk growth when sucrose is permitted to start accumulating
+      REAL Suc_LfNum_Delay  ! delay in number of leaves after onset of stalk growth when sucrose is permitted to start accumulating
       REAL RGRglaiMin  ! Minimum and Maximum relative growth rate of green leaf area index (RGRglai), and the slope
       REAL RGRglaiMax  ! Minimum and Maximum relative growth rate of green leaf area index (RGRglai), and the slope
       REAL RGRglaiSlope  ! coefficient describing the transition from max to min as the crop transitions to stalk growth
@@ -168,7 +168,7 @@ c     -----------------
       REAL SERo  !  max stalk elongation rate per day, under optimal temperature and water conditions (cm/d)
       REAL SSH  ! specific stalk height' = cm length/g (over 1 m2 for a mature crop i.e. 8-15 stalks)
       REAL lai_sen_light  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
-      REAL sen_light_slop  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
+      REAL sen_light_slope  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
 
 
 c     JvdM: RGR model local state and daily rate variables
@@ -538,7 +538,7 @@ c     JvdM: The following to be replaced by Fortran SEASINIT CUL read
             ! KeMaxLf  = 20
             ! SLAMin  = 50
             ! SLAMax  = 150
-            ! Suc_LfNum_Dela  = 4
+            ! Suc_LfNum_Delay  = 4
             ! RGRglaiMin  = 0.009
             ! RGRglaiMax  = 0.18
             ! RGRglaiSlope  = -20
@@ -553,7 +553,7 @@ c     JvdM: The following to be replaced by Fortran SEASINIT CUL read
             ! SERo  = 1
             ! SSH  = 1
             ! lai_sen_light  = 2.5
-            ! sen_light_slop  = 0.005
+            ! sen_light_slope  = 0.005
 
        CALL GET_CULTIVAR_COEFF(InitialGLAI, 'InitialGLAI', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(TBase_LAI, 'TBase_LAI', CONTROL, cERROR)
@@ -573,7 +573,7 @@ c     JvdM: The following to be replaced by Fortran SEASINIT CUL read
        CALL GET_CULTIVAR_COEFF(KeMaxLf, 'KeMaxLf', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(SLAMin, 'SLAMin', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(SLAMax, 'SLAMax', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(Suc_LfNum_Dela, 'Suc_LfNum_Dela'
+       CALL GET_CULTIVAR_COEFF(Suc_LfNum_Delay, 'Suc_LfNum_Delay'
      &  , CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(RGRglaiMin, 'RGRglaiMin', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(RGRglaiMax, 'RGRglaiMax', CONTROL, cERROR)
@@ -589,7 +589,7 @@ c     JvdM: The following to be replaced by Fortran SEASINIT CUL read
        CALL GET_CULTIVAR_COEFF(SERo, 'SERo', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(SSH, 'SSH', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(lai_sen_light, 'lai_sen_light', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(sen_light_slop, 'sen_light_slop'
+       CALL GET_CULTIVAR_COEFF(sen_light_slope, 'sen_light_slope'
      &  , CONTROL, cERROR)
 
       
@@ -828,10 +828,10 @@ c     if SPF > 0.001, record number of leaves:
 c     (SPF > 0.001 & LFNUM_OSG < 5) is test for first day of OSG
 c     LFNUM_OSG = ifelse((SPF > 0.001 & LFNUM_OSG < 5), NumLF, 0.0) 
 c     so the minimum leaf number for starting sucrose accumulation is:
-c     LFNUM_SUCStart <- ifelse((SPF > 0.001 & LFNUM_OSG < 5), LFNUM_OSG + mpars$Suc_LfNum_Dela, 20.0)
+c     LFNUM_SUCStart <- ifelse((SPF > 0.001 & LFNUM_OSG < 5), LFNUM_OSG + mpars$Suc_LfNum_Delay, 20.0)
       IF (SPF .GT. 0.001 .AND. LFNUM_OSG .LT. 5) THEN
             LFNUM_OSG = NumLF
-            LFNUM_SUCStart = LFNUM_OSG + Suc_LfNum_Dela
+            LFNUM_SUCStart = LFNUM_OSG + Suc_LfNum_Delay
       ELSE
             LFNUM_OSG = 0.0
             LFNUM_SUCStart = 20.0         
@@ -946,7 +946,7 @@ c     yesterday's senescence
 c     senescence: based on light environment only:
 c     this basic concept comes from APSIM-Sugar
       IF (GLAI .LT. lai_sen_light) THEN
-        slai_light_fac =  sen_light_slop * (GLAI - lai_sen_light)
+        slai_light_fac =  sen_light_slope * (GLAI - lai_sen_light)
       ELSE
             slai_light_fac =  0.0
       ENDIF
