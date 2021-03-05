@@ -38,54 +38,57 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       SUBROUTINE SC_RGOUTPUT (CONTROL, WEATHER,
      & SW, SoilProp,
      & YRPLT, CELLSE_DM, TAVE,
-     & ADM,   ! Above-ground dry mass t/ha
-     &  CANma,   ! Conversion from leaf to dry mass
-     &  CTT_LFEM,   ! Cumulative thermal time for leaf appearance °Cd
-     &  dADM,   ! Daily change in Above-ground dry mass
-     &  dGLA,   ! New daily green leaf area m2/m2
-     &  dGLA_pot,   ! Potential (source-unlimited) change in green leaf area m2/m2
-     &  dGLAI,   ! Daily change in green leaf area index, new growth - senescence
-     &  dLeafDM,   ! Daily change in total leaf dry mass t/ha/d
-     &  dLeafPI,   ! Daily change in leaf phyllocron interval l/s/d
-     &  dlt_slai_light,   ! Daily leaf area senescence m2/m2/d
-     &  dRootDM,   ! Daily change in Root dry mass
-     &  dSDM,   ! Daily change in stalk dry mass t/ha/d
-     &  dSenDM,   ! Daily leaf area senescence m2/m2/d
-     &  dSFibDM,   ! Daily change in stalk fibre dry mass t/ha/d
-     &  dSSuc,   ! Daily change in stalk sucrose t/ha/d
-     &  dTTLf,   ! Daily thermal time accumulation for driving leaf appearance °Cd
-     &  FIinter,   ! Inter-row PAR fractional interception
-     &  FT_LAI,   ! Temperature factor for LAI growth
-     &  FT_photos,   ! Daily temperature factor for photosynthesis
-     &  GLAI,   ! Green leaf area index m2/m2
-     &  GLeafDM,   ! Green leaf canopy dry mass t/ha
-     &  KePAR,   ! PAR canopy extinction coefficient
-     &  LAIsen,   ! Daily GLAI senesced m2/m2/d
-     &  LeafDM,   ! Total (living + dead) leaf dry mass t/ha
-     &  LeafPI,   ! Current leaf phyllocron interval °Cd
-     &  LeafSink,   ! Leaf carbon demand (sink strength) t/ha/d
-     &  LFNUM_OSG,   ! The number of leaves per shoot at which onset of stalk growth started l/s
-     &  LFNUM_SUCStart,   ! Leaf number per stalk at which sucrose accumulation can start. l/s
-     &  NumLF,   ! Number of leaves per shoot (reference) l/s
-     &  RootFrac,   ! Daily fraction of biomass allocated to roots, g/g
-     &  RootDM,   ! Root dry mass
-     &  RGR_LAI_max,   ! Today's maximum relative LAI growth rate, considering temperature
-     &  SDM,   ! Stalk dry mass t/ha
-     &  SenDM,   ! Dry mass of senesced leaves t/ha
-     &  SER,   ! Stalk elongation rate cm/d
-     &  slai_light_fac,   ! Daily fraction of GLAI senesced
-     &  SLSR,   ! Source:sink ratio
-     &  SLA,   ! specific leaf area (cm2/g)
-     &  Source,   ! Daily biomass increase (source strength) t/ha/d
-     &  SPF,   ! Stalk partitioning fraction t/t
-     &  StalkSink,   ! Stalk fibre growth sink strength t/ha/d
-     &  StalkLength,   ! Stalk length (height to top visible dewlap) cm
-     &  SFibDM,   ! Stalk fibre dry mass t/ha
-     &  SWDF2,   ! Soil water deficit (stress) factor affecting expansive growth
-     &  SUCDM,   ! stalk sucrose (t/ha)
-     &  TotalDM,   ! Total crop dry mass t/ha
-     &  vADM,   ! Verify ADM t/ha
-     &  vSource)   ! Verify Source t/ha
+     & ADM, !Above-ground dry mass t/ha
+     & CANma, !Conversion from leaf to dry mass 
+     & CTT_LFEM, !Cumulative thermal time for leaf appearance °Cd
+     & dADM, !Daily change in Above-ground dry mass
+     & dGLA, !New daily green leaf area m2/m2
+     & dGLA_pot, !Potential (source-unlimited) change in green leaf area m2/m2
+     & dGLAI, !Daily change in green leaf area index, new growth - senescence
+     & dLeafDM, !Daily change in total leaf dry mass t/ha/d
+     & dlt_slai_light, !Daily leaf area senescence m2/m2/d
+     & dRootDM, !Daily change in Root dry mass
+     & dSDM, !Daily change in stalk dry mass t/ha/d
+     & dSenDM, !Daily leaf area senescence m2/m2/d
+     & dSFibDM, !Daily change in stalk fibre dry mass t/ha/d
+     & dSSuc, !Daily change in stalk sucrose t/ha/d
+     & dTTLf, !Daily thermal time accumulation for driving leaf appearance °Cd
+     & FIinter, !Inter-row PAR fractional interception 
+     & FT_LAI, !Temperature factor for LAI growth 
+     & FT_photos, !Daily temperature factor for photosynthesis 
+     & GLAI, !Green leaf area index m2/m2
+     & GLeafDM, !Green leaf canopy dry mass t/ha
+     & SettDM, !Sett dry mass (energy source) t/ha
+     & KePAR, !PAR canopy extinction coefficient 
+     & LAIsen, !Daily GLAI senesced m2/m2/d
+     & LeafDM, !Total (living + dead) leaf dry mass t/ha
+     & LeafPI, !Current leaf phyllocron interval °Cd
+     & LeafSink, !Leaf carbon demand (sink strength) t/ha/d
+     & LFNUM_OSG, !The number of leaves per shoot at which onset of stalk growth started l/s
+     & LFNUM_SUCStart, !Leaf number per stalk at which sucrose accumulation can start. l/s
+     & NumLF, !Number of leaves per shoot (reference) l/s
+     & RootFrac, !Daily fraction of biomass allocated to roots, g/g
+     & RootDM, !Root dry mass 
+     & RGR_LAI_max, !Today_s maximum relative LAI growth rate, considering temperature 
+     & SDM, !Stalk dry mass t/ha
+     & SenDM, !Dry mass of senesced leaves t/ha
+     & SER, !Stalk elongation rate cm/d
+     & slai_light_fac, !Daily fraction of GLAI senesced 
+     & SLSR, !Source:sink ratio
+     & PIAvgSSR, !leaf PI average source:sink ratio 
+     & SLA, !specific leaf area (cm2/g)
+     & Source, !Daily biomass increase (source strength) t/ha/d
+     & SPF, !Stalk partitioning fraction t/t
+     & SRAD, !Observed input solar radiation MJ/m2
+     & StalkSink, !Stalk fibre growth sink strength t/ha/d
+     & StalkLength, !Stalk length (height to top visible dewlap) cm
+     & SFibDM, !Stalk fibre dry mass t/ha
+     & SWDF2, !Soil water deficit (stress) factor affecting expansive growth 
+     & SUCDM, !stalk sucrose (t/ha)
+     & TotalDM, !Total crop dry mass t/ha
+     & vADM, !Verify ADM t/ha
+     & vSource) !Verify Source t/ha
+
 
      
 
@@ -176,55 +179,58 @@ c     Cellulosic DM (t/ha)
       REAL, INTENT(IN) ::  CELLSE_DM
 
 c     SC_RGR outputs
-      REAL, INTENT(IN) :: TAVE  ! daily mean temperature
-      REAL, INTENT(IN) :: ADM  ! Above-ground dry mass t/ha
-      REAL, INTENT(IN) :: CANma  ! Conversion from leaf to dry mass
-      REAL, INTENT(IN) :: CTT_LFEM  ! Cumulative thermal time for leaf appearance °Cd
-      REAL, INTENT(IN) :: dADM  ! Daily change in Above-ground dry mass
-      REAL, INTENT(IN) :: dGLA  ! New daily green leaf area m2/m2
-      REAL, INTENT(IN) :: dGLA_pot  ! Potential (source-unlimited) change in green leaf area m2/m2
-      REAL, INTENT(IN) :: dGLAI  ! Daily change in green leaf area index, new growth - senescence
-      REAL, INTENT(IN) :: dLeafDM  ! Daily change in total leaf dry mass t/ha/d
-      REAL, INTENT(IN) :: dLeafPI  ! Daily change in leaf phyllocron interval l/s/d
-      REAL, INTENT(IN) :: dlt_slai_light  ! Daily leaf area senescence m2/m2/d
-      REAL, INTENT(IN) :: dRootDM  ! Daily change in Root dry mass
-      REAL, INTENT(IN) :: dSDM  ! Daily change in stalk dry mass t/ha/d
-      REAL, INTENT(IN) :: dSenDM  ! Daily leaf area senescence m2/m2/d
-      REAL, INTENT(IN) :: dSFibDM  ! Daily change in stalk fibre dry mass t/ha/d
-      REAL, INTENT(IN) :: dSSuc  ! Daily change in stalk sucrose t/ha/d
-      REAL, INTENT(IN) :: dTTLf  ! Daily thermal time accumulation for driving leaf appearance °Cd
-      REAL, INTENT(IN) :: FIinter  ! Inter-row PAR fractional interception
-      REAL, INTENT(IN) :: FT_LAI  ! Temperature factor for LAI growth
-      REAL, INTENT(IN) :: FT_photos  ! Daily temperature factor for photosynthesis
-      REAL, INTENT(IN) :: GLAI  ! Green leaf area index m2/m2
-      REAL, INTENT(IN) :: GLeafDM  ! Green leaf canopy dry mass t/ha
-      REAL, INTENT(IN) :: KePAR  ! PAR canopy extinction coefficient
-      REAL, INTENT(IN) :: LAIsen  ! Daily GLAI senesced m2/m2/d
-      REAL, INTENT(IN) :: LeafDM  ! Total (living + dead) leaf dry mass t/ha
-      REAL, INTENT(IN) :: LeafPI  ! Current leaf phyllocron interval °Cd
-      REAL, INTENT(IN) :: LeafSink  ! Leaf carbon demand (sink strength) t/ha/d
-      REAL, INTENT(IN) :: LFNUM_OSG  ! The number of leaves per shoot at which onset of stalk growth started l/s
-      REAL, INTENT(IN) :: LFNUM_SUCStart  ! Leaf number per stalk at which sucrose accumulation can start. l/s
-      REAL, INTENT(IN) :: NumLF  ! Number of leaves per shoot (reference) l/s
-      REAL, INTENT(IN) :: RootFrac  ! Daily fraction of biomass allocated to roots, g/g
-      REAL, INTENT(IN) :: RootDM  ! Root dry mass
-      REAL, INTENT(IN) :: RGR_LAI_max  ! Today's maximum relative LAI growth rate, considering temperature
-      REAL, INTENT(IN) :: SDM  ! Stalk dry mass t/ha
-      REAL, INTENT(IN) :: SenDM  ! Dry mass of senesced leaves t/ha
-      REAL, INTENT(IN) :: SER  ! Stalk elongation rate cm/d
-      REAL, INTENT(IN) :: slai_light_fac  ! Daily fraction of GLAI senesced
-      REAL, INTENT(IN) :: SLSR  ! Source:sink ratio
-      REAL, INTENT(IN) :: SLA  ! specific leaf area (cm2/g)
-      REAL, INTENT(IN) :: Source  ! Daily biomass increase (source strength) t/ha/d
-      REAL, INTENT(IN) :: SPF  ! Stalk partitioning fraction t/t
-      REAL, INTENT(IN) :: StalkSink  ! Stalk fibre growth sink strength t/ha/d
-      REAL, INTENT(IN) :: StalkLength  ! Stalk length (height to top visible dewlap) cm
-      REAL, INTENT(IN) :: SFibDM  ! Stalk fibre dry mass t/ha
-      REAL, INTENT(IN) :: SWDF2  ! Soil water deficit (stress) factor affecting expansive growth
-      REAL, INTENT(IN) :: SUCDM  ! stalk sucrose (t/ha)
-      REAL, INTENT(IN) :: TotalDM  ! Total crop dry mass t/ha
-      REAL, INTENT(IN) :: vADM  ! Verify ADM t/ha
-      REAL, INTENT(IN) :: vSource  ! Verify Source t/ha
+      REAL, INTENT(IN) :: TAVE !daily mean temperature
+      REAL, INTENT(IN) :: ADM !Above-ground dry mass t/ha
+      REAL, INTENT(IN) :: CANma !Conversion from leaf to dry mass 
+      REAL, INTENT(IN) :: CTT_LFEM !Cumulative thermal time for leaf appearance °Cd
+      REAL, INTENT(IN) :: dADM !Daily change in Above-ground dry mass
+      REAL, INTENT(IN) :: dGLA !New daily green leaf area m2/m2
+      REAL, INTENT(IN) :: dGLA_pot !Potential (source-unlimited) change in green leaf area m2/m2
+      REAL, INTENT(IN) :: dGLAI !Daily change in green leaf area index, new growth - senescence
+      REAL, INTENT(IN) :: dLeafDM !Daily change in total leaf dry mass t/ha/d
+      REAL, INTENT(IN) :: dlt_slai_light !Daily leaf area senescence m2/m2/d
+      REAL, INTENT(IN) :: dRootDM !Daily change in Root dry mass
+      REAL, INTENT(IN) :: dSDM !Daily change in stalk dry mass t/ha/d
+      REAL, INTENT(IN) :: dSenDM !Daily leaf area senescence m2/m2/d
+      REAL, INTENT(IN) :: dSFibDM !Daily change in stalk fibre dry mass t/ha/d
+      REAL, INTENT(IN) :: dSSuc !Daily change in stalk sucrose t/ha/d
+      REAL, INTENT(IN) :: dTTLf !Daily thermal time accumulation for driving leaf appearance °Cd
+      REAL, INTENT(IN) :: FIinter !Inter-row PAR fractional interception 
+      REAL, INTENT(IN) :: FT_LAI !Temperature factor for LAI growth 
+      REAL, INTENT(IN) :: FT_photos !Daily temperature factor for photosynthesis 
+      REAL, INTENT(IN) :: GLAI !Green leaf area index m2/m2
+      REAL, INTENT(IN) :: GLeafDM !Green leaf canopy dry mass t/ha
+      REAL, INTENT(IN) :: SettDM !Sett dry mass (energy source) t/ha
+      REAL, INTENT(IN) :: KePAR !PAR canopy extinction coefficient 
+      REAL, INTENT(IN) :: LAIsen !Daily GLAI senesced m2/m2/d
+      REAL, INTENT(IN) :: LeafDM !Total (living + dead) leaf dry mass t/ha
+      REAL, INTENT(IN) :: LeafPI !Current leaf phyllocron interval °Cd
+      REAL, INTENT(IN) :: LeafSink !Leaf carbon demand (sink strength) t/ha/d
+      REAL, INTENT(IN) :: LFNUM_OSG !The number of leaves per shoot at which onset of stalk growth started l/s
+      REAL, INTENT(IN) :: LFNUM_SUCStart !Leaf number per stalk at which sucrose accumulation can start. l/s
+      REAL, INTENT(IN) :: NumLF !Number of leaves per shoot (reference) l/s
+      REAL, INTENT(IN) :: RootFrac !Daily fraction of biomass allocated to roots, g/g
+      REAL, INTENT(IN) :: RootDM !Root dry mass 
+      REAL, INTENT(IN) :: RGR_LAI_max !Today_s maximum relative LAI growth rate, considering temperature 
+      REAL, INTENT(IN) :: SDM !Stalk dry mass t/ha
+      REAL, INTENT(IN) :: SenDM !Dry mass of senesced leaves t/ha
+      REAL, INTENT(IN) :: SER !Stalk elongation rate cm/d
+      REAL, INTENT(IN) :: slai_light_fac !Daily fraction of GLAI senesced 
+      REAL, INTENT(IN) :: SLSR !Source:sink ratio
+      REAL, INTENT(IN) :: PIAvgSSR !leaf PI average source:sink ratio 
+      REAL, INTENT(IN) :: SLA !specific leaf area (cm2/g)
+      REAL, INTENT(IN) :: Source !Daily biomass increase (source strength) t/ha/d
+      REAL, INTENT(IN) :: SPF !Stalk partitioning fraction t/t
+      REAL, INTENT(IN) :: SRAD !Observed input solar radiation MJ/m2
+      REAL, INTENT(IN) :: StalkSink !Stalk fibre growth sink strength t/ha/d
+      REAL, INTENT(IN) :: StalkLength !Stalk length (height to top visible dewlap) cm
+      REAL, INTENT(IN) :: SFibDM !Stalk fibre dry mass t/ha
+      REAL, INTENT(IN) :: SWDF2 !Soil water deficit (stress) factor affecting expansive growth 
+      REAL, INTENT(IN) :: SUCDM !stalk sucrose (t/ha)
+      REAL, INTENT(IN) :: TotalDM !Total crop dry mass t/ha
+      REAL, INTENT(IN) :: vADM !Verify ADM t/ha
+      REAL, INTENT(IN) :: vSource !Verify Source t/ha
+
 
 
 
@@ -238,8 +244,8 @@ c     MJ, Feb 2008: Grohead was previously an array of four long
 c     strings.  However, this was a pain to maintain, so it is
 c     now a 2-dimensional array with each column header stored
 c     separately.
-      CHARACTER*15 GROHEAD(4, 53)
-      CHARACTER*15 GRO_OUT(53)
+      CHARACTER*15 GROHEAD(4, 55)
+      CHARACTER*15 GRO_OUT(55)
 
 
 c     Loop counter variables
@@ -369,303 +375,316 @@ c      Days after 'planting' (/harvest?)
            DATA GROHEAD(4, 4) /'DAP'/
 
 c        daily mean temperature
-         DATA GROHEAD(1, 5) /'DAILY'/
-         DATA GROHEAD(2, 5) /'MEAN'/
-         DATA GROHEAD(3, 5) /'TEMPERATURE'/
-         DATA GROHEAD(4, 5) /'TAVE'/
- 
+            DATA GROHEAD(1, 5) /'DAILY'/
+            DATA GROHEAD(2, 5) /'MEAN'/
+            DATA GROHEAD(3, 5) /'TEMPERATURE'/
+            DATA GROHEAD(4, 5) /'TAVE'/
+
 c        Above-ground dry mass t/ha
-         DATA GROHEAD(1, 6) /'ABOVE-GROUN'/
-         DATA GROHEAD(2, 6) /'DRY'/
-         DATA GROHEAD(3, 6) /'MASS'/
-         DATA GROHEAD(4, 6) /'BADMD'/
- 
-c        Conversion from leaf to dry mass
-         DATA GROHEAD(1, 7) /'CONVERSION'/
-         DATA GROHEAD(2, 7) /'FROM'/
-         DATA GROHEAD(3, 7) /'LEAF'/
-         DATA GROHEAD(4, 7) /'CANma'/
- 
+            DATA GROHEAD(1, 6) /'ABOVE-GROUN'/
+            DATA GROHEAD(2, 6) /'DRY'/
+            DATA GROHEAD(3, 6) /'MASS'/
+            DATA GROHEAD(4, 6) /'ADM'/
+
+c        Conversion from leaf to dry mass 
+            DATA GROHEAD(1, 7) /'CONVERSION'/
+            DATA GROHEAD(2, 7) /'FROM'/
+            DATA GROHEAD(3, 7) /'LEAF'/
+            DATA GROHEAD(4, 7) /'CANma'/
+
 c        Cumulative thermal time for leaf appearance °Cd
-         DATA GROHEAD(1, 8) /'CUMULATIVE'/
-         DATA GROHEAD(2, 8) /'THERMAL'/
-         DATA GROHEAD(3, 8) /'TIME'/
-         DATA GROHEAD(4, 8) /'CTT_LFEM'/
- 
+            DATA GROHEAD(1, 8) /'CUMULATIVE'/
+            DATA GROHEAD(2, 8) /'THERMAL'/
+            DATA GROHEAD(3, 8) /'TIME'/
+            DATA GROHEAD(4, 8) /'CTT_LFEM'/
+
 c        Daily change in Above-ground dry mass
-         DATA GROHEAD(1, 9) /'DAILY'/
-         DATA GROHEAD(2, 9) /'CHANGE'/
-         DATA GROHEAD(3, 9) /'IN'/
-         DATA GROHEAD(4, 9) /'dADM'/
- 
+            DATA GROHEAD(1, 9) /'DAILY'/
+            DATA GROHEAD(2, 9) /'CHANGE'/
+            DATA GROHEAD(3, 9) /'IN'/
+            DATA GROHEAD(4, 9) /'dADM'/
+
 c        New daily green leaf area m2/m2
-         DATA GROHEAD(1, 10) /'NEW'/
-         DATA GROHEAD(2, 10) /'DAILY'/
-         DATA GROHEAD(3, 10) /'GREEN'/
-         DATA GROHEAD(4, 10) /'dGLA'/
- 
+            DATA GROHEAD(1, 10) /'NEW'/
+            DATA GROHEAD(2, 10) /'DAILY'/
+            DATA GROHEAD(3, 10) /'GREEN'/
+            DATA GROHEAD(4, 10) /'dGLA'/
+
 c        Potential (source-unlimited) change in green leaf area m2/m2
-         DATA GROHEAD(1, 11) /'POTENTIAL'/
-         DATA GROHEAD(2, 11) /'(SOURCE-UNL'/
-         DATA GROHEAD(3, 11) /'CHANGE'/
-         DATA GROHEAD(4, 11) /'dGLA_pot'/
- 
+            DATA GROHEAD(1, 11) /'POTENTIAL'/
+            DATA GROHEAD(2, 11) /'(SOURCE-UNL'/
+            DATA GROHEAD(3, 11) /'CHANGE'/
+            DATA GROHEAD(4, 11) /'dGLA_pot'/
+
 c        Daily change in green leaf area index, new growth - senescence
-         DATA GROHEAD(1, 12) /'DAILY'/
-         DATA GROHEAD(2, 12) /'CHANGE'/
-         DATA GROHEAD(3, 12) /'IN'/
-         DATA GROHEAD(4, 12) /'dGLAI'/
- 
+            DATA GROHEAD(1, 12) /'DAILY'/
+            DATA GROHEAD(2, 12) /'CHANGE'/
+            DATA GROHEAD(3, 12) /'IN'/
+            DATA GROHEAD(4, 12) /'dGLAI'/
+
 c        Daily change in total leaf dry mass t/ha/d
-         DATA GROHEAD(1, 13) /'DAILY'/
-         DATA GROHEAD(2, 13) /'CHANGE'/
-         DATA GROHEAD(3, 13) /'IN'/
-         DATA GROHEAD(4, 13) /'dLeafDM'/
- 
-c        Daily change in leaf phyllocron interval l/s/d
-         DATA GROHEAD(1, 14) /'DAILY'/
-         DATA GROHEAD(2, 14) /'CHANGE'/
-         DATA GROHEAD(3, 14) /'IN'/
-         DATA GROHEAD(4, 14) /'dLeafPI'/
- 
+            DATA GROHEAD(1, 13) /'DAILY'/
+            DATA GROHEAD(2, 13) /'CHANGE'/
+            DATA GROHEAD(3, 13) /'IN'/
+            DATA GROHEAD(4, 13) /'dLeafDM'/
+
 c        Daily leaf area senescence m2/m2/d
-         DATA GROHEAD(1, 15) /'DAILY'/
-         DATA GROHEAD(2, 15) /'LEAF'/
-         DATA GROHEAD(3, 15) /'AREA'/
-         DATA GROHEAD(4, 15) /'dlt_slai_li'/
- 
+            DATA GROHEAD(1, 14) /'DAILY'/
+            DATA GROHEAD(2, 14) /'LEAF'/
+            DATA GROHEAD(3, 14) /'AREA'/
+            DATA GROHEAD(4, 14) /'dlt_slai_li'/
+
 c        Daily change in Root dry mass
-         DATA GROHEAD(1, 16) /'DAILY'/
-         DATA GROHEAD(2, 16) /'CHANGE'/
-         DATA GROHEAD(3, 16) /'IN'/
-         DATA GROHEAD(4, 16) /'dRootDM'/
- 
+            DATA GROHEAD(1, 15) /'DAILY'/
+            DATA GROHEAD(2, 15) /'CHANGE'/
+            DATA GROHEAD(3, 15) /'IN'/
+            DATA GROHEAD(4, 15) /'dRootDM'/
+
 c        Daily change in stalk dry mass t/ha/d
-         DATA GROHEAD(1, 17) /'DAILY'/
-         DATA GROHEAD(2, 17) /'CHANGE'/
-         DATA GROHEAD(3, 17) /'IN'/
-         DATA GROHEAD(4, 17) /'dSDM'/
- 
+            DATA GROHEAD(1, 16) /'DAILY'/
+            DATA GROHEAD(2, 16) /'CHANGE'/
+            DATA GROHEAD(3, 16) /'IN'/
+            DATA GROHEAD(4, 16) /'dSDM'/
+
 c        Daily leaf area senescence m2/m2/d
-         DATA GROHEAD(1, 18) /'DAILY'/
-         DATA GROHEAD(2, 18) /'LEAF'/
-         DATA GROHEAD(3, 18) /'AREA'/
-         DATA GROHEAD(4, 18) /'dSenDM'/
- 
+            DATA GROHEAD(1, 17) /'DAILY'/
+            DATA GROHEAD(2, 17) /'LEAF'/
+            DATA GROHEAD(3, 17) /'AREA'/
+            DATA GROHEAD(4, 17) /'dSenDM'/
+
 c        Daily change in stalk fibre dry mass t/ha/d
-         DATA GROHEAD(1, 19) /'DAILY'/
-         DATA GROHEAD(2, 19) /'CHANGE'/
-         DATA GROHEAD(3, 19) /'IN'/
-         DATA GROHEAD(4, 19) /'dSFibDM'/
- 
+            DATA GROHEAD(1, 18) /'DAILY'/
+            DATA GROHEAD(2, 18) /'CHANGE'/
+            DATA GROHEAD(3, 18) /'IN'/
+            DATA GROHEAD(4, 18) /'dSFibDM'/
+
 c        Daily change in stalk sucrose t/ha/d
-         DATA GROHEAD(1, 20) /'DAILY'/
-         DATA GROHEAD(2, 20) /'CHANGE'/
-         DATA GROHEAD(3, 20) /'IN'/
-         DATA GROHEAD(4, 20) /'dSSuc'/
- 
+            DATA GROHEAD(1, 19) /'DAILY'/
+            DATA GROHEAD(2, 19) /'CHANGE'/
+            DATA GROHEAD(3, 19) /'IN'/
+            DATA GROHEAD(4, 19) /'dSSuc'/
+
 c        Daily thermal time accumulation for driving leaf appearance °Cd
-         DATA GROHEAD(1, 21) /'DAILY'/
-         DATA GROHEAD(2, 21) /'THERMAL'/
-         DATA GROHEAD(3, 21) /'TIME'/
-         DATA GROHEAD(4, 21) /'dTTLf'/
- 
-c        Inter-row PAR fractional interception
-         DATA GROHEAD(1, 22) /'INTER-ROW'/
-         DATA GROHEAD(2, 22) /'PAR'/
-         DATA GROHEAD(3, 22) /'FRACTIONAL'/
-         DATA GROHEAD(4, 22) /'LI%D'/
- 
-c        Temperature factor for LAI growth
-         DATA GROHEAD(1, 23) /'TEMPERATURE'/
-         DATA GROHEAD(2, 23) /'FACTOR'/
-         DATA GROHEAD(3, 23) /'FOR'/
-         DATA GROHEAD(4, 23) /'FT_LAI'/
- 
-c        Daily temperature factor for photosynthesis
-         DATA GROHEAD(1, 24) /'DAILY'/
-         DATA GROHEAD(2, 24) /'TEMPERATURE'/
-         DATA GROHEAD(3, 24) /'FACTOR'/
-         DATA GROHEAD(4, 24) /'FT_photos'/
- 
+            DATA GROHEAD(1, 20) /'DAILY'/
+            DATA GROHEAD(2, 20) /'THERMAL'/
+            DATA GROHEAD(3, 20) /'TIME'/
+            DATA GROHEAD(4, 20) /'dTTLf'/
+
+c        Inter-row PAR fractional interception 
+            DATA GROHEAD(1, 21) /'INTER-ROW'/
+            DATA GROHEAD(2, 21) /'PAR'/
+            DATA GROHEAD(3, 21) /'FRACTIONAL'/
+            DATA GROHEAD(4, 21) /'FIinter'/
+
+c        Temperature factor for LAI growth 
+            DATA GROHEAD(1, 22) /'TEMPERATURE'/
+            DATA GROHEAD(2, 22) /'FACTOR'/
+            DATA GROHEAD(3, 22) /'FOR'/
+            DATA GROHEAD(4, 22) /'FT_LAI'/
+
+            
+c        Daily temperature factor for photosynthesis 
+            DATA GROHEAD(1, 23) /'DAILY'/
+            DATA GROHEAD(2, 23) /'TEMPERATURE'/
+            DATA GROHEAD(3, 23) /'FACTOR'/
+            DATA GROHEAD(4, 23) /'FT_photos'/
+
 c        Green leaf area index m2/m2
-         DATA GROHEAD(1, 25) /'GREEN'/
-         DATA GROHEAD(2, 25) /'LEAF'/
-         DATA GROHEAD(3, 25) /'AREA'/
-         DATA GROHEAD(4, 25) /'LAIGD'/
- 
+            DATA GROHEAD(1, 24) /'GREEN'/
+            DATA GROHEAD(2, 24) /'LEAF'/
+            DATA GROHEAD(3, 24) /'AREA'/
+            DATA GROHEAD(4, 24) /'GLAI'/
+
 c        Green leaf canopy dry mass t/ha
-         DATA GROHEAD(1, 26) /'GREEN'/
-         DATA GROHEAD(2, 26) /'LEAF'/
-         DATA GROHEAD(3, 26) /'CANOPY'/
-         DATA GROHEAD(4, 26) /'LGDMD'/
- 
-c        PAR canopy extinction coefficient
-         DATA GROHEAD(1, 27) /'PAR'/
-         DATA GROHEAD(2, 27) /'CANOPY'/
-         DATA GROHEAD(3, 27) /'EXTINCTION'/
-         DATA GROHEAD(4, 27) /'KePAR'/
- 
+            DATA GROHEAD(1, 25) /'GREEN'/
+            DATA GROHEAD(2, 25) /'LEAF'/
+            DATA GROHEAD(3, 25) /'CANOPY'/
+            DATA GROHEAD(4, 25) /'GLeafDM'/
+
+c        Sett dry mass (energy source) t/ha
+            DATA GROHEAD(1, 26) /'SETT'/
+            DATA GROHEAD(2, 26) /'DRY'/
+            DATA GROHEAD(3, 26) /'MASS'/
+            DATA GROHEAD(4, 26) /'SettDM'/
+
+c        PAR canopy extinction coefficient 
+            DATA GROHEAD(1, 27) /'PAR'/
+            DATA GROHEAD(2, 27) /'CANOPY'/
+            DATA GROHEAD(3, 27) /'EXTINCTION'/
+            DATA GROHEAD(4, 27) /'KePAR'/
+
 c        Daily GLAI senesced m2/m2/d
-         DATA GROHEAD(1, 28) /'DAILY'/
-         DATA GROHEAD(2, 28) /'GLAI'/
-         DATA GROHEAD(3, 28) /'SENESCED'/
-         DATA GROHEAD(4, 28) /'LAIsen'/
- 
+            DATA GROHEAD(1, 28) /'DAILY'/
+            DATA GROHEAD(2, 28) /'GLAI'/
+            DATA GROHEAD(3, 28) /'SENESCED'/
+            DATA GROHEAD(4, 28) /'LAIsen'/
+
 c        Total (living + dead) leaf dry mass t/ha
-         DATA GROHEAD(1, 29) /'TOTAL'/
-         DATA GROHEAD(2, 29) /'(LIVING'/
-         DATA GROHEAD(3, 29) /'+'/
-         DATA GROHEAD(4, 29) /'LTDMD'/
- 
+            DATA GROHEAD(1, 29) /'TOTAL'/
+            DATA GROHEAD(2, 29) /'(LIVING'/
+            DATA GROHEAD(3, 29) /'+'/
+            DATA GROHEAD(4, 29) /'LeafDM'/
+
 c        Current leaf phyllocron interval °Cd
-         DATA GROHEAD(1, 30) /'CURRENT'/
-         DATA GROHEAD(2, 30) /'LEAF'/
-         DATA GROHEAD(3, 30) /'PHYLLOCRON'/
-         DATA GROHEAD(4, 30) /'LeafPI'/
- 
+            DATA GROHEAD(1, 30) /'CURRENT'/
+            DATA GROHEAD(2, 30) /'LEAF'/
+            DATA GROHEAD(3, 30) /'PHYLLOCRON'/
+            DATA GROHEAD(4, 30) /'LeafPI'/
+
 c        Leaf carbon demand (sink strength) t/ha/d
-         DATA GROHEAD(1, 31) /'LEAF'/
-         DATA GROHEAD(2, 31) /'CARBON'/
-         DATA GROHEAD(3, 31) /'DEMAND'/
-         DATA GROHEAD(4, 31) /'LeafSink'/
- 
+            DATA GROHEAD(1, 31) /'LEAF'/
+            DATA GROHEAD(2, 31) /'CARBON'/
+            DATA GROHEAD(3, 31) /'DEMAND'/
+            DATA GROHEAD(4, 31) /'LeafSink'/
+
 c        The number of leaves per shoot at which onset of stalk growth started l/s
-         DATA GROHEAD(1, 32) /'THE'/
-         DATA GROHEAD(2, 32) /'NUMBER'/
-         DATA GROHEAD(3, 32) /'OF'/
-         DATA GROHEAD(4, 32) /'LFNUM_OSG'/
- 
+            DATA GROHEAD(1, 32) /'THE'/
+            DATA GROHEAD(2, 32) /'NUMBER'/
+            DATA GROHEAD(3, 32) /'OF'/
+            DATA GROHEAD(4, 32) /'LFNUM_OSG'/
+
 c        Leaf number per stalk at which sucrose accumulation can start. l/s
-         DATA GROHEAD(1, 33) /'LEAF'/
-         DATA GROHEAD(2, 33) /'NUMBER'/
-         DATA GROHEAD(3, 33) /'PER'/
-         DATA GROHEAD(4, 33) /'LFNUM_SUCSt'/
- 
+            DATA GROHEAD(1, 33) /'LEAF'/
+            DATA GROHEAD(2, 33) /'NUMBER'/
+            DATA GROHEAD(3, 33) /'PER'/
+            DATA GROHEAD(4, 33) /'LFNUM_SUCSt'/
+
 c        Number of leaves per shoot (reference) l/s
-         DATA GROHEAD(1, 34) /'NUMBER'/
-         DATA GROHEAD(2, 34) /'OF'/
-         DATA GROHEAD(3, 34) /'LEAVES'/
-         DATA GROHEAD(4, 34) /'NumLF'/
- 
+            DATA GROHEAD(1, 34) /'NUMBER'/
+            DATA GROHEAD(2, 34) /'OF'/
+            DATA GROHEAD(3, 34) /'LEAVES'/
+            DATA GROHEAD(4, 34) /'NumLF'/
+
 c        Daily fraction of biomass allocated to roots, g/g
-         DATA GROHEAD(1, 35) /'DAILY'/
-         DATA GROHEAD(2, 35) /'FRACTION'/
-         DATA GROHEAD(3, 35) /'OF'/
-         DATA GROHEAD(4, 35) /'RootFrac'/
- 
-c        Root dry mass
-         DATA GROHEAD(1, 36) /'ROOT'/
-         DATA GROHEAD(2, 36) /'DRY'/
-         DATA GROHEAD(3, 36) /'MASS'/
-         DATA GROHEAD(4, 36) /'RootDM'/
- 
-c        Today_s maximum relative LAI growth rate, considering temperature
-         DATA GROHEAD(1, 37) /'TODAY_S'/
-         DATA GROHEAD(2, 37) /'MAXIMUM'/
-         DATA GROHEAD(3, 37) /'RELATIVE'/
-         DATA GROHEAD(4, 37) /'RGR_LAI_max'/
- 
+            DATA GROHEAD(1, 35) /'DAILY'/
+            DATA GROHEAD(2, 35) /'FRACTION'/
+            DATA GROHEAD(3, 35) /'OF'/
+            DATA GROHEAD(4, 35) /'RootFrac'/
+
+c        Root dry mass 
+            DATA GROHEAD(1, 36) /'ROOT'/
+            DATA GROHEAD(2, 36) /'DRY'/
+            DATA GROHEAD(3, 36) /'MASS'/
+            DATA GROHEAD(4, 36) /'RootDM'/
+
+c        Today_s maximum relative LAI growth rate, considering temperature 
+            DATA GROHEAD(1, 37) /'TODAY_S'/
+            DATA GROHEAD(2, 37) /'MAXIMUM'/
+            DATA GROHEAD(3, 37) /'RELATIVE'/
+            DATA GROHEAD(4, 37) /'RGR_LAI_max'/
+
 c        Stalk dry mass t/ha
-         DATA GROHEAD(1, 38) /'STALK'/
-         DATA GROHEAD(2, 38) /'DRY'/
-         DATA GROHEAD(3, 38) /'MASS'/
-         DATA GROHEAD(4, 38) /'SMDMD'/
- 
+            DATA GROHEAD(1, 38) /'STALK'/
+            DATA GROHEAD(2, 38) /'DRY'/
+            DATA GROHEAD(3, 38) /'MASS'/
+            DATA GROHEAD(4, 38) /'SDM'/
+
 c        Dry mass of senesced leaves t/ha
-         DATA GROHEAD(1, 39) /'DRY'/
-         DATA GROHEAD(2, 39) /'MASS'/
-         DATA GROHEAD(3, 39) /'OF'/
-         DATA GROHEAD(4, 39) /'LDDMD'/
- 
+            DATA GROHEAD(1, 39) /'DRY'/
+            DATA GROHEAD(2, 39) /'MASS'/
+            DATA GROHEAD(3, 39) /'OF'/
+            DATA GROHEAD(4, 39) /'SenDM'/
+
 c        Stalk elongation rate cm/d
-         DATA GROHEAD(1, 40) /'STALK'/
-         DATA GROHEAD(2, 40) /'ELONGATION'/
-         DATA GROHEAD(3, 40) /'RATE'/
-         DATA GROHEAD(4, 40) /'SER'/
- 
-c        Daily fraction of GLAI senesced
-         DATA GROHEAD(1, 41) /'DAILY'/
-         DATA GROHEAD(2, 41) /'FRACTION'/
-         DATA GROHEAD(3, 41) /'OF'/
-         DATA GROHEAD(4, 41) /'slai_light_'/
- 
+            DATA GROHEAD(1, 40) /'STALK'/
+            DATA GROHEAD(2, 40) /'ELONGATION'/
+            DATA GROHEAD(3, 40) /'RATE'/
+            DATA GROHEAD(4, 40) /'SER'/
+
+c        Daily fraction of GLAI senesced 
+            DATA GROHEAD(1, 41) /'DAILY'/
+            DATA GROHEAD(2, 41) /'FRACTION'/
+            DATA GROHEAD(3, 41) /'OF'/
+            DATA GROHEAD(4, 41) /'slai_light_'/
+
 c        Source:sink ratio
-         DATA GROHEAD(1, 42) /'SOURCE:SINK'/
-         DATA GROHEAD(2, 42) /'RATIO'/
-         DATA GROHEAD(3, 42) /'NA'/
-         DATA GROHEAD(4, 42) /'SLSR'/
- 
+            DATA GROHEAD(1, 42) /'SOURCE:SINK'/
+            DATA GROHEAD(2, 42) /'RATIO'/
+            DATA GROHEAD(3, 42) /'NA'/
+            DATA GROHEAD(4, 42) /'SLSR'/
+
+c        leaf PI average source:sink ratio 
+            DATA GROHEAD(1, 43) /'LEAF'/
+            DATA GROHEAD(2, 43) /'PI'/
+            DATA GROHEAD(3, 43) /'AVERAGE'/
+            DATA GROHEAD(4, 43) /'PIAvgSSR'/
+
 c        specific leaf area (cm2/g)
-         DATA GROHEAD(1, 43) /'SPECIFIC'/
-         DATA GROHEAD(2, 43) /'LEAF'/
-         DATA GROHEAD(3, 43) /'AREA'/
-         DATA GROHEAD(4, 43) /'SLAD'/
- 
+            DATA GROHEAD(1, 44) /'SPECIFIC'/
+            DATA GROHEAD(2, 44) /'LEAF'/
+            DATA GROHEAD(3, 44) /'AREA'/
+            DATA GROHEAD(4, 44) /'SLA'/
+
 c        Daily biomass increase (source strength) t/ha/d
-         DATA GROHEAD(1, 44) /'DAILY'/
-         DATA GROHEAD(2, 44) /'BIOMASS'/
-         DATA GROHEAD(3, 44) /'INCREASE'/
-         DATA GROHEAD(4, 44) /'Source'/
- 
+            DATA GROHEAD(1, 45) /'DAILY'/
+            DATA GROHEAD(2, 45) /'BIOMASS'/
+            DATA GROHEAD(3, 45) /'INCREASE'/
+            DATA GROHEAD(4, 45) /'Source'/
+
 c        Stalk partitioning fraction t/t
-         DATA GROHEAD(1, 45) /'STALK'/
-         DATA GROHEAD(2, 45) /'PARTITIONIN'/
-         DATA GROHEAD(3, 45) /'FRACTION'/
-         DATA GROHEAD(4, 45) /'SPF'/
- 
+            DATA GROHEAD(1, 46) /'STALK'/
+            DATA GROHEAD(2, 46) /'PARTITIONIN'/
+            DATA GROHEAD(3, 46) /'FRACTION'/
+            DATA GROHEAD(4, 46) /'SPF'/
+
+c        Observed input solar radiation MJ/m2
+            DATA GROHEAD(1, 47) /'OBSERVED'/
+            DATA GROHEAD(2, 47) /'INPUT'/
+            DATA GROHEAD(3, 47) /'SOLAR'/
+            DATA GROHEAD(4, 47) /'SRAD'/
+
 c        Stalk fibre growth sink strength t/ha/d
-         DATA GROHEAD(1, 46) /'STALK'/
-         DATA GROHEAD(2, 46) /'FIBRE'/
-         DATA GROHEAD(3, 46) /'GROWTH'/
-         DATA GROHEAD(4, 46) /'StalkSink'/
- 
+            DATA GROHEAD(1, 48) /'STALK'/
+            DATA GROHEAD(2, 48) /'FIBRE'/
+            DATA GROHEAD(3, 48) /'GROWTH'/
+            DATA GROHEAD(4, 48) /'StalkSink'/
+
 c        Stalk length (height to top visible dewlap) cm
-         DATA GROHEAD(1, 47) /'STALK'/
-         DATA GROHEAD(2, 47) /'LENGTH'/
-         DATA GROHEAD(3, 47) /'(HEIGHT'/
-         DATA GROHEAD(4, 47) /'StalkLength'/
- 
+            DATA GROHEAD(1, 49) /'STALK'/
+            DATA GROHEAD(2, 49) /'LENGTH'/
+            DATA GROHEAD(3, 49) /'(HEIGHT'/
+            DATA GROHEAD(4, 49) /'StalkLength'/
+
 c        Stalk fibre dry mass t/ha
-         DATA GROHEAD(1, 48) /'STALK'/
-         DATA GROHEAD(2, 48) /'FIBRE'/
-         DATA GROHEAD(3, 48) /'DRY'/
-         DATA GROHEAD(4, 48) /'SFibDM'/
- 
-c        Soil water deficit (stress) factor affecting expansive growth
-         DATA GROHEAD(1, 49) /'SOIL'/
-         DATA GROHEAD(2, 49) /'WATER'/
-         DATA GROHEAD(3, 49) /'DEFICIT'/
-         DATA GROHEAD(4, 49) /'WSGD'/
- 
+            DATA GROHEAD(1, 50) /'STALK'/
+            DATA GROHEAD(2, 50) /'FIBRE'/
+            DATA GROHEAD(3, 50) /'DRY'/
+            DATA GROHEAD(4, 50) /'SFibDM'/
+
+c        Soil water deficit (stress) factor affecting expansive growth 
+            DATA GROHEAD(1, 51) /'SOIL'/
+            DATA GROHEAD(2, 51) /'WATER'/
+            DATA GROHEAD(3, 51) /'DEFICIT'/
+            DATA GROHEAD(4, 51) /'SWDF2'/
+
 c        stalk sucrose (t/ha)
-         DATA GROHEAD(1, 50) /'STALK'/
-         DATA GROHEAD(2, 50) /'SUCROSE'/
-         DATA GROHEAD(3, 50) /'(T/HA)'/
-         DATA GROHEAD(4, 50) /'SUCMD'/
- 
+            DATA GROHEAD(1, 52) /'STALK'/
+            DATA GROHEAD(2, 52) /'SUCROSE'/
+            DATA GROHEAD(3, 52) /'(T/HA)'/
+            DATA GROHEAD(4, 52) /'SUCDM'/
+
 c        Total crop dry mass t/ha
-         DATA GROHEAD(1, 51) /'TOTAL'/
-         DATA GROHEAD(2, 51) /'CROP'/
-         DATA GROHEAD(3, 51) /'DRY'/
-         DATA GROHEAD(4, 51) /'TotalDM'/
- 
+            DATA GROHEAD(1, 53) /'TOTAL'/
+            DATA GROHEAD(2, 53) /'CROP'/
+            DATA GROHEAD(3, 53) /'DRY'/
+            DATA GROHEAD(4, 53) /'TotalDM'/
+
 c        Verify ADM t/ha
-         DATA GROHEAD(1, 52) /'VERIFY'/
-         DATA GROHEAD(2, 52) /'ADM'/
-         DATA GROHEAD(3, 52) /'T/HA'/
-         DATA GROHEAD(4, 52) /'vADM'/
- 
+            DATA GROHEAD(1, 54) /'VERIFY'/
+            DATA GROHEAD(2, 54) /'ADM'/
+            DATA GROHEAD(3, 54) /'T/HA'/
+            DATA GROHEAD(4, 54) /'vADM'/
+
 c        Verify Source t/ha
-         DATA GROHEAD(1, 53) /'VERIFY'/
-         DATA GROHEAD(2, 53) /'SOURCE'/
-         DATA GROHEAD(3, 53) /'T/HA'/
-         DATA GROHEAD(4, 53) /'vSource'/
+            DATA GROHEAD(1, 55) /'VERIFY'/
+            DATA GROHEAD(2, 55) /'SOURCE'/
+            DATA GROHEAD(3, 55) /'T/HA'/
+            DATA GROHEAD(4, 55) /'vSource'/
 
 
 c          ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c          Number of output variables (important for output!)
-           DATA NUM_OVARS /53/
+           DATA NUM_OVARS /55/
 
 c          Width of output columns:
            DATA VAR_WIDTH /12/
@@ -996,21 +1015,21 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
           WRITE(NOUTDG,FMT=D_FMT_STR) 
      &                     YEAR, DOY,  DAS, DAP, 
-     & TAVE, ADM,
-     & CANma, CTT_LFEM,
-     & dADM, dGLA, dGLA_pot, dGLAI,
-     & dLeafDM, dLeafPI, dlt_slai_light, 
+     & TAVE, ADM, CANma, CTT_LFEM, 
+     & dADM, dGLA, dGLA_pot, dGLAI, 
+     & dLeafDM, dlt_slai_light, 
      & dRootDM, dSDM, dSenDM, dSFibDM, 
      & dSSuc, dTTLf, FIinter, FT_LAI, 
-     & FT_photos, GLAI, GLeafDM,
-     & KePAR, LAIsen, LeafDM, LeafPI,
-     & LeafSink, LFNUM_OSG, LFNUM_SUCStart,
-     & NumLF, RootFrac, RootDM,
-     & RGR_LAI_max, SDM, SenDM, 
-     & SER, slai_light_fac, SLSR,
-     & SLA, Source, SPF, StalkSink, 
-     & StalkLength, SFibDM, SWDF2, 
-     & SUCDM, TotalDM, vADM, vSource
+     & FT_photos, GLAI, GLeafDM, 
+     & SettDM, KePAR, LAIsen, LeafDM, 
+     & LeafPI, LeafSink, LFNUM_OSG, 
+     & LFNUM_SUCStart, NumLF, RootFrac, 
+     & RootDM, RGR_LAI_max, SDM, 
+     & SenDM, SER, slai_light_fac, 
+     & SLSR, PIAvgSSR, SLA, Source, 
+     & SPF, SRAD, StalkSink, StalkLength, 
+     & SFibDM, SWDF2, SUCDM, TotalDM, 
+     & vADM, vSource
 !     &                     TMIN, TMAX, 
 !     -                     NINT(T_SD), 
 !     -                     CaneCrop%GROPHASE,
