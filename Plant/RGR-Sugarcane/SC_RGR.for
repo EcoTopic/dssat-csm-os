@@ -162,6 +162,7 @@ c     -----------------
       REAL AvRootDMFrac  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
       REAL APFMX  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
       REAL PCB  ! Root partitioning: average partitioning of mass to roots, maximum partitioning fraction
+      REAL RUE_FT_c ! MARCH 2021
       REAL FI_OSG  ! Fractional PAR interception at which 50% of shoots have started stalk growth
       REAL OSG_log_c1  ! Parameter controlling the rate at which the crop transitions to stalk growth in response to PAR interception
       REAL STKPFmax  ! Maximum fraction of aerial biomass that can be allocated to stalks each day
@@ -601,6 +602,7 @@ c     JvdM: The following to be replaced by Fortran SEASINIT CUL read
        CALL GET_CULTIVAR_COEFF(AvRootDMFrac, 'AvRootDMFrac', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(APFMX, 'APFMX', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(PCB, 'PCB', CONTROL, cERROR)
+       CALL GET_CULTIVAR_COEFF(RUE_FT_c, 'RUE_FT_c', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(FI_OSG, 'FI_OSG', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(OSG_log_c1, 'OSG_log_c1', CONTROL, cERROR)
        CALL GET_CULTIVAR_COEFF(STKPFmax, 'STKPFmax', CONTROL, cERROR)

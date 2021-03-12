@@ -893,9 +893,9 @@ C          Branch to menu choice
      & RGRglaiMin, RGRglaiMax, 
      & RGRglaiSlope, RUEo, MAX_ROOTPF, 
      & AvRootDMFrac, APFMX, PCB, 
-     & OSG_log_c1, STKPFmax, SERo, 
-     & SSH, lai_sen_light, sen_light_slope
-!     & LAI_JTo
+     & RUE_FT_c, FI_OSG, OSG_log_c1, 
+     & STKPFmax, SERo, SSH, lai_sen_light, 
+     & sen_light_slope
     
 5910    FORMAT (12X,'0. End of changes',//,
      &  12X,'1. InitialGLAI (Initial green leaf area index (m2[',F7.2,/,
@@ -911,7 +911,7 @@ C          Branch to menu choice
      &  12X,'11. TFin_LFAPP (Cardinal temperatures for leaf ap[',F7.2,/,
      &  12X,'12. LeafPI1 (Leaf phyllocron intervals, P1 (°Cd))[',F7.2,/,
      &  12X,'13. LeafPI2 (Leaf phyllocron intervals, P2 (°Cd))[',F7.2,/,
-     &  12X,'14. KeMin (Minimum PAR extinction coefficients)..[',F7.2,/,
+     &  12X,'14. KeMin (Minimum PAR extinction coefficients)..[',F7.2,/,  
      &  12X,'15. KeMax (Maximum PAR extinction coefficients)..[',F7.2,/,
      &  12X,'16. KeMaxLf (Number of leaves/stalk at KeMax)....[',F7.2,/,
      &  12X,'17. SLAMin (Minimumspecific leaf area (cm2/g))...[',F7.2,/,
@@ -925,12 +925,14 @@ C          Branch to menu choice
      &  12X,'25. AvRootDMFrac (Root partitioning: average part[',F7.2,/,
      &  12X,'26. APFMX (Root partitioning: average partitionin[',F7.2,/,
      &  12X,'27. PCB (Root partitioning: average partitioning [',F7.2,/,
-     &  12X,'28. OSG_log_c1 (OSG_log_c1)......................[',F7.2,/,
-     &  12X,'29. STKPFmax (STKPFmax)..........................[',F7.2,/,
-     &  12X,'30. SERo (max stalk elongation rate per day, unde[',F7.2,/,
-     &  12X,'31. SSH (specific stalk height  = cm length/g (ov[',F7.2,/,
-     &  12X,'32. lai_sen_light (APSIM-Sugar maximum GLAI for l[',F7.2,/,
-     &  12X,'33. sen_light_slope (APSIM-Sugar light intercepti[',F7.2,/)
+     &  12X,'28. RUE_FT_c ( ).................................[',F7.2,/,
+     &  12X,'29. FI_OSG ( )...................................[',F7.2,/,
+     &  12X,'30. OSG_log_c1 (OSG_log_c1)......................[',F7.2,/,
+     &  12X,'31. STKPFmax (STKPFmax)..........................[',F7.2,/,
+     &  12X,'32. SERo (max stalk elongation rate per day, unde[',F7.2,/,
+     &  12X,'33. SSH (specific stalk height  = cm length/g (ov[',F7.2,/,
+     &  12X,'34. lai_sen_light (APSIM-Sugar maximum GLAI for l[',F7.2,/,
+     &  12X,'35. sen_light_slope (APSIM-Sugar light intercepti[',F7.2,/)
     
            WRITE (*,5100)
 C
@@ -971,13 +973,15 @@ C          Branch to menu choice
             CASE (25); CALL GETREAL (AvRootDMFrac, 'AvRootDMFrac', 0.0, 2.3)
             CASE (26); CALL GETREAL (APFMX, 'APFMX', 0.0, 8.0)
             CASE (27); CALL GETREAL (PCB, 'PCB', 0.0, 6.0)
-            CASE (28); CALL GETREAL (OSG_log_c1, 'OSG_log_c1', 0.0, 2000.0)
-            CASE (29); CALL GETREAL (STKPFmax, 'STKPFmax', 0.0, 7.0)
-            CASE (30); CALL GETREAL (SERo, 'SERo', 0.0, 10.0)
-            CASE (31); CALL GETREAL (SSH, 'SSH', 0.0, 10.0)
-            CASE (32); CALL GETREAL (lai_sen_light, 'lai_sen_light',
+            CASE (28); CALL GETREAL (RUE_FT_c, 'RUE_FT_c', 0.0, 3.0)
+            CASE (29); CALL GETREAL (FI_OSG, 'FI_OSG', 0.0, 7.5)
+            CASE (30); CALL GETREAL (OSG_log_c1, 'OSG_log_c1', 0.0, 2000.0)
+            CASE (31); CALL GETREAL (STKPFmax, 'STKPFmax', 0.0, 7.0)
+            CASE (32); CALL GETREAL (SERo, 'SERo', 0.0, 10.0)
+            CASE (33); CALL GETREAL (SSH, 'SSH', 0.0, 10.0)
+            CASE (34); CALL GETREAL (lai_sen_light, 'lai_sen_light',
      &         0.0, 25.0)
-            CASE (33); CALL GETREAL (sen_light_slope, 'sen_light_slope',
+            CASE (35); CALL GETREAL (sen_light_slope, 'sen_light_slope',
      &         0.0, 0.05)
                END SELECT 
 

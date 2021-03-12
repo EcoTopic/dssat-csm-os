@@ -52,7 +52,8 @@
      & SLAMax, Suc_LfNum_Delay, 
      & RGRglaiMin, RGRglaiMax, 
      & RGRglaiSlope, RUEo, MAX_ROOTPF, 
-     & AvRootDMFrac, PCB, 
+     & AvRootDMFrac, PCB,
+     & RUE_FT_c, FI_OSG,
      & OSG_log_c1, SERo, 
      & SSH, lai_sen_light, sen_light_slope 
 !     & LAI_JTo
@@ -186,6 +187,7 @@
      & RGRglaiSlope, RUEo, MAX_ROOTPF, 
      & AvRootDMFrac, 
      & PCB, 
+     & RUE_FT_c, FI_OSG,
      & OSG_log_c1, SERo, 
      & SSH, lai_sen_light, sen_light_slope
 !     & LAI_JTo

@@ -356,15 +356,16 @@ C-GH        F6.2,6F6.1,5F6.2,F6.1,F6.0,2F6.1,F6.2,2F6.1,2F6.2,A)
      &   RGRglaiMin, RGRglaiMax, 
      &   RGRglaiSlope, RUEo, MAX_ROOTPF, 
      &   AvRootDMFrac, APFMX, PCB, 
-     &   OSG_log_c1, STKPFmax, SERo, 
-     &   SSH, lai_sen_light, sen_light_slope 
+     &   RUE_FT_c, FI_OSG, OSG_log_c1, 
+     &   STKPFmax, SERo, SSH, lai_sen_light, 
+     &   sen_light_slope 
 !     &   LAI_JTo
    
    
 !  170   FORMAT (I3,1X,A2,1X,A6,1X,A8,1X,A6,
 !     &      4F15.2,16F15.1,2F15.2,F15.10,F15.1,2F15.10)
 172    FORMAT (I3,1X,A2,1X,A6,1X,A8,1X,A6,
-     &           34F15.4)
+     &           33F16.4)
 
       case ('SCSAM')
           

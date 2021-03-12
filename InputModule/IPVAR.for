@@ -335,21 +335,22 @@ C-GH &            P1,P2O,P2R,P5,G1,G2,PHINT,P3,P4
         !WRITE(*, '(A, F10.5)') 'SER0 is ', SER0     
 !          SCRGR: EXPERIMENTAL South African Sugarcane model **
         CASE ('SCRGR') 
-      !WRITE(*, '(A)') C360
+      WRITE(*, '(A)') C360
          READ (C360,1062,IOSTAT=ERRNUM) VARTY, VRNAME, ECONO,
-     &   InitialGLAI, TBase_LAI, 
-     &   TOpt_LAI, TFin_LAI, TBase_Photos, 
-     &   TOpt1_Photos, TOpt2_Photos, 
-     &   TFin_Photos, TBase_LFAPP, 
-     &   TOpt_LFAPP, TFin_LFAPP, 
-     &   LeafPI1, LeafPI2, KeMin, 
-     &   KeMax, KeMaxLf, SLAMin, 
-     &   SLAMax, Suc_LfNum_Delay, 
-     &   RGRglaiMin, RGRglaiMax, 
-     &   RGRglaiSlope, RUEo, MAX_ROOTPF, 
-     &   AvRootDMFrac, APFMX, PCB, 
-     &   OSG_log_c1, STKPFmax, SERo, 
-     &   SSH, lai_sen_light, sen_light_slope
+     & InitialGLAI, TBase_LAI, 
+     & TOpt_LAI, TFin_LAI, TBase_Photos, 
+     & TOpt1_Photos, TOpt2_Photos, 
+     & TFin_Photos, TBase_LFAPP, 
+     & TOpt_LFAPP, TFin_LFAPP, 
+     & LeafPI1, LeafPI2, KeMin, 
+     & KeMax, KeMaxLf, SLAMin, 
+     & SLAMax, Suc_LfNum_Delay, 
+     & RGRglaiMin, RGRglaiMax, 
+     & RGRglaiSlope, RUEo, MAX_ROOTPF, 
+     & AvRootDMFrac, APFMX, PCB, 
+     & RUE_FT_c, FI_OSG, OSG_log_c1, 
+     & STKPFmax, SERo, SSH, lai_sen_light, 
+     & sen_light_slope
 !     &   LAI_JTo
    
 
@@ -459,7 +460,7 @@ C-----------------------------------------------------------------------
   850 FORMAT (A6,1X,A16,7X,A6,9F6.0,A)     !JG moved parameters to ECO, 01/09/2020
  1055 FORMAT (A6,1X,A16,7X,A6,44F6.0)      ! 02/10/2009 
  1060 FORMAT (A6,1X,A16,7X,A6,22F15.0)     ! 02/21/2018
- 1062 FORMAT (A6,1X,A16,7X,A6,34F15.0)     ! 02/26/2021 (SCRGR)
+ 1062 FORMAT (A6,1X,A16,7X,A6,35F16.4)     ! 02/26/2021 (SCRGR)
  1070 FORMAT (A6,1X,A16,7X,A6,24F15.0)     ! 01/07/2020 (SAMUCA)
  1500 FORMAT (A6,1X,A16,7X,A)              ! 11/8/07
 
