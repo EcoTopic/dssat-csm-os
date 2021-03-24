@@ -48,6 +48,11 @@ c     Emergence
       REAL TT_EMERG
       LOGICAL EMERGED
 
+c     MJ, 2020-09-29
+      INTEGER F_EDATE ! forced emergence date
+      REAL F_EDATEIN ! same as above; reads as REAL
+      REAL F_EPOP ! Forced population at emergence      
+
 c     Heat units for today: base10, base16, cultivar-
 c     defined heat units for leaf dynamics & emergence
 c      & population
@@ -79,7 +84,7 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 c     D_TT function defined in SC_CNG_MODS
       REAL D_TT
 c     Array to store daily change in thermal time values for each
-c     of leaves, shoots, emergence, °Cd
+c     of leaves, shoots, emergence, ï¿½Cd
       REAL DTT(3)
       CHARACTER*20 TP_PRFIX
 c     Set this to one of the PARAMETER values below
@@ -149,6 +154,16 @@ c             For ratoon cane:
 c     :::::::::::::::::::::::::::::::
 
           EMERGED = .FALSE. 
+
+c     Read reported date of emergence
+      CALL FIND_INP(F_EDATEIN, 'EDATE', Control)
+      F_EDATE = F_EDATEIN / 1 ! convert to integer
+c     Read reported emergence population      
+      CALL FIND_INP(F_EPOP, 'EPOP', Control)
+     
+      WRITE(*, '(A, I7, F6.1)') 'Emergence inputs: ', F_EDATE, F_EPOP  
+          
+                    
 c         Set base temperatures:
 c         * READ from CULTIVAR file! *
 c         ::::::::::::::::::::::
@@ -301,13 +316,15 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(CONTROL%DYNAMIC.EQ.RATE) THEN
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+      ! WRITE(*, '(A, I7)') 'YRDOY: ', Control%YRDOY
+
 c         Calculate heat units:
 c         :::::::::::::::::::::
 c         Average temperature:
               AVGTEMP = (Climate%TEMPMX + Climate%TEMPMN) / 2.
 c         Heat units:
 
-c         Calculate daily thermal time accumulation (°Cd)
+c         Calculate daily thermal time accumulation (ï¿½Cd)
 c         Germination
           DTT(GermEm) = D_TT(AVGTEMP, TBase(GermEm), TOpt(GermEm), 
      &      TFin(GermEm))
@@ -323,7 +340,21 @@ c             Calculate
 c             heat units for emergence:
           !HUBaseEm   = MAX(0., AVGTEMP - TBaseEm)
           HUBaseEm =  DTT(GermEm)
-          IF ((CHUBaseEm + HUbaseEm) .GE. TT_EMERG) THEN
+!          IF ((CHUBaseEm + HUbaseEm) .GE. TT_EMERG) THEN
+
+c     MJ & JvdM, 2020-09-30: Support for "forcing" date of emergence
+c       by specifying EDATE in X file.
+c     :::::::::::::::::::::::::::::::::
+c     Logic here: if F_EDATE > 0 (indicating that recorded date of emergence should be used)
+c       AND current date >= F_EDATE, then assume that emergence has happened.
+c     if F_EDATE < 0, then we should use thermal time to drive emergence
+c       so F_EDATE < 0 AND (CHUBaseEm + HUbaseEm) .GE. TT_EMERG
+          IF (
+     &  (( (F_EDATE .LT. 0) .AND. (CHUBaseEm + HUbaseEm) .GE. TT_EMERG))
+     &     .OR.
+     &  ((F_EDATE .GT. 0) .AND. (Control%YRDOY .GE. F_EDATE))) 
+     &    THEN
+                          
               
 c             Calculate heat units for population, canopy,
 c             etc (not emergence), after the plant has emerged

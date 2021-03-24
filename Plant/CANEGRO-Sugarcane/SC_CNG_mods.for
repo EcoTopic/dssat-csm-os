@@ -1309,6 +1309,12 @@ c     ===============================================================
 c         Planting method
           CHARACTER*1   PLTRAT
 
+c          MJ 2020-09-29
+c          Plant population at emergence
+          REAL F_EPOP
+c         Emergence date (forced / override sim)
+          INTEGER F_EDATE          
+
           INTEGER LUNIO, ERR, LNUM
           CHARACTER*6     ERRKEY          
           PARAMETER       (ERRKEY='SC_CNG')   
@@ -1367,11 +1373,18 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             CALL ERROR(SECTION, 42, FILEIO, LNUM)
           ELSE
 c           Read plant population, rowspacing, and planting method
-            READ(LUNIO,61,IOSTAT=ERR) PLTPOP, PLTRAT, ROWSPC   
+!            READ(LUNIO,61,IOSTAT=ERR) PLTPOP, PLTRAT, ROWSPC   
+             READ(LUNIO,62,IOSTAT=ERR) 
+     &        F_EDATE, PLTPOP,F_EPOP, PLTRAT, ROWSPC 
             LNUM = LNUM + 1
  60         FORMAT(25X,F5.2,13X,F5.2,7X,F5.2)
 c           Added by MJ, 2007-05-04
  61         FORMAT(25X,F5.2,5X, A1,7X,F5.2,7X,F5.2)
+c           MJ, 2020-09-29
+c           Modify to skip 11, then read date of emergence,
+c           plant pop, pop at emergence, skip 5,
+c           plant/ratoon, and row-spacing
+ 62         FORMAT(11X, I7, F6.0, F6.0, 5X, A1,6X,F6.0)  
             IF (ERR .NE. 0) CALL ERROR(ERRKEY,ERR,FILEIO,LNUM)
           ENDIF
 
@@ -1416,6 +1429,13 @@ c             Any other form of planting will be treated as seed(cane) = plant
 
           CASE ('PLTPOP')
               var = PLTPOP
+                            
+c         MJ, 2020-09-29: added to read reported date of emergence
+          CASE ('EDATE')
+            var = F_EDATE
+c         MJ, 2020-09-29: added to read reported population at emergence              
+        CASE ('EPOP')
+            var = F_EPOP
       END SELECT
 
       CONTINUE
@@ -1887,7 +1907,7 @@ c     an optimal temperature (TOpt),
 c     and a final cutoff temperature (TFinal) above which the
 c     plant stops responding to temperature
 c     DTT |___/\__
-c            °C
+c            ï¿½C
 c     MJ, Dec 2012
       REAL FUNCTION D_TT(TMEAN, TBase, TOpt, TFinal)
 c     ===============================================================      
@@ -1927,7 +1947,7 @@ c     temperature range end (Topt2),
 c     and a final cutoff temperature (TFinal) above which the
 c     plant stops responding to temperature
 c     DTT |___/--\__
-c            °C
+c            ï¿½C
 c     MJ, Dec 2012
       REAL FUNCTION D_TT4(TMEAN, TBase, TOpt1, Topt2, TFinal)
 c     ===============================================================      
