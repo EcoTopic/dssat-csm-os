@@ -340,32 +340,26 @@ C-GH        F6.2,6F6.1,5F6.2,F6.1,F6.0,2F6.1,F6.2,2F6.1,2F6.2,A)
      &           F15.1,F15.4,F15.4,F15.1,F15.4)
 
         CASE ('SCRGR')
-      
       ! WRITE(*, '(A, F10.5)') 'SER0 is ', SER0 
-         WRITE(LUNIO,'(A)') TRIM(ATLINE) 
+         WRITE(LUNIO,'(A)') TRIM(ATLINE)
+      !--- Write SCRGR cultivar coefficients data to .INH 
          WRITE(LUNIO,172,IOSTAT=ERRNUM)
      &   LNCU,CROP,VARNO,VRNAME(1:8),ECONO,
-     &   InitialGLAI, TBase_LAI, 
-     &   TOpt_LAI, TFin_LAI, TBase_Photos, 
-     &   TOpt1_Photos, TOpt2_Photos, 
-     &   TFin_Photos, TBase_LFAPP, 
-     &   TOpt_LFAPP, TFin_LFAPP, 
-     &   LeafPI1, LeafPI2, KeMin, 
-     &   KeMax, KeMaxLf, SLAMin, 
-     &   SLAMax, Suc_LfNum_Delay, 
-     &   RGRglaiMin, RGRglaiMax, 
-     &   RGRglaiSlope, RUEo, MAX_ROOTPF, 
-     &   AvRootDMFrac, APFMX, PCB, 
-     &   RUE_FT_c, FI_OSG, OSG_log_c1, 
-     &   STKPFmax, SERo, SSH, lai_sen_light, 
-     &   sen_light_slope 
+     & InitialGLAI, TBase_LAI, TOpt_LAI, TFin_LAI, TBase_Photos, TOpt1_Photos, 
+     & TOpt2_Photos, TFin_Photos, TBase_LFAPP, TOpt_LFAPP, TFin_LFAPP, 
+     & LeafPI1, LeafPI2, KeMin, KeMax, KeMaxLf, 
+     & SLAMin, SLAMax, Suc_LfNum_Delay, RGRglaiMin, RGRglaiMax, 
+     & RUEo, MAX_ROOTPF, AvRootDMFrac, APFMX, PCB, 
+     & RUE_FT_c, FI_OSG, OSG_log_c1, STKPFmax, SXRo, 
+     & SSV, TBase_SXR, TOpt_SXR, TFin_SXR, lai_sen_light, 
+     & sen_light_slope, ResExFrac
 !     &   LAI_JTo
    
    
 !  170   FORMAT (I3,1X,A2,1X,A6,1X,A8,1X,A6,
 !     &      4F15.2,16F15.1,2F15.2,F15.10,F15.1,2F15.10)
 172    FORMAT (I3,1X,A2,1X,A6,1X,A8,1X,A6,
-     &           35F16.4)
+     &           38F16.4)
 
       case ('SCSAM')
           

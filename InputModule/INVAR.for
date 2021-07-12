@@ -882,20 +882,14 @@ C          Branch to menu choice
 !     SCRGR Experimental sugarcane model
       CASE ('SCRGR')
             WRITE (*,5910) 
-     & InitialGLAI, TBase_LAI, 
-     & TOpt_LAI, TFin_LAI, TBase_Photos, 
-     & TOpt1_Photos, TOpt2_Photos, 
-     & TFin_Photos, TBase_LFAPP, 
-     & TOpt_LFAPP, TFin_LFAPP, 
-     & LeafPI1, LeafPI2, KeMin, 
-     & KeMax, KeMaxLf, SLAMin, 
-     & SLAMax, Suc_LfNum_Delay, 
-     & RGRglaiMin, RGRglaiMax, 
-     & RGRglaiSlope, RUEo, MAX_ROOTPF, 
-     & AvRootDMFrac, APFMX, PCB, 
-     & RUE_FT_c, FI_OSG, OSG_log_c1, 
-     & STKPFmax, SERo, SSH, lai_sen_light, 
-     & sen_light_slope
+     & InitialGLAI, TBase_LAI, TOpt_LAI, TFin_LAI, TBase_Photos, TOpt1_Photos, 
+     & TOpt2_Photos, TFin_Photos, TBase_LFAPP, TOpt_LFAPP, TFin_LFAPP, 
+     & LeafPI1, LeafPI2, KeMin, KeMax, KeMaxLf, 
+     & SLAMin, SLAMax, Suc_LfNum_Delay, RGRglaiMin, RGRglaiMax, 
+     & RUEo, MAX_ROOTPF, AvRootDMFrac, APFMX, PCB, 
+     & RUE_FT_c, FI_OSG, OSG_log_c1, STKPFmax, SXRo, 
+     & SSV, TBase_SXR, TOpt_SXR, TFin_SXR, lai_sen_light, 
+     & sen_light_slope, ResExFrac
     
 5910    FORMAT (12X,'0. End of changes',//,
      &  12X,'1. InitialGLAI (Initial green leaf area index (m2[',F7.2,/,
@@ -909,30 +903,33 @@ C          Branch to menu choice
      &  12X,'9. TBase_LFAPP (Cardinal temperatures for leaf ap[',F7.2,/,
      &  12X,'10. TOpt_LFAPP (Cardinal temperatures for leaf ap[',F7.2,/,
      &  12X,'11. TFin_LFAPP (Cardinal temperatures for leaf ap[',F7.2,/,
-     &  12X,'12. LeafPI1 (Leaf phyllocron intervals, P1 (°Cd))[',F7.2,/,
-     &  12X,'13. LeafPI2 (Leaf phyllocron intervals, P2 (°Cd))[',F7.2,/,
-     &  12X,'14. KeMin (Minimum PAR extinction coefficients)..[',F7.2,/,  
-     &  12X,'15. KeMax (Maximum PAR extinction coefficients)..[',F7.2,/,
+     &  12X,'12. LeafPI1 (Leaf phyllocron intervals (°Cd):)...[',F7.2,/,
+     &  12X,'13. LeafPI2 (Leaf phyllocron intervals (°Cd):)...[',F7.2,/,
+     &  12X,'14. KeMin (Minimum and maximum PAR extinction coe[',F7.2,/,
+     &  12X,'15. KeMax (Minimum and maximum PAR extinction coe[',F7.2,/,
      &  12X,'16. KeMaxLf (Number of leaves/stalk at KeMax)....[',F7.2,/,
-     &  12X,'17. SLAMin (Minimumspecific leaf area (cm2/g))...[',F7.2,/,
-     &  12X,'18. SLAMax (Maximum specific leaf area (cm2/g))..[',F7.2,/,
+     &  12X,'17. SLAMin (Minimum and maximum specific leaf are[',F7.2,/,
+     &  12X,'18. SLAMax (Minimum and maximum specific leaf are[',F7.2,/,
      &  12X,'19. Suc_LfNum_Delay (delay in number of leaves af[',F7.2,/,
-     &  12X,'20. RGRglaiMin (Minimum relative growth rate of g[',F7.2,/,
-     &  12X,'21. RGRglaiMax (Maximum relative growth rate of g[',F7.2,/,
-     &  12X,'22. RGRglaiSlope (Slope coefficient describing th[',F7.2,/,
-     &  12X,'23. RUEo (maximum theoretical radiation use effic[',F7.2,/,
-     &  12X,'24. MAX_ROOTPF (Root partitioning: average partit[',F7.2,/,
-     &  12X,'25. AvRootDMFrac (Root partitioning: average part[',F7.2,/,
-     &  12X,'26. APFMX (Root partitioning: average partitionin[',F7.2,/,
-     &  12X,'27. PCB (Root partitioning: average partitioning [',F7.2,/,
-     &  12X,'28. RUE_FT_c ( ).................................[',F7.2,/,
-     &  12X,'29. FI_OSG ( )...................................[',F7.2,/,
-     &  12X,'30. OSG_log_c1 (OSG_log_c1)......................[',F7.2,/,
-     &  12X,'31. STKPFmax (STKPFmax)..........................[',F7.2,/,
-     &  12X,'32. SERo (max stalk elongation rate per day, unde[',F7.2,/,
-     &  12X,'33. SSH (specific stalk height  = cm length/g (ov[',F7.2,/,
-     &  12X,'34. lai_sen_light (APSIM-Sugar maximum GLAI for l[',F7.2,/,
-     &  12X,'35. sen_light_slope (APSIM-Sugar light intercepti[',F7.2,/)
+     &  12X,'20. RGRglaiMin (Minimum and Maximum relative grow[',F7.2,/,
+     &  12X,'21. RGRglaiMax (Minimum and Maximum relative grow[',F7.2,/,
+     &  12X,'22. RUEo (maximum theoretical radiation use effic[',F7.2,/,
+     &  12X,'23. MAX_ROOTPF (Root partitioning: average partit[',F7.2,/,
+     &  12X,'24. AvRootDMFrac (Root partitioning: average part[',F7.2,/,
+     &  12X,'25. APFMX (Root partitioning: average partitionin[',F7.2,/,
+     &  12X,'26. PCB (Root partitioning: average partitioning [',F7.2,/,
+     &  12X,'27. RUE_FT_c (MARCH 2021)........................[',F7.2,/,
+     &  12X,'28. FI_OSG (Fractional PAR interception at which [',F7.2,/,
+     &  12X,'29. OSG_log_c1 (Parameter controlling the rate at[',F7.2,/,
+     &  12X,'30. STKPFmax (Maximum fraction of aerial biomass [',F7.2,/,
+     &  12X,'31. SXRo (May 2021)..............................[',F7.2,/,
+     &  12X,'32. SSV (May 2021)...............................[',F7.2,/,
+     &  12X,'33. TBase_SXR (May 2021).........................[',F7.2,/,
+     &  12X,'34. TOpt_SXR (May 2021)..........................[',F7.2,/,
+     &  12X,'35. TFin_SXR (May 2021)..........................[',F7.2,/,
+     &  12X,'36. lai_sen_light (APSIM-Sugar maximum GLAI for l[',F7.2,/,
+     &  12X,'37. sen_light_slope (APSIM-Sugar maximum GLAI for[',F7.2,/,
+     &  12X,'38. ResExFrac (May 2021).........................[',F7.2,/)
     
            WRITE (*,5100)
 C
@@ -942,47 +939,49 @@ C          Get menu choice
            IF (NDEX .EQ. 2) GOTO 3001
 C
 C          Branch to menu choice
-           SELECT CASE (IPARAM)
-             CASE (0)
-                RETURN
-            CASE (1); CALL GETREAL (InitialGLAI, 'InitialGLAI', 0.0, 1.0)
-            CASE (2); CALL GETREAL (TBase_LAI, 'TBase_LAI', 0.0, 150.0)
-            CASE (3); CALL GETREAL (TOpt_LAI, 'TOpt_LAI', 0.0, 350.0)
-            CASE (4); CALL GETREAL (TFin_LAI, 'TFin_LAI', 0.0, 400.0)
-            CASE (5); CALL GETREAL (TBase_Photos, 'TBase_Photos', 0.0, 100.0)
-            CASE (6); CALL GETREAL (TOpt1_Photos, 'TOpt1_Photos', 0.0, 200.0)
-            CASE (7); CALL GETREAL (TOpt2_Photos, 'TOpt2_Photos', 0.0, 320.0)
-            CASE (8); CALL GETREAL (TFin_Photos, 'TFin_Photos', 0.0, 450.0)
-            CASE (9); CALL GETREAL (TBase_LFAPP, 'TBase_LFAPP', 0.0, 90.0)
-            CASE (10); CALL GETREAL (TOpt_LFAPP, 'TOpt_LFAPP', 0.0, 280.0)
-            CASE (11); CALL GETREAL (TFin_LFAPP, 'TFin_LFAPP', 0.0, 400.0)
-            CASE (12); CALL GETREAL (LeafPI1, 'LeafPI1', 0.0, 700.0)
-            CASE (13); CALL GETREAL (LeafPI2, 'LeafPI2', 0.0, 1200.0)
-            CASE (14); CALL GETREAL (KeMin, 'KeMin', 0.0, 5.0)
-            CASE (15); CALL GETREAL (KeMax, 'KeMax', 0.0, 9.0)
-            CASE (16); CALL GETREAL (KeMaxLf, 'KeMaxLf', 0.0, 200.0)
-            CASE (17); CALL GETREAL (SLAMin, 'SLAMin', 0.0, 500.0)
-            CASE (18); CALL GETREAL (SLAMax, 'SLAMax', 0.0, 1500.0)
-            CASE (19); CALL GETREAL (Suc_LfNum_Delay, 'Suc_LfNum_Delay',
-     &         0.0, 40.0)
-            CASE (20); CALL GETREAL (RGRglaiMin, 'RGRglaiMin', 0.0, 0.09)
-            CASE (21); CALL GETREAL (RGRglaiMax, 'RGRglaiMax', 0.0, 1.8)
-            CASE (22); CALL GETREAL (RGRglaiSlope, 'RGRglaiSlope', 0.0, -200.0)
-            CASE (23); CALL GETREAL (RUEo, 'RUEo', 0.0, 36.0)
-            CASE (24); CALL GETREAL (MAX_ROOTPF, 'MAX_ROOTPF', 0.0, 9.5)
-            CASE (25); CALL GETREAL (AvRootDMFrac, 'AvRootDMFrac', 0.0, 2.3)
-            CASE (26); CALL GETREAL (APFMX, 'APFMX', 0.0, 8.0)
-            CASE (27); CALL GETREAL (PCB, 'PCB', 0.0, 6.0)
-            CASE (28); CALL GETREAL (RUE_FT_c, 'RUE_FT_c', 0.0, 3.0)
-            CASE (29); CALL GETREAL (FI_OSG, 'FI_OSG', 0.0, 7.5)
-            CASE (30); CALL GETREAL (OSG_log_c1, 'OSG_log_c1', 0.0, 2000.0)
-            CASE (31); CALL GETREAL (STKPFmax, 'STKPFmax', 0.0, 7.0)
-            CASE (32); CALL GETREAL (SERo, 'SERo', 0.0, 10.0)
-            CASE (33); CALL GETREAL (SSH, 'SSH', 0.0, 10.0)
-            CASE (34); CALL GETREAL (lai_sen_light, 'lai_sen_light',
-     &         0.0, 25.0)
-            CASE (35); CALL GETREAL (sen_light_slope, 'sen_light_slope',
-     &         0.0, 0.05)
+      SELECT CASE (IPARAM)
+       CASE (0)
+         RETURN
+        CASE (1); CALL GETREAL (InitialGLAI, 'InitialGLAI', 0.0, 1.0)
+        CASE (2); CALL GETREAL (TBase_LAI, 'TBase_LAI', 0.0, 130.0)
+        CASE (3); CALL GETREAL (TOpt_LAI, 'TOpt_LAI', 0.0, 340.0)
+        CASE (4); CALL GETREAL (TFin_LAI, 'TFin_LAI', 0.0, 450.0)
+        CASE (5); CALL GETREAL (TBase_Photos, 'TBase_Photos', 0.0, 100.0)
+        CASE (6); CALL GETREAL (TOpt1_Photos, 'TOpt1_Photos', 0.0, 200.0)
+        CASE (7); CALL GETREAL (TOpt2_Photos, 'TOpt2_Photos', 0.0, 400.0)
+        CASE (8); CALL GETREAL (TFin_Photos, 'TFin_Photos', 0.0, 450.0)
+        CASE (9); CALL GETREAL (TBase_LFAPP, 'TBase_LFAPP', 0.0, 90.0)
+        CASE (10); CALL GETREAL (TOpt_LFAPP, 'TOpt_LFAPP', 0.0, 280.0)
+        CASE (11); CALL GETREAL (TFin_LFAPP, 'TFin_LFAPP', 0.0, 400.0)
+        CASE (12); CALL GETREAL (LeafPI1, 'LeafPI1', 0.0, 700.0)
+        CASE (13); CALL GETREAL (LeafPI2, 'LeafPI2', 0.0, 1200.0)
+        CASE (14); CALL GETREAL (KeMin, 'KeMin', 0.0, 8.0)
+        CASE (15); CALL GETREAL (KeMax, 'KeMax', 0.0, 9.0)
+        CASE (16); CALL GETREAL (KeMaxLf, 'KeMaxLf', 0.0, 200.0)
+        CASE (17); CALL GETREAL (SLAMin, 'SLAMin', 0.0, 200.0)
+        CASE (18); CALL GETREAL (SLAMax, 'SLAMax', 0.0, 750.0)
+        CASE (19); CALL GETREAL (Suc_LfNum_Delay, 'Suc_LfNum_Delay', 
+     &     0.0, 40.0)
+        CASE (20); CALL GETREAL (RGRglaiMin, 'RGRglaiMin', 0.0, 0.3)
+        CASE (21); CALL GETREAL (RGRglaiMax, 'RGRglaiMax', 0.0, 0.6)
+        CASE (22); CALL GETREAL (RUEo, 'RUEo', 0.0, 24.0)
+        CASE (23); CALL GETREAL (MAX_ROOTPF, 'MAX_ROOTPF', 0.0, 9.5)
+        CASE (24); CALL GETREAL (AvRootDMFrac, 'AvRootDMFrac', 0.0, 1.9)
+        CASE (25); CALL GETREAL (APFMX, 'APFMX', 0.0, 8.5)
+        CASE (26); CALL GETREAL (PCB, 'PCB', 0.0, 6.0)
+        CASE (27); CALL GETREAL (RUE_FT_c, 'RUE_FT_c', 0.0, 3.0)
+        CASE (28); CALL GETREAL (FI_OSG, 'FI_OSG', 0.0, 7.0)
+        CASE (29); CALL GETREAL (OSG_log_c1, 'OSG_log_c1', 0.0, 200.0)
+        CASE (30); CALL GETREAL (STKPFmax, 'STKPFmax', 0.0, 7.0)
+        CASE (31); CALL GETREAL (SXRo, 'SXRo', 0.0, 30.0)
+        CASE (32); CALL GETREAL (SSV, 'SSV', 0.0, 2.0)
+        CASE (33); CALL GETREAL (TBase_SXR, 'TBase_SXR', 0.0, 160.0)
+        CASE (34); CALL GETREAL (TOpt_SXR, 'TOpt_SXR', 0.0, 350.0)
+        CASE (35); CALL GETREAL (TFin_SXR, 'TFin_SXR', 0.0, 480.0)
+        CASE (36); CALL GETREAL (lai_sen_light, 'lai_sen_light', 0.0, 30.0)
+        CASE (37); CALL GETREAL (sen_light_slope, 'sen_light_slope', 0.0, 
+     &     0.07)
+        CASE (38); CALL GETREAL (ResExFrac, 'ResExFrac', 0.0, 1.0)  
                END SELECT 
 
 !=======================================================================

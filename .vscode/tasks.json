@@ -10,7 +10,8 @@
             "args": [
                 "C",
                 //"SRRG9801.SCX",
-                "SCRG1401.SCX",
+                //"SCRG1401.SCX",
+                "ICSA1401.SCX",
                 "1"
             ],
             "command": "${workspaceRoot}/build/bin/dscsm047.exe",

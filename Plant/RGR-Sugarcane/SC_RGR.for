@@ -168,8 +168,17 @@ c     -----------------
       REAL STKPFmax  ! Maximum fraction of aerial biomass that can be allocated to stalks each day
       REAL SERo  !  max stalk elongation rate per day, under optimal temperature and water conditions (cm/d)
       REAL SSH  ! specific stalk height' = cm length/g (over 1 m2 for a mature crop i.e. 8-15 stalks)
+      REAL SXRo ! May 2021
+      REAL SSV ! May 2021
+      REAL TBase_SXR ! May 2021
+      REAL TOpt_SXR ! May 2021
+      REAL TFin_SXR ! May 2021
       REAL lai_sen_light  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
       REAL sen_light_slope  ! APSIM-Sugar maximum GLAI for light interception reasons / LAI at which senescence starts (m2/m2)
+      REAL ResExFrac ! May 2021
+      REAL FT_SXR ! May 2021
+      REAL SLA_prop ! May 2021
+
 
 c     JvdM: compiled from genetic parameters
       REAL AvgSLA ! AVG (min+max/2) specific leaf area (cm2/g)
@@ -177,51 +186,65 @@ c     JvdM: compiled from genetic parameters
 
 c     JvdM: RGR model local state and daily rate variables
       REAL TAVE  ! daily mean temperature
-      REAL ADM  ! Above-ground dry mass t/ha
+      REAL ADM  ! Above-ground dry mass t/ha (sum of components)
       REAL CANma  ! Conversion from leaf to dry mass
       REAL CTT_LFEM  ! Cumulative thermal time for leaf appearance °Cd
-      REAL dADM  ! Daily change in Above-ground dry mass
+      REAL dADM ! MAY 2021
+      REAL dADMSource  ! Daily change in Above-ground dry mass
+      REAL dSourceLimit !
       REAL dGLA  ! New daily green leaf area m2/m2
       REAL dGLA_pot  ! Potential (source-unlimited) change in green leaf area m2/m2
       REAL dGLAI  ! Daily change in green leaf area index, new growth - senescence
       REAL dLeafDM  ! Daily change in total leaf dry mass t/ha/d
-!      REAL dLeafPI  ! Daily change in leaf phyllocron interval l/s/d
       REAL dlt_slai_light  ! Daily leaf area senescence m2/m2/d
       REAL dRootDM  ! Daily change in Root dry mass
-      REAL dRootDM_Sett ! FEB 2021
       REAL dSDM  ! Daily change in stalk dry mass t/ha/d
       REAL dSenDM  ! Daily leaf area senescence m2/m2/d
+      REAL dRootDM_Sett ! MAY 2021
       REAL dSFibDM  ! Daily change in stalk fibre dry mass t/ha/d
+      REAL dSourceShortfall  ! daily sink - source, t/ha/d
+      REAL LeafSourceShortfall  ! daily leaf source shortfall
+      REAL StalkSourceShortfall  ! daily stalk source shortfall
+      REAL AdditionalSource  ! additional source that could not be allocated (t/ha)
+      REAL dAdditionalSource  ! daily additional source that could not be allocated (t/ha/d)
+      REAL SourceShortfall
       REAL dSSuc  ! Daily change in stalk sucrose t/ha/d
-      REAL ExtraSource ! FEB 2021
       REAL dTTLf  ! Daily thermal time accumulation for driving leaf appearance °Cd
       REAL FIinter  ! Inter-row PAR fractional interception
       REAL FT_LAI  ! Temperature factor for LAI growth
       REAL FT_photos  ! Daily temperature factor for photosynthesis
       REAL GLAI  ! Green leaf area index m2/m2
       REAL GLeafDM  ! Green leaf canopy dry mass t/ha
+      REAL CarbReserveDM  ! Sett dry mass (energy source) t/ha
       REAL KePAR  ! PAR canopy extinction coefficient
       REAL LAIsen  ! Daily GLAI senesced m2/m2/d
       REAL LeafDM  ! Total (living + dead) leaf dry mass t/ha
       REAL LeafPI  ! Current leaf phyllocron interval °Cd
+      REAL CTT_LFEM_prev ! CTT when the most recent leaf appeared
+      REAL LeafSource  ! Leaf carbon supply (source strength) t/ha/d
       REAL LeafSink  ! Leaf carbon demand (sink strength) t/ha/d
       REAL LFNUM_OSG  ! The number of leaves per shoot at which onset of stalk growth started l/s
       REAL LFNUM_SUCStart  ! Leaf number per stalk at which sucrose accumulation can start. l/s
       REAL NumLF  ! Number of leaves per shoot (reference) l/s
-      REAL NumLFprev ! added Feb 2021
-      REAL NumPI_SSR ! added Feb 2021
+      REAL NumLFprev ! added February 2021
+      REAL dNumLF  ! change in number of leaves l/s
       REAL RootFrac  ! Daily fraction of biomass allocated to roots, g/g
       REAL RootDM  ! Root dry mass
-      REAL RGR_LAI_max  ! Today's maximum relative LAI growth rate, considering temperature
+      REAL RGR_LAI_max  ! Today's maximum relative LAI growth rate
+      REAL RGR_LAI_FTSW  ! Today's maximum relative LAI growth rate, considering temperature and soil moisture
+      REAL RGR_LAI_act  ! Today's actual relative LAI growth rate, considering source limitations
       REAL SDM  ! Stalk dry mass t/ha
       REAL SenDM  ! Dry mass of senesced leaves t/ha
-      REAL SER  ! Stalk elongation rate cm/d
-      REAL SettDM ! FEB 2021
+      REAL SXR  ! Stalk elongation rate cm/d
       REAL slai_light_fac  ! Daily fraction of GLAI senesced
-      REAL SLSR  ! Source:sink ratio
-      REAL SLA  ! specific leaf area (cm2/g)
+      REAL PIAvgSSRv2  ! leaf PI average source:sink ratio (2nd approach)
+      REAL SLA  ! specific leaf area (cm2/g) (daily / instantaneous value)
+      REAL SLA_avg  ! Average SLA (cm2/g)
       REAL Source  ! Daily biomass increase (source strength) t/ha/d
-      REAL SPF  ! Stalk partitioning fraction t/t
+      REAL StalkSource  ! stalk source strength
+      REAL OSGfrac  ! fraction of shoots that have started stalk elongation
+      REAL SPF_act  ! actual stalk partitioning fracton g/g
+      REAL STKFRAC_avg  ! average stalk part frac, i.e. SDM/ADM
       REAL StalkSink  ! Stalk fibre growth sink strength t/ha/d
       REAL StalkLength  ! Stalk length (height to top visible dewlap) cm
       REAL SFibDM  ! Stalk fibre dry mass t/ha
@@ -230,26 +253,44 @@ c     JvdM: RGR model local state and daily rate variables
       REAL TotalDM  ! Total crop dry mass t/ha
       REAL vADM  ! Verify ADM t/ha
       REAL vSource  ! Verify Source t/ha
+      REAL ADMSource  ! sum of ADM source
+      REAL dExcessLeafSource ! MAY 2021
+      REAL dReserveUsed ! MAY 2021
+      REAL TotShortFall ! MAY 2021
+      REAL LeafAllocRes ! MAY 2021
+      REAL StalkAllocRes ! MAY 2021
+      REAL dTotalSourceShortfall ! MAY 2021
+      REAL ExtraSource  ! MAY 2021
+      REAL PINumDays ! MAY 2021
+      REAL PIsumSource ! MAY 2021
+      REAL PIsumSink ! MAY 2021
+
 
 c     to be used in seasinit      
-      REAL leafTT
+      REAL LeafTT
       REAL LeafTTmax
       REAL StalkSucPart
+      REAL SXR_EffTemp
+      REAL Suc_LfNum_Max
       REAL, DIMENSION(5) :: LeafTTx, LeafTTy ! array
       REAL, DIMENSION(6) :: FT_photosx, FT_photosy ! array
       REAL, DIMENSION(5) :: FT_LAIx,FT_LAIy ! array
       REAL, DIMENSION(2) :: KePARx,KePARy ! array
       REAL, DIMENSION(3) :: RelativeSLAx,RelativeSLAy ! array
       REAL, DIMENSION(2) :: StalkSucPartx, StalkSucParty ! array
+      REAL, DIMENSION(5) :: SXR_EffTempx, SXR_EffTempy ! array
       REAL TABEX
       REAL SWDF1
       
-      REAL PINumDays
       REAL PIAvgSSR
-      REAL PIsumSource
-      REAL PIsumSink
 
-c     need for SPF calculation in rate calculations. 
+      REAL dMaxReserveSource
+      REAL dSourceFromSett
+      REAL RootSource
+      REAL SettDM
+
+c     need for SPF calculation in rate calculations.
+      REAL SPF
 c     Need to fix digits to avoid overrun: REAL(8)
       REAL(8) inx
 
@@ -389,6 +430,19 @@ c     (saturation factor)
       REAL SUMEX, SUMRL, SWEXF
       INTEGER L
       REAL TSS(NL)
+
+c     JvdM: JUN_2021 v13_6 additional functions
+c     LeafMassFromArea
+      REAL LMFAra
+c     LeafAreaFromMass
+      REAL LAFMa
+c     SLAFromAreaAndMass
+      REAL SLAFAM
+
+      REAL LeafSink_SLAmin, LeafSink_SLAmax
+      
+
+
       
 
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -421,59 +475,63 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
         WRITE(*,*) 'SC_RGR CALLED IN RUNINIT MODE...'
 
 c     JvdM: initalise program variables
-      TAVE = 0.0
-      ADM = 0.0
-      CANma = 0.0
-      CTT_LFEM = 0.0
-      dADM = 0.0
-      dGLA = 0.0
-      dGLA_pot = 0.0
-      dGLAI = 0.0
-      dLeafDM = 0.0
-!      dLeafPI = 0.0
-      dlt_slai_light = 0.0
-      dRootDM = 0.0
-      dSDM = 0.0
-      dSenDM = 0.0
-      dSFibDM = 0.0
-      dSSuc = 0.0
-      dTTLf = 0.0
-      FIinter = 0.0
-      FT_LAI = 0.0
-      FT_photos = 0.0
-      InitialGLAI  = 0.1
-      GLAI = InitialGLAI
-      GLeafDM = 0.0
-      KePAR = 0.0
-      LAIsen = 0.0
-      LeafDM = 0.0
-      LeafPI = 0.0
-      LeafSink = 0.0
-      LFNUM_OSG = 0.0
-      LFNUM_SUCStart = 20.0
-      NumLF = 0.0
-      NumLFprev = 1.0 ! added Feb 2021
-      RootFrac = 0.0
-      RootDM = 0.0
-      RGR_LAI_max = 0.0
-      SDM = 0.0
-      SenDM = 0.0
-      SER = 0.0
-      slai_light_fac = 0.0
-      SLSR = 0.0
-      SLA = 0.0
-      Source = 0.0
-      SPF = 0.0
-      StalkSink = 0.0
-      StalkLength = 0.0
-      SFibDM = 0.0
-      SWDF2 = 0.0
-      SUCDM = 0.0
-      TotalDM = 0.0
-      vADM = 0.0
-      vSource = 0.0
+      ! TAVE = 0.0
+      ! ADM = 0.0
+      ! CANma = 0.0
+      ! CTT_LFEM = 0.0
+      ! dADMSource = 0.0
+      ! dGLA = 0.0
+      ! dGLA_pot = 0.0
+      ! dGLAI = 0.0
+      ! dLeafDM = 0.0
+      ! dlt_slai_light = 0.0
+      ! dRootDM = 0.0
+      ! dSDM = 0.0
+      ! dSenDM = 0.0
+      ! dSFibDM = 0.0
+      ! dSourceShortfall = 0.0
+      ! LeafSourceShortfall = 0.0
+      ! StalkSourceShortfall = 0.0
+      ! AdditionalSource = 0.0
+      ! dAdditionalSource = 0.0
+      ! dSSuc = 0.0
+      ! dTTLf = 0.0
+      ! FIinter = 0.0
+      ! FT_LAI = 0.0
+      ! FT_photos = 0.0
+      ! InitialGLAI  = 0.1
+      ! GLAI = InitialGLAI
+      ! GLeafDM = 0.0
+      ! KePAR = 0.0
+      ! LAIsen = 0.0
+      ! LeafDM = 0.0
+      ! LeafPI = 0.0
+      ! LeafSink = 0.0
+      ! LFNUM_OSG = 0.0
+      ! LFNUM_SUCStart = 20.0
+      ! NumLF = 0.0
+      ! NumLFprev = 1.0 ! added Feb 2021
+      ! RootFrac = 0.0
+      ! RootDM = 0.0
+      ! RGR_LAI_max = 0.0
+      ! SDM = 0.0
+      ! SenDM = 0.0
+      ! SXR = 0.0
+      ! slai_light_fac = 0.0
+      ! SLSR = 0.0
+      ! SLA = 0.0
+      ! Source = 0.0
+      ! SPF = 0.0
+      ! StalkSink = 0.0
+      ! StalkLength = 0.0
+      ! SFibDM = 0.0
+      ! SWDF2 = 0.0
+      ! SUCDM = 0.0
+      ! TotalDM = 0.0
+      ! vADM = 0.0
+      ! vSource = 0.0
 
-c     need for SPF calculation in rate calculations
+c     need for OSGfrac calculation in rate calculations
       inx = 0.0
      
 
@@ -481,22 +539,31 @@ c     Call the output routine, to initialise output
 c     ::::::::::
       CALL SC_RGOUTPUT(CONTROL, WEATHER,
      &  SW, SoilProp,
-     &  YRPLT, CELLSE_DM, TAVE,
-     &  ADM, CANma, CTT_LFEM, 
-     & dADM, dGLA, dGLA_pot, dGLAI, 
-     & dLeafDM, dlt_slai_light, 
-     & dRootDM, dSDM, dSenDM, dSFibDM, 
+     &  YRPLT, CELLSE_DM,
+     & TAVE, 
+     & ADM, CANma, CTT_LFEM, dADMSource, 
+     & dGLA, dGLA_pot, dGLAI, dLeafDM, 
+     & dlt_slai_light, dRootDM, 
+     & dSDM, dSenDM, dSFibDM, dTotalSourceShortfall, 
+     & CarbReserveDM, SourceShortfall, 
+     & LeafSourceShortfall, StalkSourceShortfall, 
+     & AdditionalSource, dAdditionalSource, 
      & dSSuc, dTTLf, FIinter, FT_LAI, 
      & FT_photos, GLAI, GLeafDM, 
      & SettDM, KePAR, LAIsen, LeafDM, 
-     & LeafPI, LeafSink, LFNUM_OSG, 
-     & LFNUM_SUCStart, NumLF, RootFrac, 
-     & RootDM, RGR_LAI_max, SDM, 
-     & SenDM, SER, slai_light_fac, 
-     & SLSR, PIAvgSSR, SLA, Source, 
-     & SPF, SRAD, StalkSink, StalkLength, 
-     & SFibDM, SWDF2, SUCDM, TotalDM, 
-     & vADM, vSource)
+     & LeafPI, LeafSource, LeafSink, 
+     & LFNUM_OSG, LFNUM_SUCStart, 
+     & NumLF, dNumLF, PIAvgSSRv2, 
+     & RootDM, RootFrac, RGR_LAI_max, 
+     & RGR_LAI_FTSW, RGR_LAI_act, 
+     & SDM, SenDM, SXR, SFibDM, 
+     & slai_light_fac, SLA, SLA_avg, 
+     & Source, StalkSource, OSGfrac, 
+     & SPF_act, STKFRAC_avg, StalkSink, 
+     & StalkLength, SWDF2, SUCDM, 
+     & TotalDM, vADM, vSource, 
+     & ADMSource)     
+
      
 
 
@@ -579,43 +646,48 @@ c     JvdM: The following to be replaced by Fortran SEASINIT CUL read
             ! lai_sen_light  = 2.5
             ! sen_light_slope  = 0.005
 
-       CALL GET_CULTIVAR_COEFF(InitialGLAI, 'InitialGLAI', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TBase_LAI, 'TBase_LAI', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TOpt_LAI, 'TOpt_LAI', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TFin_LAI, 'TFin_LAI', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TBase_Photos, 'TBase_Photos', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TOpt1_Photos, 'TOpt1_Photos', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TOpt2_Photos, 'TOpt2_Photos', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TFin_Photos, 'TFin_Photos', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TBase_LFAPP, 'TBase_LFAPP', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TOpt_LFAPP, 'TOpt_LFAPP', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(TFin_LFAPP, 'TFin_LFAPP', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(LeafPI1, 'LeafPI1', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(LeafPI2, 'LeafPI2', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(KeMin, 'KeMin', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(KeMax, 'KeMax', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(KeMaxLf, 'KeMaxLf', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(SLAMin, 'SLAMin', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(SLAMax, 'SLAMax', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(Suc_LfNum_Delay, 'Suc_LfNum_Delay'
-     &  , CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(RGRglaiMin, 'RGRglaiMin', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(RGRglaiMax, 'RGRglaiMax', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(RGRglaiSlope, 'RGRglaiSlope', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(RUEo, 'RUEo', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(MAX_ROOTPF, 'MAX_ROOTPF', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(AvRootDMFrac, 'AvRootDMFrac', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(APFMX, 'APFMX', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(PCB, 'PCB', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(RUE_FT_c, 'RUE_FT_c', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(FI_OSG, 'FI_OSG', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(OSG_log_c1, 'OSG_log_c1', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(STKPFmax, 'STKPFmax', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(SERo, 'SERo', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(SSH, 'SSH', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(lai_sen_light, 'lai_sen_light', CONTROL, cERROR)
-       CALL GET_CULTIVAR_COEFF(sen_light_slope, 'sen_light_slope'
-     &  , CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(InitialGLAI, 'InitialGLAI', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TBase_LAI, 'TBase_LAI', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TOpt_LAI, 'TOpt_LAI', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TFin_LAI, 'TFin_LAI', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TBase_Photos, 'TBase_Photos', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TOpt1_Photos, 'TOpt1_Photos', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TOpt2_Photos, 'TOpt2_Photos', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TFin_Photos, 'TFin_Photos', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TBase_LFAPP, 'TBase_LFAPP', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TOpt_LFAPP, 'TOpt_LFAPP', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TFin_LFAPP, 'TFin_LFAPP', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(LeafPI1, 'LeafPI1', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(LeafPI2, 'LeafPI2', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(KeMin, 'KeMin', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(KeMax, 'KeMax', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(KeMaxLf, 'KeMaxLf', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(SLAMin, 'SLAMin', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(SLAMax, 'SLAMax', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(Suc_LfNum_Delay, 'Suc_LfNum_Delay'
+     & , CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(RGRglaiMin, 'RGRglaiMin', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(RGRglaiMax, 'RGRglaiMax', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(RUEo, 'RUEo', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(MAX_ROOTPF, 'MAX_ROOTPF', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(AvRootDMFrac, 'AvRootDMFrac', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(APFMX, 'APFMX', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(PCB, 'PCB', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(RUE_FT_c, 'RUE_FT_c', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(FI_OSG, 'FI_OSG', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(OSG_log_c1, 'OSG_log_c1', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(STKPFmax, 'STKPFmax', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(SXRo, 'SXRo', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(SSV, 'SSV', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TBase_SXR, 'TBase_SXR', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TOpt_SXR, 'TOpt_SXR', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(TFin_SXR, 'TFin_SXR', CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(lai_sen_light, 'lai_sen_light', 
+     & CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(sen_light_slope, 'sen_light_slope', 
+     & CONTROL, cERROR)
+      CALL GET_CULTIVAR_COEFF(ResExFrac, 'ResExFrac', CONTROL, cERROR)
+
 
 c     set lai_sen_light to test model behaviour
 !      lai_sen_light = 2.3
@@ -700,22 +772,30 @@ c	Water logging stress
 
       CALL SC_RGOUTPUT(CONTROL, WEATHER,
      &  SW, SoilProp,
-     &  YRPLT, CELLSE_DM, TAVE,
-     &  ADM, CANma, CTT_LFEM, 
-     & dADM, dGLA, dGLA_pot, dGLAI, 
-     & dLeafDM, dlt_slai_light, 
-     & dRootDM, dSDM, dSenDM, dSFibDM, 
+     &  YRPLT, CELLSE_DM,
+     & TAVE, 
+     & ADM, CANma, CTT_LFEM, dADMSource, 
+     & dGLA, dGLA_pot, dGLAI, dLeafDM, 
+     & dlt_slai_light, dRootDM, 
+     & dSDM, dSenDM, dSFibDM, dTotalSourceShortfall, 
+     & CarbReserveDM, SourceShortfall, 
+     & LeafSourceShortfall, StalkSourceShortfall, 
+     & AdditionalSource, dAdditionalSource, 
      & dSSuc, dTTLf, FIinter, FT_LAI, 
      & FT_photos, GLAI, GLeafDM, 
      & SettDM, KePAR, LAIsen, LeafDM, 
-     & LeafPI, LeafSink, LFNUM_OSG, 
-     & LFNUM_SUCStart, NumLF, RootFrac, 
-     & RootDM, RGR_LAI_max, SDM, 
-     & SenDM, SER, slai_light_fac, 
-     & SLSR, PIAvgSSR, SLA, Source, 
-     & SPF, SRAD, StalkSink, StalkLength, 
-     & SFibDM, SWDF2, SUCDM, TotalDM, 
-     & vADM, vSource)
+     & LeafPI, LeafSource, LeafSink, 
+     & LFNUM_OSG, LFNUM_SUCStart, 
+     & NumLF, dNumLF, PIAvgSSRv2, 
+     & RootDM, RootFrac, RGR_LAI_max, 
+     & RGR_LAI_FTSW, RGR_LAI_act, 
+     & SDM, SenDM, SXR, SFibDM, 
+     & slai_light_fac, SLA, SLA_avg, 
+     & Source, StalkSource, OSGfrac, 
+     & SPF_act, STKFRAC_avg, StalkSink, 
+     & StalkLength, SWDF2, SUCDM, 
+     & TotalDM, vADM, vSource, 
+     & ADMSource)   
      
 
 
@@ -724,7 +804,10 @@ c      set initial GLAI
       InitialGLAI = InitialGLAI ! as above, probabaly superfluous?
 
 c      Initial mass of energy in setts (which becomes roots) (t/ha)
-      SettDM = 3.0
+      SettDM = 2.0
+
+c      initialise the "new" reserve (development of a stool)
+      CarbReserveDM = 0.0
       
 c       ---- "lookup" functions --------
 c      These functions interpolate linearly between points.
@@ -764,11 +847,18 @@ c      KePAR = TABEX(KePARy, KePARx, NumLF, 2)
       
 c      WRITE(*,'(A,F8.3)') "KePAR: ", KePAR
 
+c      OSG fraction - NOT IN USE
+c       FI_OSGx = (/ FI_OSG - 0.05, min(1.0, FI_OSG + 0.05) /)
+c      FI_OSGy = (/ 0.0, 1.0 /)
+
+c     call TABEX function later (daily loop, rates of change) with arrays defined above:
+C      OSGfrac = TABEX(FI_OSGy, FI_OSGx, FIinter, 2)
+
 c     define the leaf appearance dTT function
       LeafTTmax = TOpt_LFAPP - TBase_LFAPP
       
 c     prepare arrays for TABEX function
-      LeafTTx = (/ 0.0, TBase_LFAPP, TOpt_LFAPP, TFin_LFAPP,  0.0 /)
+      LeafTTx = (/ 0.0, TBase_LFAPP, TOpt_LFAPP, TFin_LFAPP,  60.0 /)
       LeafTTy = (/ 0.0,         0.0,  LeafTTmax,        0.0,  0.0 /)
 
 c     call TABEX function later (daily loop, rates of change) with arrays defined above:
@@ -777,37 +867,39 @@ c      LeafTT = TABEX(LeafTTy, LeafTTx, TAVE, 5)
 
 c      WRITE(*,'(A,F10.4)') "LeafTT: ", LeafTT
 
-c      define the function relating relative specific leaf area to source sink ratio
-c      RelativeSLA <- approxfun(x=c(0.0, 1.0, 5.0), y=c(1.8, 1.0, 0.2), yright = 0.2, yleft=1.8)
-      AvgSLA =  0.5 * SLAMax + 0.5 * SLAMin
-c      RelativeSLA = approxfun(x=c(0.5, 1.5, 4.0), # was 0.5, 1, 10 
-c                           y=c(mpars$SLAMax, AvgSLA, mpars$SLAMin), yright = mpars$SLAMin, yleft=mpars$SLAMax)
-      RelativeSLAx = (/    0.5,    1.5,    4.0 /)
-      RelativeSLAy = (/ SLAMax, AvgSLA, SLAMin /)
-
+c      Stalk elongation dTT function
+       SXR_EffTempx = (/ 0.0, TBase_SXR, TOpt_SXR, TFin_SXR, 60.0 /)
+       SXR_EffTempy = (/ 0.0,       0.0,      1.0,      0.0,  0.0 /)
 c     call TABEX function later (daily loop, rates of change) with arrays defined above:
-c     format: TABEX(xArray, yArray, valueToBeEstimated, dimensions of Arrays)
+c      SXR_EffTemp = TABEX(SXR_EffTempy, SXR_EffTempx, TAVE, 5)
+
+c      define the function relating relative specific leaf area to source sink ratio
+      AvgSLA =  0.5 * SLAMax + 0.5 * SLAMin
+
+      !RelativeSLAx = (/    0.5,    1.5 /)
+      !RelativeSLAy = (/ SLAMax, SLAMin /)
+c     call TABEX function later (daily loop, rates of change) with arrays defined above:
 c      RelativeSLA = TABEX(RelativeSLAy, RelativeSLAx, PIAvgSSR, 3)
 
 c      define function describing transition from stalk fibre only to stalk fibre + sucrose
 c      this starts at mpars$Suc_LfNum_Delay (leaf 3 or 4 or whatever after OSG)
-c      StalkSucPart <- approxfun(x=c(0.0, 7.0), 
-c                               y=c(0.0, 1.0), yright = 1.0, yleft=0.0)
-      StalkSucPartx = (/ 0.0, 7.0 /)
-      StalkSucParty = (/ 0.0, 1.0 /)
+      Suc_LfNum_Max = 7.0  ! move to parameters sometime
 
+      StalkSucPartx = (/ 0.0, Suc_LfNum_Max /)
+      StalkSucParty = (/ 0.0, 1.0 /)
 c     call TABEX function later (daily loop, rates of change) with arrays defined above:
-c     format: TABEX(xArray, yArray, valueToBeEstimated, dimensions of Arrays)
 c      StalkSucPart = TABEX(StalkSucPartx, StalkSucParty, NumLF-LFNUM_SUCStart , 2)
 
       
 c       state variables (set to 0 or other initial value)
       GLAI      = InitialGLAI ! initial green leaf area index
-      
+      LeafPI    = LeafPI1  ! Current Leaf phyllocron interval, °Cd
       ADM = 0.0
+      ADMSource = 0.0
       CANma = 0.0
       CTT_LFEM = 0.0
       dADM = 0.0
+      dADMSource = 0.0
       dGLA = 0.0
       dGLA_pot = 0.0
       dGLAI = 0.0
@@ -816,6 +908,7 @@ c       state variables (set to 0 or other initial value)
       dRootDM = 0.0
       dSDM = 0.0
       dSenDM = 0.0
+      !dRootDM_Sett = 0.0
       dSFibDM = 0.0
       dSSuc = 0.0
       dTTLf = 0.0
@@ -829,17 +922,21 @@ c       state variables (set to 0 or other initial value)
       LeafSink = 0.0
       LFNUM_OSG = 0.0
       LFNUM_SUCStart = 0.0
-      NumLF = 0.0
+      NumLF = 1.0 ! updated Apil 2021
       NumLFprev = 1.0 ! added Feb 2021
       RootDM = 0.0
       RGR_LAI_max = 0.0
+      RGR_LAI_act = 0.0
+      RGR_LAI_FTSW = 0.0
       SDM = 0.0
       SenDM = 0.0
-      SER = 0.0
+      SXR = 0
+      !SER = 0.0
       slai_light_fac = 0.0
-      SLSR = 0.0
+      !SLSR = 0.0
       Source = 0.0
-      SPF = 0.0
+      OSGfrac = 0.0
+      !SPF = 0.0
       StalkSink = 0.0
       StalkLength = 0.0
       SFibDM = 0.0
@@ -849,19 +946,37 @@ c       state variables (set to 0 or other initial value)
       vADM = 0.0
       vSource = 0.0
       RootFrac = 0.0
+      !dMaxReserveSource = 0.0
+      !dSourceFromSett = 0.0
+      !SettDM = 0.0
+      !RootSource = 0.0
+      !FT_SXR = 0.0
+      !dExcessLeafSource = 0.0
+      !SLA_prop = 0.0
+      !dReserveUsed = 0.0
+      !TotShortFall = 0.0
+      !LeafAllocRes = 0.0
+      !StalkAllocRes = 0.0
+      !dTotalSourceShortfall = 0.0
+      !ExtraSource = 0.0
       
 
   
 
 c      leaf phyllocron interval starts at minimum value, not 0
        LeafPI = LeafPI1
+c       CTT when the most recent leaf appeared
+       CTT_LFEM_prev = 0.0
 
-c      variables for keeping track of average source sink ration over 
+       SLA = AvgSLA
+
+c      variables for keeping track of average source sink ratio over 
 c      the duration of a leaf phyllocron interval
-       PINumDays = 0.0
-       PIAvgSSR = 2.0
-       PIsumSource = 0.0
-       PIsumSink = 1.0
+      PINumDays = 0.0
+       !PIAvgSSR <- 2.0
+      !PIAvgSSRv2 = 2.0
+      PIsumSource = 0.0
+      PIsumSink = 1.0
 
 c       place holders for soil water stress deficit (stress) factors
        SWDF1 = 1.0
@@ -873,6 +988,13 @@ c       number of leaves at which sucrose accumulation can start
 c       (this is recalculated at runtime)
        LFNUM_SUCStart = 20.0
 
+c       unallocated source (sink-limited growth)
+       AdditionalSource = 0.0
+c       accummulated source shortfall (sink > source)
+       SourceShortfall = 0.0
+
+c       increment iteration counter
+       !Inti = 0 ! PROBALY ONLY NEEDED IN R SCRIPT
 
       WRITE(*,*) "End of SEASINIT"
 
@@ -906,6 +1028,9 @@ c     set rates of change to 0 at start
       dSFibDM = 0.0
       dSSuc = 0.0
       dTTLf = 0.0
+      dNumLF = 0.0
+      dSourceLimit = 0.0
+      dADMSource = 0.0
       
 c     Average daily temperature
       TAVE = (0.5 * TMAX) + (0.5 * TMIN)
@@ -913,29 +1038,18 @@ c     SRAD already defined
       
 c     -----------  CALCULATE RATES OF CHANGE ------------------
 c     ------------- Phenology-related -------------------
-c     calculate SLA
-c     todo: make this a function of average source:sink index over the preceding
-c     phyllocron interval
-        IF (PIAvgSSR .GE. MAXVAL(RelativeSLAx)) THEN
-            SLA = MINVAL(RelativeSLAy)
-        ELSE IF (PIAvgSSR .LE. MINVAL(RelativeSLAx)) THEN
-            SLA = MAXVAL(RelativeSLAy)
-        ELSE
-            SLA = TABEX(RelativeSLAy, RelativeSLAx, PIAvgSSR, 3)
-        ENDIF
-      
+      WRITE(*,'(A,F8.3)') "ResExFrac: ", ResExFrac
       WRITE(*,'(A,F8.3)') "SLA: ", SLA
-
 c     convert Specific leaf area input to t/ha/m2
 c     (SLA might be modified at runtime)
-      CANma = 1.0 / SLA * 100.0
+c      CANma = 1.0 / SLA * 100.0
 
 
 c     radiation extinction coefficient:
-        IF (NumLF .GE. KeMaxLf) THEN
-            KePAR = KeMax
-        ELSE IF (NumLF .LE. 0.0) THEN
-            KePAR = KeMin
+        IF (NumLF .GE. MAXVAL(KePARx)) THEN
+            KePAR = MAXVAL(KePARy)
+        ELSE IF (NumLF .LE. MINVAL(KePARx)) THEN
+            KePAR = MINVAL(KePARy)
         ELSE
           KePAR = TABEX(KePARy, KePARx, NumLF, 2)
         ENDIF
@@ -943,42 +1057,51 @@ c     radiation extinction coefficient:
       WRITE(*,'(A,F8.3)') "KePAR: ", KePAR
 
 c      leaf phyllocron interval (transition from short to long PI linked to transition to stalk growth):
-      LeafPI = LeafPI1 + ((LeafPI2 - LeafPI1) * ( SPF / STKPFmax))
+      LeafPI = LeafPI1 + ((LeafPI2 - LeafPI1) * OSGfrac)
 
 c     fractional interception of radiation
-      FIinter = 1.0 - EXP(-1.0 * KePAR * GLAI)
-
-      WRITE(*,'(A,F8.3)') "FIinter: ", (FIinter - FI_OSG)
-      
-c     stalk partitioning fraction
-c     can OSG_log_c1 be linked to LAI_RGR, i.e. a faster canopy --> faster transition?
-      inx = (-1.0 * OSG_log_c1 * (FIinter - FI_OSG))
-      SPF = MAX((STKPFmax / (1.0 + EXP(inx))), SPF)
+      inx = -1.0 * KePAR * GLAI
+      FIinter = 1.0 - EXP(inx)
       inx = 0.0
 
-      WRITE(*,'(A,F8.3)') "SPF: ", SPF
+      WRITE(*,'(A,F8.3)') "FIinter: ", FIinter
+      WRITE(*,'(A,F8.3)') "OSG_log_c1: ", OSG_log_c1
+      WRITE(*,'(A,F8.3)') "(FIinter - FI_OSG): ", (FIinter - FI_OSG)
+
+c      stalk partitioning fraction
+      inx = -1 * OSG_log_c1 * (FIinter - FI_OSG)
+      OSGfrac = MAX( 1 / (1 + EXP(inx)), OSGfrac)
+      inx = 0.0
+     
+       WRITE(*,'(A,F8.3)') "OSGfrac: ", OSGfrac
+
+! c     stalk partitioning fraction
+! c     can OSG_log_c1 be linked to LAI_RGR, i.e. a faster canopy --> faster transition?
+!       inx = (-1.0 * OSG_log_c1 * (FIinter - FI_OSG))
+!       SPF = MAX((STKPFmax / (1.0 + EXP(inx))), SPF)
+!       inx = 0.0
+
+!       WRITE(*,'(A,F8.3)') "SPF: ", SPF
 
 c     how many leaves are there? (first primary cohort)
-      NumLF = (CTT_LFEM / LeafPI) + 1.0
+c     new leaf appears if LeafPI Cd have elapsed since current leaf appeared
+      !NumLF = (CTT_LFEM / LeafPI) + 1.0
+c     FLOOR returns an integer
+      dNumLF = floor((CTT_LFEM - CTT_LFEM_prev) / LeafPI) * 1.0 !convert int -> real
+
+      WRITE(*,'(A,F8.3)') "dNumLF: ", dNumLF
 
 c     if SPF > 0.001, record number of leaves:
-c     (SPF > 0.001 & LFNUM_OSG < 5) is test for first day of OSG
-c     LFNUM_OSG = ifelse((SPF > 0.001 & LFNUM_OSG < 5), NumLF, 0.0) 
-c     so the minimum leaf number for starting sucrose accumulation is:
-c     LFNUM_SUCStart <- ifelse((SPF > 0.001 & LFNUM_OSG < 5), LFNUM_OSG + mpars$Suc_LfNum_Delay, 20.0)
-      IF (SPF .GT. 0.001 .AND. LFNUM_OSG .LT. 5) THEN
-            LFNUM_OSG = NumLF
-      ELSE
-            LFNUM_OSG = 0.0                      
-      ENDIF
 
-      IF (SPF .GT. 0.001 .AND. LFNUM_OSG .LT. 5) THEN
-            LFNUM_SUCStart = LFNUM_OSG + Suc_LfNum_Delay
-      ELSE
-            LFNUM_SUCStart = 20.0         
+      IF (LFNUM_OSG .LT. 1.0) THEN
+            IF (OSGfrac .GT. 0.001) THEN
+                  LFNUM_OSG = NumLF
+                  LFNUM_SUCStart = LFNUM_OSG + Suc_LfNum_Delay
+            ENDIF
       ENDIF
 
       WRITE(*,'(A,F8.3)') "LFNUM_SUCStart: ", LFNUM_SUCStart
+      WRITE(*,'(A,F8.3)') "GLAI: ", GLAI
 
 c     daily thermal time for leaf appearance
 c     dTTLf = ifelse(GLAI>0.0, LeafTTf(TAVE), 0.0)
@@ -998,123 +1121,228 @@ c     ----------- Photosynthesis (source strength) --------------
 c     temperature factor for photosynthesis
       FT_photos = TABEX(FT_photosy, FT_photosx, TAVE, 6)
 
+c     maximum source strength that can come from underground reserves:
+c     described as maximum carb reserves used; any unused goes back into
+c     the reserve each day
+c     the rhizome has structure, absorbing 40% of the dry mass.  The remaining
+c     60% is available for use, but the rate is limited to ResExFrac (a 
+c     fraction) of the remaining total per day.
+      dMaxReserveSource = CarbReserveDM * 0.6 * ResExFrac
+      dSourceFromSett = SettDM * ResExFrac
+      
 c     daily source strength    
 c     source strength is increases by the average fraction allocated to roots.
 c     RUEo is defined in terms of above-ground biomass per unit intercepted 
 c     photosynthetically-active radiation (PAR).
-      Source = (FT_photos * FIinter * RUEo * 0.01 * (1.0/(1.0-AvRootDMFrac)) * SRAD * 0.5)
+      Source = (FT_photos * FIinter * RUEo * 0.01 * (1.0/(1.0-AvRootDMFrac)) 
+     & * SRAD * 0.5) + dSourceFromSett
+
+      WRITE(*,'(A,F8.3)') "Source: ", Source
+c      divide up source strength into source pools for leaves and stalks:
+      inx = -1.0 * PCB * TotalDM
+      RootSource  = Source * min(MAX_ROOTPF, 1.0 - APFMX * ( 1 - EXP(inx)))
+      inx = 0.0
+      WRITE(*,'(A,F8.3)') "RootSource: ", RootSource
+      dADMSource  = Source - RootSource
+      WRITE(*,'(A,F8.3)') "dADMSource: ", dADMSource
+      LeafSource  = (1.0 - OSGfrac * STKPFmax) * dADMSource
+      WRITE(*,'(A,F8.3)') "LeafSource: ", LeafSource
+      StalkSource = OSGfrac * STKPFmax * dADMSource
+      WRITE(*,'(A,F8.3)') "StalkSource: ", StalkSource
 
 c     ----------- Sink strengths --------------
 c     daily allocation to root DM
-      inx = (-1.0 * PCB * TotalDM)
-      RootFrac = MIN(MAX_ROOTPF, 1.0 - APFMX * ( 1 - exp(inx)))
-      inx = 0.0
-      dRootDM = Source * RootFrac
+      dRootDM = RootSource
 
 c     calculate relative growth rate of green leaf area index
-      inx = (-1.0 * RGRglaiSlope * (FIinter - FI_OSG))
       RGR_LAI_max = RGRglaiMin + 
-     & (RGRglaiMax - RGRglaiMin) / ( 1.0 + exp(inx))
-      inx = 0.0
-      
+     & ((RGRglaiMax - RGRglaiMin) * (1.0 - OSGfrac))
+      WRITE(*,'(A,F8.3)') "RGR_LAI_max: ", RGR_LAI_max
 c     potential (source-unlimited) growth in GLAI today
       FT_LAI = TABEX(FT_LAIy, FT_LAIx, TAVE, 5)
-      dGLA_pot = RGR_LAI_max * FT_LAI * GLAI  * SWDF2
+      WRITE(*,'(A,F8.3)') "FT_LAI: ", FT_LAI
 
-c     associated potential sink strength
-      LeafSink = dGLA_pot * 1.0/SLA * 100.0
+c     temperature- and water-stress limited RGR_LAI:
+      RGR_LAI_FTSW = RGR_LAI_max * FT_LAI * SWDF2
+
+c     source-unlimited change in LAI
+      dGLA_pot = RGR_LAI_FTSW * GLAI
+
+c     associated potential sink strengths for min and max SLA
+      WRITE(*,'(A,F8.3)') "dGLA_pot: ", dGLA_pot
+      LeafSink_SLAmin = LMFAra(dGLA_pot, SLAMin)
+      LeafSink_SLAmax = LMFAra(dGLA_pot, SLAMax)
+
+      WRITE(*,'(A,F8.3)') "LeafSink_SLAmin: ", LeafSink_SLAmin
+      WRITE(*,'(A,F8.3)') "LeafSink_SLAmax: ", LeafSink_SLAmax
 
 c     stalk elongation rate (cm/d) for the average stalk
-c     assuming the same cardinal temperatures for stalk growth as leaf growth, hence FT_LAI
-      SER = SERo * FT_LAI * SWDF2 * SPF/STKPFmax
+c     using SXR-specific cardinal temperatures for stalk growth
+      FT_SXR = TABEX(SXR_EffTempy, SXR_EffTempx, TAVE, 5)
+      SXR = SXRo * FT_SXR * SWDF2 * OSGfrac
 
-      WRITE(*,'(A,F8.3)') "SER: ", SER
-      WRITE(*,'(A,F8.3)') "SSH: ", SSH
+      WRITE(*,'(A,F8.3)') "TBase_SXR: ", TBase_SXR
+
+      WRITE(*,'(A,F8.3)') "FT_SXR: ", FT_SXR
+      WRITE(*,'(A,F8.3)') "SXR: ", SXR
 
 c     stalk structural growth sink strength
 c     maybe delay by a few PIs before sucrose can start accumulating?
-c     in that case, excess source adds to stalk fibre mass but 
-c     not stalk length, allowing for densification of the stalk.
-c     SSH = 'specific stalk height' = cm length/g (per m2)
-      StalkSink = SER * 1.0 / SSH * 0.01
+c     SSV = 'specific stalk volume' 
+      StalkSink = SXR * 1.0 / SSV * 0.01
 
 c     ------------- resolution of source and sink strengths ----------
-     
-C      dRootDM can come out of sett energy (InitialCH)
-      dRootDM_Sett = min(dRootDM, SettDM)
+C     demand for leaf dry mass (source and sink-limited)
+      dLeafDM = 0.0     
 
-c     daily increase in above-ground dry biomass
-      dADM = Source - dRootDM + dRootDM_Sett
+c     spare source after meeting leaf growth demand at minimum SLA (dense leaves)
+      dExcessLeafSource = 0.0
 
-      WRITE(*,'(A,F8.3)') "(LeafSink + StalkSink): ", (LeafSink + StalkSink)
+c     amount of source the leaves would need to achieve full expansion
+c     today at maxSLA (i.e. thinnest leaves)
+      LeafSourceShortfall = 0.0
 
-c     source:sink ratio
-!      if ((LeafSink + StalkSink) .GT. 0.0) THEN 
-!            SLSR = dADM / (LeafSink + StalkSink)
-!      ELSE
-!            SLSR = SLSR
-!      ENDIF
+      IF (LeafSource .LE. LeafSink_SLAmax) THEN
+c       Source-limited scenario --> leaf area growth is reduced  
+        SLA = SLAMax
+        dLeafDM = LeafSource
+c        dGLA = dLeafDM * SLA * 0.01
+c       how much reserve would be required to meet shortfall?
+        LeafSourceShortfall = LeafSink_SLAmax - LeafSource
       
-c     demand for leaf dry mass (source and sink-limited)
-      dLeafDM = MIN(dADM, LeafSink)
+      ELSE IF (LeafSource .GT. LeafSink_SLAmin) THEN
+c       Excess-source scenario  
+        SLA  = SLAMin
+        dLeafDM = LeafSink_SLAmin
+c        dGLA =  dLeafDM * SLA *0.01
+        dExcessLeafSource = LeafSource - dLeafDM
+      
+      ELSE 
+c       Leaf source strength is equivalent to sink strength within the SLA range  
+        dLeafDM = LeafSource  
+c       select an SLA proportional to where source is relative to sink
+c       if source is close to sink with SLA_min, then SLA is close to SLA_min
+c       if source is close to sink with SLA_max, then SLA is close to SLA_max
+        SLA_prop = 1.0 - ((LeafSource - LeafSink_SLAmax)/(LeafSink_SLAmin - LeafSink_SLAmax))
+        SLA = SLAMin + ((SLAMax - SLAMin) * SLA_prop)
+c        dGLA = LeafSource * SLA * 0.01
+      ENDIF
+
+c     calculate the actual RGR LAI:
+      RGR_LAI_act = dGLA / GLAI
+
+c     convert Specific leaf area input to t/ha/m2
+c     (SLA might be modified at runtime)
+      CANma = 1.0 / SLA * 100.0
 
 c     change in stalk dry fibre mass, limited by:
-c     1. Stalk partitioning fraction * source
-c     2. ADM source leftovers after C requirements for leaf growth are deducted
-c     3. Stalk sink strength
-      dSFibDM = MIN(SPF * dADM, (dADM - dLeafDM), StalkSink)
+c     1. Source partitioned to source
+c     2. Stalk sink strength
+      dSFibDM = min(StalkSource, StalkSink)
+
+c     how much additional source is required for stalk fibre to achieve
+c     full expansion today?
+      StalkSourceShortfall = max(0.0, StalkSink - StalkSource)
+
+c     The maximum amount of source available in reserve is dMaxReserveSource
+      dReserveUsed = 0.0
+      TotShortFall = LeafSourceShortfall + StalkSourceShortfall
+      LeafAllocRes = 0.0
+      StalkAllocRes = 0.0
+
+c     if the shortfalls for leaf and stalk are both less than the available
+c     reserve, we can add this and allow full expansion of leaves and stalks
+    
+      IF (TotShortFall .GT. 0.00001) THEN
+        IF (TotShortFall .LE. dMaxReserveSource ) THEN
+c         if the shortfall is less than the available reserve, meet
+c         the shortfall for leaves and stalks
+          dReserveUsed = TotShortFall
+          LeafAllocRes = LeafSourceShortfall
+          StalkAllocRes = StalkSourceShortfall
+        ELSE 
+c         if the shortfall greater than the available reserve, partitiong
+c         according to OSGfrac and STKPFMAX:
+c         v4
+          LeafAllocRes = (1 - OSGfrac * STKPFmax) * dMaxReserveSource
+          StalkAllocRes = OSGfrac * STKPFmax * dMaxReserveSource
+          dReserveUsed = LeafAllocRes + StalkAllocRes
+        ENDIF
+      ENDIF
+
+c      issue a warning if necessary
+c      if (dReserveUsed > dMaxReserveSource) warning('Allocation of reserves exceeds available reserve.')
+
+c     update remaining reserve:
+      dMaxReserveSource = dMaxReserveSource - dReserveUsed
+
+c     Total shortfall today:
+      dTotalSourceShortfall = LeafSourceShortfall + StalkSourceShortfall 
+     & - dReserveUsed
+
+c     update leaf delta mass:
+      dLeafDM = dLeafDM + LeafAllocRes
+
+c     calculate actual source-limited change in leaf area today
+      dGLA = LAFMa(dLeafDM, SLA)  !dLeafDM * SLA * 0.01
+
+c     update stalk dry mass delta:
+      dSFibDM = dSFibDM + StalkAllocRes
 
 c     allocation to sucrose is whatever is left over after roots, leaves and stalks
-c     demands are met.  Sucrose can only accumulate after a certain number of
+c     C demands are met.  Sucrose can only accumulate after a certain number of
 c     internodes have appeared, i.e. at leaf number LFNUM_SUCStart
 c     I suspect this necessary, otherwise sucrose content will be very high
 c     shortly after OSG, where the canopy is photosynthesising strongly and
 c     sink strengths are not that great during the transition to stalk growth.
       dSSuc = 0.0
+
       IF (NumLF .GE. LFNUM_SUCStart) THEN
-c       allocated excess to sucrose if enough internodes have developed
-!        dSSuc = dADM - dLeafDM - dSFibDM
-c      allocated excess to sucrose if enough internodes have developed
-        ExtraSource = dADM - dLeafDM - dSFibDM
-c      the amount allocated to sucrose is limited by internode maturity
-            IF ((NumLF-LFNUM_SUCStart) .GE. MAXVAL(StalkSucPartx)) THEN
-                  StalkSucPart = MAXVAL(StalkSucParty)
-            ELSE IF ((NumLF-LFNUM_SUCStart) .LE. MINVAL(StalkSucPartx)) THEN
-                 StalkSucPart = MINVAL(StalkSucParty)
-            ELSE
-                  StalkSucPart = TABEX(StalkSucParty, StalkSucPartx, (NumLF-LFNUM_SUCStart), 2)
-            ENDIF
-        dSSuc = ExtraSource * StalkSucPart
-c      any that cannot be allocated to sucrose gets added to stalk fibre
-        dSFibDM = dSFibDM + ExtraSource*(1-StalkSucPart)
-      ELSE     
-c       otherwise allocate the excess to stalk fibre
-        dSFibDM = dADM - dLeafDM
+c       allocate excess to sucrose if enough internodes have developed
+c       note: stalkallocres is added to stalksource, but in principle
+c       there should not be anything leftover if reserves had to be used
+c       to support structural growth today.
+        ExtraSource = StalkSource + StalkAllocRes - dSFibDM + dExcessLeafSource
+c       the amount allocated to sucrose is limited by internode maturity
+c     ! dSSuc = ExtraSource * 
+c     !&   TABEX(StalkSucParty, StalkSucPartx, (NumLF-LFNUM_SUCStart) , 2)
+        IF ((NumLF-LFNUM_SUCStart) .GE. MAXVAL(StalkSucPartx)) THEN
+            dSSuc = ExtraSource * MAXVAL(StalkSucParty)
+        ELSE IF ((NumLF-LFNUM_SUCStart) .LE. MINVAL(StalkSucPartx)) THEN
+            dSSuc = ExtraSource * MINVAL(StalkSucParty)
+        ELSE
+            dSSuc = ExtraSource * TABEX(StalkSucParty, StalkSucPartx, 
+     &       (NumLF-LFNUM_SUCStart), 2)
+        ENDIF
+
       ENDIF
-         
 
-c     new green leaf area, based on yesterday's new leaf dry mass
-       dGLA = dLeafDM / CANma
+c     was there a source shortfall?
+      dSourceLimit = (LeafSink + StalkSink) - (dLeafDM + dSFibDM)
 
-c     actual GLAI growth, based on yesterday's new leaf dry mass and
+c     actual GLAI growth, based on new leaf dry mass and
 c     yesterday's senescence
       dGLAI = dGLA - LAIsen
 
 c     senescence: based on light environment only:
 c     this basic concept comes from APSIM-Sugar
       IF (GLAI .GT. lai_sen_light) THEN
-        slai_light_fac =  sen_light_slope * (GLAI - lai_sen_light)
+            slai_light_fac = sen_light_slope * (GLAI - lai_sen_light)
       ELSE
-        slai_light_fac =  0.0
+            slai_light_fac = 0.0
       ENDIF
-      
+
 c     daily senescence rate (using APSIM_Sugar variable name)
       dlt_slai_light = GLAI * slai_light_fac
       LAIsen = dlt_slai_light
 
 c     mass senesced
 c     ##todo: senesce based on SLA from when these leaves appeared.
-      dSenDM = dlt_slai_light * CANma 
+      dSenDM  = dlt_slai_light * CANma
+
+
+
+
 
 
              
@@ -1253,62 +1481,95 @@ c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
             WRITE(*,*) 'SC_RGR CALLED IN INTEGRATE MODE...'
 
             IF (Control%YRDOY >= F_EDATE) THEN
+      
+c     update number of leaves
+      NumLF = NumLF + dNumLF
 
-c     Leaf phyllo interval
-!      LeafPI = LeafPI + dLeafPI
-
-c      check if the whole number of leaves changed?  In which case, calculate average
-c      source/sink ratio over the previous phyllocron interval (PI)
-      NumPI_SSR = 3.0
-        IF (FLOOR( NumLF ) - NumPI_SSR .GT. NumLFprev) THEN
-            PIAvgSSR = PIsumSource / PIsumSink            
-c         reset cumulative source sink ratio sum and number of days in this PI
-            PIsumSource = 0.0
-            PIsumSink = 0.0
-            PINumDays = 0.0
-            NumLFprev = FLOOR( NumLF )
-        ENDIF
+c     update cumulative CTT since appearance of this leaf
+      IF (dNumLF .GT. 0.0) THEN
+c       reset
+        CTT_LFEM_prev = CTT_LFEM
+      ENDIF
     
-c        update cumulative source strength over this PI
-        PIsumSource = PIsumSource + dADM
-        PIsumSink = PIsumSink + LeafSink + StalkSink
-c        update the number of days in this phyllocron interval
-        PINumDays = PINumDays + 1.0
+
 
 c     integrate GLAI
       GLAI = GLAI + dGLAI
-            
+
 c     stalk length
-      StalkLength = StalkLength + SER
-       
-C     thermal time for leaf appearance:
+      StalkLength = StalkLength + SXR
+
+c     thermal time for leaf appearance:
       CTT_LFEM = CTT_LFEM + dTTLf
 
-c     energy in sett
-      SettDM = SettDM - dRootDM_Sett
-             
-C     integrate ADM
-      ADM = ADM + dADM
-C     integrate stalk dry mass
+c     integrate ADM
+      ADMSource = ADMSource + dADMSource
+      dADM = dLeafDM + dSFibDM + dSSuc
+      ADM =  ADM + dADM
+    
+c     calculate the change today:
+      dAdditionalSource = dADMSource - (dLeafDM + dSFibDM + dSSuc)
+      AdditionalSource = AdditionalSource + dAdditionalSource
+
+c     SettDM
+      SettDM = SettDM - dSourceFromSett
+    
+c     to what extent was source under-supplying the sink?
+c     SourceShortfall <- SourceShortfall + dSourceLimit
+      SourceShortfall = SourceShortfall + dTotalSourceShortfall
+c     energy in sett / stool / rhizome
+c     SettDM <- SettDM - dRootDM_Sett
+      CarbReserveDM = CarbReserveDM - dReserveUsed + dAdditionalSource
+
+c     integrate stalk dry mass
       SDM = SDM + dSFibDM + dSSuc
-C     stalk fibre dry mass
+
+      WRITE(*,'(A,F8.3)') "SDM: ", SDM
+
+c     actual stalk partitioning fraction
+      IF (dLeafDM + dSFibDM + dSSuc .GT. 0.0) THEN
+        SPF_act = (dSFibDM + dSSuc)/ (dLeafDM + dSFibDM + dSSuc)
+      ENDIF
+
+      WRITE(*,'(A,F8.3)') "SPF_act: ", SPF_act
+
+
+c     average stalk fraction of ADM:
+      IF (ADM .GT. 0.0 ) THEN
+        STKFRAC_avg = SDM / ADM
+      ENDIF
+
+      WRITE(*,'(A,F8.3)') "STKFRAC_avg: ", STKFRAC_avg
+    
+c     stalk fibre dry mass
       SFibDM = SFibDM + dSFibDM
-C     stalk sucrose (t/ha)
+c     stalk sucrose (t/ha)
       SUCDM = SUCDM + dSSuc
-C     integrate total leaf dry mass
       LeafDM = LeafDM + dLeafDM
-C     integrate green leaf dry mass
+c     integrate green leaf dry mass
       GLeafDM = GLeafDM + dLeafDM - dSenDM
-C     integrate total dry mass
+c     calculate average SLA; clamp to known max
+      WRITE(*,'(A,F8.3)') "GLeafDM: ", GLeafDM
+      WRITE(*,'(A,F8.3)') "GLAI: ", GLAI
+      IF(GLeafDM .GT. 0.0) THEN
+        SLA_avg = MIN(SLAMax, SLAFAM(GLeafDM,  GLAI))
+      ENDIF
+      WRITE(*,'(A,F8.3)') "SLA_avg: ", SLA_avg
+    
+c     integrate total dry mass
       TotalDM = TotalDM + Source
-C     integrate root dry mass
+c     integrate root dry mass
       RootDM = RootDM + dRootDM
-C     integrate senesced DM
+
+c     integrate senesced DM
       SenDM = SenDM + dSenDM
-C     verify ADM
+c     verify ADM
       vADM = GLeafDM + SenDM + dSFibDM + dSSuc
-C     verify source
-      vSource = dRootDM + dLeafDM + dSFibDM + dSSuc
+    
+c     verify source
+      vSource = dRootDM + dLeafDM + dSFibDM + dSSuc      
+
+
 
       ENDIF ! end ofIF (Control%YRDOY >= F_EDATE)
 
@@ -1323,6 +1584,9 @@ c              DYNAMIC = OUTPUT
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.OUTPUT) THEN
+        
+            WRITE(*,*) "SC_RGR CALLED IN OUTPUT MODE..."
+
             IF (Control%YRDOY >= F_EDATE) THEN
 
 c     Write output of daily values:
@@ -1330,22 +1594,30 @@ c     :::::::::::::::::::::::::::::
 
       CALL SC_RGOUTPUT(CONTROL, WEATHER,
      &  SW, SoilProp,
-     &  YRPLT, CELLSE_DM, TAVE,
-     & ADM, CANma, CTT_LFEM, 
-     & dADM, dGLA, dGLA_pot, dGLAI, 
-     & dLeafDM, dlt_slai_light, 
-     & dRootDM, dSDM, dSenDM, dSFibDM, 
+     &  YRPLT, CELLSE_DM,
+     & TAVE, 
+     & ADM, CANma, CTT_LFEM, dADMSource, 
+     & dGLA, dGLA_pot, dGLAI, dLeafDM, 
+     & dlt_slai_light, dRootDM, 
+     & dSDM, dSenDM, dSFibDM, dTotalSourceShortfall, 
+     & CarbReserveDM, SourceShortfall, 
+     & LeafSourceShortfall, StalkSourceShortfall, 
+     & AdditionalSource, dAdditionalSource, 
      & dSSuc, dTTLf, FIinter, FT_LAI, 
      & FT_photos, GLAI, GLeafDM, 
      & SettDM, KePAR, LAIsen, LeafDM, 
-     & LeafPI, LeafSink, LFNUM_OSG, 
-     & LFNUM_SUCStart, NumLF, RootFrac, 
-     & RootDM, RGR_LAI_max, SDM, 
-     & SenDM, SER, slai_light_fac, 
-     & SLSR, PIAvgSSR, SLA, Source, 
-     & SPF, SRAD, StalkSink, StalkLength, 
-     & SFibDM, SWDF2, SUCDM, TotalDM, 
-     & vADM, vSource)
+     & LeafPI, LeafSource, LeafSink, 
+     & LFNUM_OSG, LFNUM_SUCStart, 
+     & NumLF, dNumLF, PIAvgSSRv2, 
+     & RootDM, RootFrac, RGR_LAI_max, 
+     & RGR_LAI_FTSW, RGR_LAI_act, 
+     & SDM, SenDM, SXR, SFibDM, 
+     & slai_light_fac, SLA, SLA_avg, 
+     & Source, StalkSource, OSGfrac, 
+     & SPF_act, STKFRAC_avg, StalkSink, 
+     & StalkLength, SWDF2, SUCDM, 
+     & TotalDM, vADM, vSource, 
+     & ADMSource)  
      
             ENDIF ! end of IF (Control%YRDOY >= F_EDATE)
 
@@ -1394,6 +1666,35 @@ c     ::::::::::::::::::::::::::::::::::::
 c     -----------------------------------------------------
 c     END of SUBROUTINE SC_RGR
 c     -----------------------------------------------------
+
+c     FUNCTION LeafMassFromArea(Area, SLA)
+      FUNCTION LMFAra(Area_f1, SLA_f1)
+        IMPLICIT NONE
+        REAL Area_f1, SLA_f1, LMFAra
+        LMFAra = Area_f1 * 1.0/SLA_f1 * 100.0
+c      RETURN 
+      END FUNCTION LMFAra
+
+
+c     FUNCTION LeafAreaFromMass(Mass, SLA)
+      FUNCTION LAFMa(Mass_f2, SLA_f2)
+          IMPLICIT NONE
+          REAL Mass_f2, SLA_f2, LAFMa
+          LAFMa = Mass_f2 * SLA_f2 * 0.01
+c      RETURN 
+      END FUNCTION LAFMa
+
+
+c     FUNCTION SLAFromAreaAndMass(Mass, Area)
+      FUNCTION SLAFAM(Mass_f3, Area_f3)
+        IMPLICIT NONE
+        REAL Mass_f3, Area_f3, SLAFAM
+        SLAFAM = Area_f3 / (Mass_f3 * 0.01)
+c      RETURN 
+      END FUNCTION SLAFAM
+
+
+
 c     APPENDIX 1: DSSAT interface variables:
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
 c     - Input variables -
