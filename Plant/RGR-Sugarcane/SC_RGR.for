@@ -478,64 +478,8 @@ c              DYNAMIC = RUNINIT
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       IF (DYNAMIC.EQ.RUNINIT) THEN
-        WRITE(*,*) 'SC_RGR CALLED IN RUNINIT MODE...'
+        !WRITE(*,*) 'SC_RGR CALLED IN RUNINIT MODE...'
 
-c     JvdM: initalise program variables
-      ! TAVE = 0.0
-      ! ADM = 0.0
-      ! CANma = 0.0
-      ! CTT_LFEM = 0.0
-      ! dADMSource = 0.0
-      ! dGLA = 0.0
-      ! dGLA_pot = 0.0
-      ! dGLAI = 0.0
-      ! dLeafDM = 0.0
-      ! dlt_slai_light = 0.0
-      ! dRootDM = 0.0
-      ! dSDM = 0.0
-      ! dSenDM = 0.0
-      ! dSFibDM = 0.0
-      ! dSourceShortfall = 0.0
-      ! LeafSourceShortfall = 0.0
-      ! StalkSourceShortfall = 0.0
-      ! AdditionalSource = 0.0
-      ! dAdditionalSource = 0.0
-      ! dSSuc = 0.0
-      ! dTTLf = 0.0
-      ! FIinter = 0.0
-      ! FT_LAI = 0.0
-      ! FT_photos = 0.0
-      ! InitialGLAI  = 0.1
-      ! GLAI = InitialGLAI
-      ! GLeafDM = 0.0
-      ! KePAR = 0.0
-      ! LAIsen = 0.0
-      ! LeafDM = 0.0
-      ! LeafPI = 0.0
-      ! LeafSink = 0.0
-      ! LFNUM_OSG = 0.0
-      ! LFNUM_SUCStart = 20.0
-      ! NumLF = 0.0
-      ! NumLFprev = 1.0 ! added Feb 2021
-      ! RootFrac = 0.0
-      ! RootDM = 0.0
-      ! RGR_LAI_max = 0.0
-      ! SDM = 0.0
-      ! SenDM = 0.0
-      ! SXR = 0.0
-      ! slai_light_fac = 0.0
-      ! SLSR = 0.0
-      ! SLA = 0.0
-      ! Source = 0.0
-      ! SPF = 0.0
-      ! StalkSink = 0.0
-      ! StalkLength = 0.0
-      ! SFibDM = 0.0
-      ! SWDF2 = 0.0
-      ! SUCDM = 0.0
-      ! TotalDM = 0.0
-      ! vADM = 0.0
-      ! vSource = 0.0
 
 c     need for OSGfrac calculation in rate calculations
       inx = 0.0
@@ -613,43 +557,8 @@ c              DYNAMIC = SEASINIT
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF (DYNAMIC.EQ.SEASINIT) THEN
-            WRITE(*,*) 'SC_RGR CALLED IN SEASINIT MODE...'
+            !WRITE(*,*) 'SC_RGR CALLED IN SEASINIT MODE...'
 
-c     JvdM: The following to be replaced by Fortran SEASINIT CUL read     
-!            InitialGLAI  = 0.1
-!            TBase_LAI  = 15
-!            TOpt_LAI  = 35
-!            TFin_LAI  = 40
-            ! TBase_Photos  = 10.0
-            ! TOpt1_Photos  = 20.0
-            ! TOpt2_Photos  = 32.0
-            ! TFin_Photos  = 45.0
-            ! TBase_LFAPP  = 9
-            ! TOpt_LFAPP  = 28
-            ! TFin_LFAPP  = 40
-            ! LeafPI1  = 70
-            ! LeafPI2  = 120
-            ! KeMin  = 0.5
-            ! KeMax  = 0.9
-            ! KeMaxLf  = 20
-            ! SLAMin  = 50
-            ! SLAMax  = 150
-            ! Suc_LfNum_Delay  = 4
-            ! RGRglaiMin  = 0.009
-            ! RGRglaiMax  = 0.18
-            ! RGRglaiSlope  = -20
-            ! RUEo  = 3.6
-            ! MAX_ROOTPF  = 0.95
-            ! AvRootDMFrac  = 0.23
-            ! APFMX  = 0.8
-            ! PCB  = 0.6
-            ! FI_OSG  = 0.7
-            ! OSG_log_c1  = 200.0
-            ! STKPFmax  = 0.7
-            ! SERo  = 1
-            ! SSH  = 1
-            ! lai_sen_light  = 2.5
-            ! sen_light_slope  = 0.005
 
       CALL GET_CULTIVAR_COEFF(InitialGLAI, 'InitialGLAI', CONTROL, cERROR)
       CALL GET_CULTIVAR_COEFF(TBase_LAI, 'TBase_LAI', CONTROL, cERROR)
@@ -827,14 +736,14 @@ c      These functions interpolate linearly between points.
       FT_photosy = (/ 0.0,          0.0,          1.0, 
      &          1.0,         0.0, 0.0 /)
 
-      WRITE(*,'(A,F5.2)') "FT_photosx: ", FT_photosx(2)
-      WRITE(*,'(A,F5.2)') "MAX OF FT_photosy: ", MAXVAL(FT_photosy)
+      !WRITE(*,'(A,F5.2)') "FT_photosx: ", FT_photosx(2)
+      !WRITE(*,'(A,F5.2)') "MAX OF FT_photosy: ", MAXVAL(FT_photosy)
 
 c     call TABEX function later (daily loop, rates of change) with arrays defined above:
 c     format: TABEX(yArray, xArray, valueToBeEstimated, dimensions of Arrays)
 c     FT_photos = TABEX(FT_photosy, FT_photosx, TAVE, 6)
 
-      WRITE(*,'(A,F8.3)') "TFin_LAI: ", TFin_LAI
+      !WRITE(*,'(A,F8.3)') "TFin_LAI: ", TFin_LAI
 
 c     Max relative growth rate of GLAI
       FT_LAIx= (/ 0.0, TBase_LAI, TOpt_LAI, TFin_LAI, 0.0 /)
@@ -1020,7 +929,7 @@ c      maximum energy content of reserve
 c       increment iteration counter
        !Inti = 0 ! PROBALY ONLY NEEDED IN R SCRIPT
 
-      WRITE(*,*) "End of SEASINIT"
+      !WRITE(*,*) "End of SEASINIT"
 
 c     END of SEASINIT
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1031,13 +940,13 @@ c              DYNAMIC = RATE
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.RATE) THEN
-            WRITE(*,*) 'SC_RGR CALLED IN RATE MODE...'
+            !WRITE(*,*) 'SC_RGR CALLED IN RATE MODE...'
 
-            WRITE(*,'(A,I8)') "YRDOY: ", Control%YRDOY
+            !WRITE(*,'(A,I8)') "YRDOY: ", Control%YRDOY
 
       IF (Control%YRDOY >= F_EDATE) THEN
-            WRITE(*,'(A,I8)') "F_EDATE: ", F_EDATE
-            WRITE(*,'(A,I8)') "YRDOY: ", Control%YRDOY
+            !WRITE(*,'(A,I8)') "F_EDATE: ", F_EDATE
+            !WRITE(*,'(A,I8)') "YRDOY: ", Control%YRDOY
 c     set rates of change to 0 at start            
       dADM = 0.0
       dGLA = 0.0
@@ -1062,8 +971,7 @@ c     SRAD already defined
       
 c     -----------  CALCULATE RATES OF CHANGE ------------------
 c     ------------- Phenology-related -------------------
-      WRITE(*,'(A,F8.3)') "ResExFrac: ", ResExFrac
-      WRITE(*,'(A,F8.3)') "SLA: ", SLA
+      
 c     convert Specific leaf area input to t/ha/m2
 c     (SLA might be modified at runtime)
 c      CANma = 1.0 / SLA * 100.0
@@ -1078,7 +986,7 @@ c     radiation extinction coefficient:
           KePAR = TABEX(KePARy, KePARx, NumLF, 2)
         ENDIF
 
-      WRITE(*,'(A,F8.3)') "KePAR: ", KePAR
+      !WRITE(*,'(A,F8.3)') "KePAR: ", KePAR
 
 c      leaf phyllocron interval (transition from short to long PI linked to transition to stalk growth):
       LeafPI = LeafPI1 + ((LeafPI2 - LeafPI1) * OSGfrac)
@@ -1088,16 +996,16 @@ c     fractional interception of radiation
       FIinter = 1.0 - EXP(inx)
       inx = 0.0
 
-      WRITE(*,'(A,F8.3)') "FIinter: ", FIinter
-      WRITE(*,'(A,F8.3)') "OSG_log_c1: ", OSG_log_c1
-      WRITE(*,'(A,F8.3)') "(FIinter - FI_OSG): ", (FIinter - FI_OSG)
+      !WRITE(*,'(A,F8.3)') "FIinter: ", FIinter
+      !WRITE(*,'(A,F8.3)') "OSG_log_c1: ", OSG_log_c1
+      !WRITE(*,'(A,F8.3)') "(FIinter - FI_OSG): ", (FIinter - FI_OSG)
 
 c      stalk partitioning fraction
       inx = -1 * OSG_log_c1 * (FIinter - FI_OSG)
       OSGfrac = MAX( 1 / (1 + EXP(inx)), OSGfrac)
       inx = 0.0
      
-       WRITE(*,'(A,F8.3)') "OSGfrac: ", OSGfrac
+       !WRITE(*,'(A,F8.3)') "OSGfrac: ", OSGfrac
 
 ! c     stalk partitioning fraction
 ! c     can OSG_log_c1 be linked to LAI_RGR, i.e. a faster canopy --> faster transition?
@@ -1113,7 +1021,7 @@ c     new leaf appears if LeafPI Cd have elapsed since current leaf appeared
 c     FLOOR returns an integer
       dNumLF = floor((CTT_LFEM - CTT_LFEM_prev) / LeafPI) * 1.0 !convert int -> real
 
-      WRITE(*,'(A,F8.3)') "dNumLF: ", dNumLF
+      !WRITE(*,'(A,F8.3)') "dNumLF: ", dNumLF
 
 c     if SPF > 0.001, record number of leaves:
 
@@ -1124,8 +1032,8 @@ c     if SPF > 0.001, record number of leaves:
             ENDIF
       ENDIF
 
-      WRITE(*,'(A,F8.3)') "LFNUM_SUCStart: ", LFNUM_SUCStart
-      WRITE(*,'(A,F8.3)') "GLAI: ", GLAI
+      !WRITE(*,'(A,F8.3)') "LFNUM_SUCStart: ", LFNUM_SUCStart
+      !WRITE(*,'(A,F8.3)') "GLAI: ", GLAI
 
 c     daily thermal time for leaf appearance
 c     dTTLf = ifelse(GLAI>0.0, LeafTTf(TAVE), 0.0)
@@ -1135,7 +1043,7 @@ c     dTTLf = ifelse(GLAI>0.0, LeafTTf(TAVE), 0.0)
             dTTLf =  0.0
       ENDIF
       
-      WRITE(*,'(A,F8.3)') "dTTLf: ", dTTLf
+      !WRITE(*,'(A,F8.3)') "dTTLf: ", dTTLf
 
 c     leaf phyllocron interval transitions from short to long as crop
 c     transitions to stalk growth phase
@@ -1161,18 +1069,18 @@ c     photosynthetically-active radiation (PAR).
       Source = (FT_photos * FIinter * RUEo * 0.01 * (1.0/(1.0 - AvRootDMFrac)) 
      & * SRAD * 0.5) + dSourceFromSett
 
-      WRITE(*,'(A,F8.3)') "Source: ", Source
+      !WRITE(*,'(A,F8.3)') "Source: ", Source
 c      divide up source strength into source pools for leaves and stalks:
       inx = -1.0 * PCB * TotalDM
       RootSource  = Source * min(MAX_ROOTPF, 1.0 - APFMX * ( 1 - EXP(inx)))
       inx = 0.0
-      WRITE(*,'(A,F8.3)') "RootSource: ", RootSource
+      !WRITE(*,'(A,F8.3)') "RootSource: ", RootSource
       dADMSource  = Source - RootSource
-      WRITE(*,'(A,F8.3)') "dADMSource: ", dADMSource
+      !WRITE(*,'(A,F8.3)') "dADMSource: ", dADMSource
       LeafSource  = (1.0 - OSGfrac * STKPFmax) * dADMSource
-      WRITE(*,'(A,F8.3)') "LeafSource: ", LeafSource
+      !WRITE(*,'(A,F8.3)') "LeafSource: ", LeafSource
       StalkSource = OSGfrac * STKPFmax * dADMSource
-      WRITE(*,'(A,F8.3)') "StalkSource: ", StalkSource
+      !WRITE(*,'(A,F8.3)') "StalkSource: ", StalkSource
 
 c     ----------- Sink strengths --------------
 c     daily allocation to root DM
@@ -1181,10 +1089,10 @@ c     daily allocation to root DM
 c     calculate relative growth rate of green leaf area index
       RGR_LAI_max = RGRglaiMin + 
      & ((RGRglaiMax - RGRglaiMin) * (1.0 - OSGfrac))
-      WRITE(*,'(A,F8.3)') "RGR_LAI_max: ", RGR_LAI_max
+      !WRITE(*,'(A,F8.3)') "RGR_LAI_max: ", RGR_LAI_max
 c     potential (source-unlimited) growth in GLAI today
       FT_LAI = TABEX(FT_LAIy, FT_LAIx, TAVE, 5)
-      WRITE(*,'(A,F8.3)') "FT_LAI: ", FT_LAI
+      !WRITE(*,'(A,F8.3)') "FT_LAI: ", FT_LAI
 
 c     temperature- and water-stress limited RGR_LAI:
       RGR_LAI_FTSW = RGR_LAI_max * FT_LAI * SWDF2
@@ -1193,22 +1101,22 @@ c     source-unlimited change in LAI
       dGLA_pot = RGR_LAI_FTSW * GLAI
 
 c     associated potential sink strengths for min and max SLA
-      WRITE(*,'(A,F8.3)') "dGLA_pot: ", dGLA_pot
+      !WRITE(*,'(A,F8.3)') "dGLA_pot: ", dGLA_pot
       LeafSink_SLAmin = LMFAra(dGLA_pot, SLAMin)
       LeafSink_SLAmax = LMFAra(dGLA_pot, SLAMax)
 
-      WRITE(*,'(A,F8.3)') "LeafSink_SLAmin: ", LeafSink_SLAmin
-      WRITE(*,'(A,F8.3)') "LeafSink_SLAmax: ", LeafSink_SLAmax
+      !WRITE(*,'(A,F8.3)') "LeafSink_SLAmin: ", LeafSink_SLAmin
+      !WRITE(*,'(A,F8.3)') "LeafSink_SLAmax: ", LeafSink_SLAmax
 
 c     stalk elongation rate (cm/d) for the average stalk
 c     using SXRpot-specific cardinal temperatures for stalk growth
       FT_SXR = TABEX(SXR_EffTempy, SXR_EffTempx, TAVE, 5)
       SXRpot = SXRo * FT_SXR * SWDF2 * OSGfrac
 
-      WRITE(*,'(A,F8.3)') "TBase_SXR: ", TBase_SXR
+      !WRITE(*,'(A,F8.3)') "TBase_SXR: ", TBase_SXR
 
-      WRITE(*,'(A,F8.3)') "FT_SXR: ", FT_SXR
-      WRITE(*,'(A,F8.3)') "SXRpot: ", SXRpot
+      !WRITE(*,'(A,F8.3)') "FT_SXR: ", FT_SXR
+      !WRITE(*,'(A,F8.3)') "SXRpot: ", SXRpot
 
 c     stalk structural growth sink strength
 c     maybe delay by a few PIs before sucrose can start accumulating?
@@ -1370,14 +1278,6 @@ c     ##todo: senesce based on SLA from when these leaves appeared.
       dSenDM  = dlt_slai_light * CANma
 
 
-
-
-
-
-             
-
-
-
 c     Calculate water stresses:
 c     :::::::::::::::::::::::::::
 c     Only call this sub if the crop has emerged:
@@ -1496,7 +1396,7 @@ c           Find an equivalent value from DSSAT!
 
       ENDIF ! END OF IF (Control%YRDOY >= F_EDATE)
 
-      WRITE(*,*) "End of RATE MODE..."
+      !WRITE(*,*) "End of RATE MODE..."
 
 c     END of RATE
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1507,7 +1407,7 @@ c              DYNAMIC = INTEGRATE
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.INTEGR) THEN
-            WRITE(*,*) 'SC_RGR CALLED IN INTEGRATE MODE...'
+            !WRITE(*,*) 'SC_RGR CALLED IN INTEGRATE MODE...'
 
             IF (Control%YRDOY >= F_EDATE) THEN
       
@@ -1563,14 +1463,14 @@ c     SettDM <- SettDM - dRootDM_Sett
 c     integrate stalk dry mass
       SDM = SDM + dSFibDM + dSSuc
 
-      WRITE(*,'(A,F8.3)') "SDM: ", SDM
+      !WRITE(*,'(A,F8.3)') "SDM: ", SDM
 
 c     actual stalk partitioning fraction
       IF ((dLeafDM + dSFibDM + dSSuc) .NE. 0.0) THEN
         SPF_act = (dSFibDM + dSSuc) / (dLeafDM + dSFibDM + dSSuc)
       ENDIF
 
-      WRITE(*,'(A,F8.3)') "SPF_act: ", SPF_act
+      !WRITE(*,'(A,F8.3)') "SPF_act: ", SPF_act
 
 
 c     average stalk fraction of ADM:
@@ -1578,7 +1478,7 @@ c     average stalk fraction of ADM:
         STKFRAC_avg = SDM / ADM
       ENDIF
 
-      WRITE(*,'(A,F8.3)') "STKFRAC_avg: ", STKFRAC_avg
+      !WRITE(*,'(A,F8.3)') "STKFRAC_avg: ", STKFRAC_avg
     
 c     stalk fibre dry mass
       SFibDM = SFibDM + dSFibDM
@@ -1588,13 +1488,13 @@ c     stalk sucrose (t/ha)
 c     integrate green leaf dry mass
       GLeafDM = GLeafDM + dLeafDM - dSenDM
 c     calculate average SLA; clamp to known max
-      WRITE(*,'(A,F8.3)') "GLeafDM: ", GLeafDM
-      WRITE(*,'(A,F8.3)') "GLAI: ", GLAI
+      !WRITE(*,'(A,F8.3)') "GLeafDM: ", GLeafDM
+      !WRITE(*,'(A,F8.3)') "GLAI: ", GLAI
       ! check for GLeadFM > 0 otherwise SLAFAM function returns error
       IF(GLeafDM .NE. 0.0) THEN
         SLA_avg = MIN(SLAMax, SLAFAM(GLeafDM,  GLAI))
       ENDIF
-      WRITE(*,'(A,F8.3)') "SLA_avg: ", SLA_avg
+      !WRITE(*,'(A,F8.3)') "SLA_avg: ", SLA_avg
     
 c     integrate total dry mass
       TotalDM = TotalDM + Source
@@ -1613,7 +1513,7 @@ c     verify source
 
       ENDIF ! end ofIF (Control%YRDOY >= F_EDATE)
 
-      WRITE(*,*) "End of INTEGRATE MODE..."
+      !WRITE(*,*) "End of INTEGRATE MODE..."
 
 
 c     END of INTEGRATE
@@ -1625,7 +1525,7 @@ c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.OUTPUT) THEN
         
-            WRITE(*,*) "SC_RGR CALLED IN OUTPUT MODE..."
+            !WRITE(*,*) "SC_RGR CALLED IN OUTPUT MODE..."
 
             IF (Control%YRDOY >= F_EDATE) THEN
 
@@ -1676,14 +1576,10 @@ c              DYNAMIC = FINAL
 c
 c     :::::::::::::::::::::::::::::::::::::::::::::::::::::
       ELSEIF(DYNAMIC.EQ.SEASEND) THEN
-            WRITE(*,*) 'SC_RGR CALLED IN FINAL MODE...'
+            !WRITE(*,*) 'SC_RGR CALLED IN FINAL MODE...'
             
-            WRITE(*,'(A,F8.3)') 'SERo: ', SERo
-            WRITE(*,'(A,F8.3)') 'SSH: ', SSH
-            WRITE(*,'(A,F8.3)') 'lai_sen_light: ', lai_sen_light
-            WRITE(*,'(A,F8.3)') 'sen_light_slope: ', sen_light_slope
-            WRITE(*,'(A,F8.3)') "ROWSPC: ", ROWSPC
-            WRITE(*,'(A,F8.3)') "FI_OSG: ", FI_OSG
+            !WRITE(*,'(A,F8.3)') "ROWSPC: ", ROWSPC
+            !WRITE(*,'(A,F8.3)') "FI_OSG: ", FI_OSG
 
 
 
